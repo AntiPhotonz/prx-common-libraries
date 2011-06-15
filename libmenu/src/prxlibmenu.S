@@ -2,7 +2,7 @@
 
 #include "pspstub.s"
 
-	STUB_START "prxlibmenu",0x40090000,0x002F0005
+	STUB_START "prxlibmenu",0x40090000,0x00340005
 	STUB_FUNC  0x177A922B,libmIsInvalidItem
 	STUB_FUNC  0xC076E2D7,libmGetPrevItem
 	STUB_FUNC  0x30C9C4D9,libmGetNextItem
@@ -50,4 +50,9 @@
 	STUB_FUNC  0xFA91BCBF,libmGetColor
 	STUB_FUNC  0x5148114A,libmGetCurVInfo
 	STUB_FUNC  0xCE0C4B66,libmSetCurVInfo
+	STUB_FUNC  0x483DAE95,libmLoadFont
+	STUB_FUNC  0xB30F8027,libmLen
+	STUB_FUNC  0xD96421D1,libmPrintXY16
+	STUB_FUNC  0x8700B40A,libmPrintfXY16
+	STUB_FUNC  0x0C545004,libmGetIdxItem
 	STUB_END

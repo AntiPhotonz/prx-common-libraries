@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include <libmenu.h>
+#include "libmenu.h"
 
 #include "color.h"
 
@@ -542,6 +542,11 @@ int threadMain(SceSize args, void *argp)
 	
 	//初期ロードチェック
 	init();
+	
+	// load font
+	libmLoadFont(FONT_SJIS);
+	libmLoadFont(FONT_CG);
+	//libmLoadFont(FONT_HANKAKU_KANA);
 	
 	//メニュー作成
 	MenuCreate();

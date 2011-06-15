@@ -58,8 +58,8 @@ extern "C" {
 
 #define	GET_ARRAY_SIZE(size)	( size / sizeof(MenuItem*) )
 
-#define BLEND_FUNC( src_ch, dst_ch, alpha, maxbits ) ( ( ( ( src_ch ) + 1 - ( dst_ch ) ) * ( alpha ) >> ( maxbits ) ) + ( dst_ch ) )
-
+//#define BLEND_FUNC( src_ch, dst_ch, alpha, maxbits ) ( ( ( ( src_ch ) + 1 - ( dst_ch ) ) * ( alpha ) >> ( maxbits ) ) + ( dst_ch ) )
+#define BLEND_FUNC(src_ch, dst_ch, alpha, maxbits) ((dst_ch) + ((((src_ch) - (dst_ch)) * (alpha)) >> (maxbits)))
 
 
 #define SWAP( a, b )		\

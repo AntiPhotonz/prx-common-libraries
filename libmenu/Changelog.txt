@@ -1,2 +1,10 @@
+*1.1
+[+] libmLoadFont関数を追加。これにより、文字を描画する前にフォントをロードする必要がある。
+[!] 上記に伴いlibmPrintXYを修正。
+[!] BLEND_FUNCを変更。
+[+] libmLen関数を追加。
+[+] libmPrintXY16 & libmPrintfXY16関数の追加。
+[+] libmGetIdxItem関数を追加。
+
 *1.0 (2011.06.08)
 [] 最初のリリース。

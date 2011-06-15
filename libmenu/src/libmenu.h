@@ -40,6 +40,10 @@ enum
 #define	LIBM_VIEW_ALL			false
 #define	LIBM_VIEW_ACTIVE		true
 
+// font load
+#define FONT_CG 1
+#define FONT_HANKAKU_KANA 2
+#define FONT_SJIS 3
 
 typedef enum
 {
@@ -1175,6 +1179,76 @@ bool libmGetCurVInfo(libm_vram_info *info);
 	描画幅
 */
 void libmSetCurVInfo(int format, void *buf, int width);
+
+
+
+/*	#############################################################
+
+	#							Extension						#
+	#############################################################
+
+*/
+
+/*
+    libmLoadFont
+    フォントをロードします。文字を描画する前に、この関数で必要なフォントをロードしてください。
+    
+    @params : flag
+    ロードするフォント。
+    以下からロードしたいものを設定。
+    
+    FONT_CG             "/seplugins/lib/font/cg.bin"をロードします
+    FONT_HANKAKU_KANA   "/seplugins/lib/font/hankaku_kana.bin"をロードします
+    FONT_SJIS           "/seplugins/lib/font/sjis.bin"をロードします
+    
+    @return : 0 = 成功、 -1 = 失敗
+*/
+int libmLoadFont(int flag);
+
+
+/*
+    libmLen
+    引数に渡された文字列の文字数を返します。
+    
+    @param : str
+    文字列
+    
+    @return : 文字数
+*/
+int libmLen(const char *str);
+
+
+/*
+    libmPrintXY16
+    フォントを16x16に拡大して表示する。それ以外は"libmPrintXY"と同様。
+*/
+inline int libmPrintXY16( int x, int y, u32 fg, u32 bg, const char *str );
+
+
+/*
+    libmPrintfXY16
+    フォントを16x16に拡大して表示する。それ以外は"libmPrintfXY"と同様。
+*/
+inline int libmPrintfXY16( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen ,const char *format, ... );
+
+
+/*	libmGetIdxItem
+    先頭から検索して指定数番目にあるアイテムを調べる
+    
+    @param: MenuItem *Item
+    検索の基準とするアイテム
+    
+    @param: bool Invalid_Skip
+    無効なアイテム (スペーサー、非表示、無効）を除外して検索するどうか
+    
+    @param: int Point_Idx
+    指定数番目のもの 
+    
+    @return : 有効なアイテム、なければ NULL
+ */
+MenuItem* libmGetIdxItem( MenuItem *Item , bool Invalid_Skip , int Point_Idx );
+
+
 
 
 #ifdef __cplusplus

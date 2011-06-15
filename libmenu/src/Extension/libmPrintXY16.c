@@ -1,21 +1,12 @@
 #include "common.h"
 
-/*
-#include "../fonts/font_cg.c"
-
-#ifdef LNGJPN
-#include "../fonts/misaki8x8.c"
-#endif
-*/
-
 #define	PB_INVALID_FONT			('?' * LIBM_CHAR_HEIGHT)
 #define	PB_INVALID_SJIS_INDEX	(0xFFFF)
 
-const char *font_cg = NULL, *font_hankaku_kana = NULL, *font_sjis = NULL;
+extern const char *font_cg, *font_hankaku_kana, *font_sjis;
+extern const char no_font[];
 
-const char no_font[] = {0xFF, 0xC3, 0xA5, 0x99, 0x99, 0xA5, 0xC3, 0xFF};
-
-inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str )
+inline int libmPrintXY16( int x, int y, u32 fg, u32 bg, const char *str )
 {
 	void *put_addr;
 	
@@ -50,10 +41,6 @@ inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str )
 		put_addr = libmMakeDrawAddr( x, y );
 		
 		/* グリフ取得 */
-		
-//#ifdef LNGJPN
-		//日本語サポート
-		
 		if( (unsigned char)str[i] < 0x80)
 		{
 			if(font_cg){
@@ -134,48 +121,37 @@ inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str )
 			}
 			else
 			{
-				//continue;
 				glyph = no_font;
 			}
 		}
 		else
 		{
-			//該当なし => ?
-			//continue;
 			glyph = no_font;
 		}
-/*		
-#else
-		//英数字のみ
+
+		chr_width_bytes = LIBM_CHAR_WIDTH * 2 * vinfo.pixelSize;
 		
-		//文字アドレス = 文字コード * 文字高さ（1*8 = 8byte）
-		if( (unsigned char)str[i] <= 0x88 )
-		{
-			glyph = &(font_cg[(unsigned char)str[i] * LIBM_CHAR_HEIGHT]);
-		}
-		else
-		{
-			//該当なし => ?
-			glyph = no_font;
-		}
-		
-#endif
-		*/
-		chr_width_bytes = LIBM_CHAR_WIDTH * vinfo.pixelSize;
-		
-		for( glyph_y = 0; glyph_y < LIBM_CHAR_HEIGHT; glyph_y++, put_addr += vinfo.lineSize - chr_width_bytes )
+		for( glyph_y = 0; glyph_y < LIBM_CHAR_HEIGHT; glyph_y++ )
 		{
 			glyph_line_data = glyph[glyph_y];
 			
-			for( glyph_x = 0; glyph_x < LIBM_CHAR_WIDTH	; glyph_x++, glyph_line_data <<= 1, put_addr += vinfo.pixelSize )
-			{
-				color = glyph_line_data & 0x80 ? fg : bg;
-				
-				if( color != LIBM_NO_DRAW ) libmPoint( put_addr, color );
+			int j;
+			for(j = 0; j < 2; j++){
+    			for( glyph_x = 0; glyph_x < LIBM_CHAR_WIDTH; glyph_x++, glyph_line_data <<= 1, put_addr += vinfo.pixelSize * 2 )
+	    		{
+	    			color = glyph_line_data & 0x80 ? fg : bg;
+	    			
+	    			if( color != LIBM_NO_DRAW ){
+	    			    libmPoint( put_addr, color );
+	    			    libmPoint( put_addr + vinfo.pixelSize, color );
+	    		    }
+	    		}
+    			put_addr += vinfo.lineSize - chr_width_bytes;
+    			glyph_line_data = glyph[glyph_y];
 			}
 		}
 		
-		x += LIBM_CHAR_WIDTH;
+		x += LIBM_CHAR_WIDTH * 2;
 	}
 	
 	if( flag )
@@ -186,3 +162,4 @@ inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str )
 	
 	return cnt;
 }
+

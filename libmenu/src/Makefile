@@ -1,9 +1,12 @@
 all:
-	psp-build-exports -s -v exports.exp
+	psp-build-exports -s exports.exp
 
 TARGET = prxlibmenu
 
-OBJS = main.o syslibc.o
+MAJOR_VERSION = 1
+MINOR_VERSION = 0
+
+OBJS = main.o syslibc.o memory.o
 
 OBJS	+=	static.o
 OBJS	+=	import.o
@@ -54,6 +57,13 @@ OBJS	+=	./Draw/libmGetColor.o
 OBJS	+=	./Draw/libmGetCurVInfo.o
 OBJS	+=	./Draw/libmSetCurVInfo.o
 
+#Extension
+OBJS	+=	./Extension/libmLoadFont.o
+OBJS	+=	./Extension/libmLen.o
+OBJS	+=	./Extension/libmPrintXY16.o
+OBJS	+=	./Extension/libmPrintfXY16.o
+OBJS	+=	./Extension/libmGetIdxItem.o
+
 BUILD_PRX = 1
 PRX_EXPORTS = exports.exp
 
@@ -61,7 +71,7 @@ USE_KERNEL_LIBS = 1
 USE_KERNEL_LIBC = 1
 
 INCDIR		= 
-CFLAGS 		= -Os -G0 -Wall -DLNGJPN
+CFLAGS 		= -Os -G0 -Wall -DLNGJPN -DMAJOR_VERSION=$(MAJOR_VERSION) -DMINOR_VERSION=$(MINOR_VERSION)
 CXXFLAGS 	= $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS 	= $(CFLAGS)
 

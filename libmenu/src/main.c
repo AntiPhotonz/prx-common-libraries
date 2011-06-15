@@ -3,7 +3,7 @@
 
 #include <pspkernel.h>
 
-PSP_MODULE_INFO("prxlibmenu", PSP_MODULE_KERNEL, 1, 0);
+PSP_MODULE_INFO("prxlibmenu", PSP_MODULE_KERNEL, MAJOR_VERSION, MINOR_VERSION);
 PSP_NO_CREATE_MAIN_THREAD();
 
 // entry point
