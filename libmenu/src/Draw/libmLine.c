@@ -2,7 +2,7 @@
 
 
 
-inline void libmLine( int sx, int sy, int ex, int ey, uint32_t color )
+inline void libmLine( int sx, int sy, int ex, int ey, uint32_t color, libm_draw_info *dinfo )
 {
 	void *draw_addr;
 	int       e, dx, dy;
@@ -12,15 +12,15 @@ inline void libmLine( int sx, int sy, int ex, int ey, uint32_t color )
 	if( sx > ex ) SWAP( &sx, &ex );
 	if( sy > ey ) SWAP( &sy, &ey );
 	
-	draw_addr = libmMakeDrawAddr( sx, sy );
+	draw_addr = libmMakeDrawAddr( sx, sy, dinfo );
 	
 	if( sx == ex )
 	{
-		for( ; sy <= ey; sy++, draw_addr += vinfo.lineSize ) libmPoint( draw_addr, color );
+		for( ; sy <= ey; sy++, draw_addr += dinfo->vinfo->lineSize ) libmPoint( draw_addr, color, dinfo );
 	}
 	else if( sy == ey )
 	{
-		for( ; sx <= ex; sx++, draw_addr += vinfo.pixelSize ) libmPoint( draw_addr, color );
+		for( ; sx <= ex; sx++, draw_addr += dinfo->vinfo->pixelSize ) libmPoint( draw_addr, color, dinfo );
 	}
 	else
 	{
@@ -32,34 +32,34 @@ inline void libmLine( int sx, int sy, int ex, int ey, uint32_t color )
 		{
 			int x;
 			
-			for( x = sx; x <= ex; x++, draw_addr += vinfo.pixelSize )
+			for( x = sx; x <= ex; x++, draw_addr += dinfo->vinfo->pixelSize )
 			{
 				e += dy;
 				
 				if( e > dx )
 				{
 					e -= dx;
-					draw_addr += vinfo.lineSize;
+					draw_addr += dinfo->vinfo->lineSize;
 				}
 				
-				libmPoint( draw_addr, color );
+				libmPoint( draw_addr, color, dinfo );
 			}
 		}
 		else
 		{
 			int y;
 			
-			for( y = sy; y <= ey; y++, draw_addr += vinfo.lineSize )
+			for( y = sy; y <= ey; y++, draw_addr += dinfo->vinfo->lineSize )
 			{
 				e += dx;
 				
 				if( e > dy )
 				{
 					e -= dy;
-					draw_addr += vinfo.pixelSize;
+					draw_addr += dinfo->vinfo->pixelSize;
 				}
 				
-				libmPoint( draw_addr, color );
+				libmPoint( draw_addr, color, dinfo );
 			}
 		}
 	}

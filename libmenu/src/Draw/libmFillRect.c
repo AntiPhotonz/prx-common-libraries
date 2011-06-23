@@ -1,6 +1,6 @@
 #include "common.h"
 
-inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color )
+inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo )
 {
 	void *start_addr, *draw_addr;
 	u32 offset;
@@ -14,16 +14,16 @@ inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color )
 	w = ex - sx;
 	h = ey - sy;
 	
-	start_addr = libmMakeDrawAddr(sx, sy);
+	start_addr = libmMakeDrawAddr(sx, sy, dinfo);
 	
-	for( ; h; h--, start_addr += vinfo.lineSize )
+	for( ; h; h--, start_addr += dinfo->vinfo->lineSize )
 	{
 		offset = 0;
 		
-		for( x = 0; x < w; x++, offset += vinfo.pixelSize )
+		for( x = 0; x < w; x++, offset += dinfo->vinfo->pixelSize )
 		{
 			draw_addr = start_addr + offset;
-			libmPoint(draw_addr, color );
+			libmPoint(draw_addr, color, dinfo );
 		}
 	}
 }

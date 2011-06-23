@@ -78,12 +78,12 @@ extern "C" {
 
 bool _vram_sync(int sync);
 MenuItem* _createItem(libmOpt *opt ,const char* Name,MenuItemType type);
-
+/*
 extern u32 (*convert)(u32);
 extern u32 (*blend)(u8,u32,u32);
 extern libm_vram_info vinfo,vinfo_tmp;
 extern int psx,psy;
-
+*/
 
 extern int vsnprintf( char *buf, size_t n, const char *fmt, va_list ap );
 extern int snprintf( char *buf, size_t n, const char *fmt, ... );

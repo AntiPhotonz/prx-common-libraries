@@ -11,7 +11,7 @@ int libmLoadFont(int flag){
     char *font_buf;
 
     switch(flag){
-        case FONT_CG:
+        case LIBM_FONT_CG:
             if(loaded_cg){
                 return 0;
             }
@@ -27,7 +27,7 @@ int libmLoadFont(int flag){
             }
             break;
         
-        case FONT_HANKAKU_KANA:
+        case LIBM_FONT_HANKAKU_KANA:
             if(loaded_hankaku_kana){
                 return 0;
             }
@@ -43,7 +43,7 @@ int libmLoadFont(int flag){
             }
             break;
         
-        case FONT_SJIS:
+        case LIBM_FONT_SJIS:
             if(loaded_sjis){
                 return 0;
             }
@@ -86,17 +86,17 @@ int libmLoadFont(int flag){
     }
     
     switch(flag){
-        case FONT_CG:
+        case LIBM_FONT_CG:
             font_cg = font_buf;
             loaded_cg = 1;
             break;
         
-        case FONT_HANKAKU_KANA:
+        case LIBM_FONT_HANKAKU_KANA:
             font_hankaku_kana = font_buf;
             loaded_hankaku_kana = 1;
             break;
         
-        case FONT_SJIS:
+        case LIBM_FONT_SJIS:
             font_sjis = font_buf;
             loaded_sjis = 1;
             break;

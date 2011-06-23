@@ -1,8 +1,8 @@
 #include "common.h"
 
-void libmSetCurVInfo(int format, void *buf, int width)
+void libmSetCurVInfo(int format, void *buf, int width, libm_draw_info *dinfo)
 {
-	vinfo.format	= format;
-	vinfo.buffer	= buf;
-	vinfo.width		= width;
+	dinfo->vinfo->format	= format;
+	dinfo->vinfo->buffer	= buf;
+	dinfo->vinfo->width		= width;
 }

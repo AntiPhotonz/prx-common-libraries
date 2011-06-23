@@ -1,6 +1,6 @@
 #include "common.h"
 
-inline void* libmMakeDrawAddr( int x, int y )
+inline void* libmMakeDrawAddr( int x, int y, libm_draw_info *dinfo )
 {
-	return (void*)( vinfo.buffer + (( x + y * vinfo.lineWidth ) * vinfo.pixelSize) );
+	return (void*)( dinfo->vinfo->buffer + (( x + y * dinfo->vinfo->lineWidth ) * dinfo->vinfo->pixelSize) );
 }

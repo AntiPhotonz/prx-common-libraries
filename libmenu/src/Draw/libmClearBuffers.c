@@ -1,6 +1,6 @@
 #include "common.h"
 
-void libmClearBuffers()
+void libmClearBuffers(libm_draw_info *dinfo)
 {
-	memset(vinfo.buffer ,0, vinfo.frameSize );
+	memset(dinfo->vinfo->buffer ,0, dinfo->vinfo->frameSize );
 }

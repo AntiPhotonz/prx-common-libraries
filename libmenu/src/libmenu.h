@@ -41,9 +41,9 @@ enum
 #define	LIBM_VIEW_ACTIVE		true
 
 // font load
-#define FONT_CG 1
-#define FONT_HANKAKU_KANA 2
-#define FONT_SJIS 3
+#define LIBM_FONT_CG 1
+#define LIBM_FONT_HANKAKU_KANA 2
+#define LIBM_FONT_SJIS 3
 
 typedef enum
 {
@@ -250,6 +250,16 @@ typedef struct
 	
 } libm_vram_info;
 
+typedef struct{
+    libm_vram_info *vinfo;
+    
+    u32 (*convert)(u32);
+    u32 (*blend)(u8, u32, u32);
+    
+    int psx;
+    int psy;
+    
+} libm_draw_info;
 
 /*	#########################################################
 	#					メニュー関連						#
@@ -515,7 +525,7 @@ MenuParams* libmGetHandle(MenuContext* Context, SceCtrlData* Input);
     表示(他スレッド停止)中に HOMEボタン が押されると
     ゲーム終了を可能にするために自動で他スレッド再開 + メニューを閉じる
  */
-void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen);
+void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen, libm_draw_info *dinfo);
 
 
 
@@ -698,7 +708,7 @@ MenuItem* libmCreateTriggerButton(libmOpt *opt ,const char* Name);
     
     @return: true = 成功、false = 失敗
  */
-bool libmInitBuffers( int opt ,int sync );
+bool libmInitBuffers( int opt ,int sync, libm_draw_info *dinfo );
 
 
 
@@ -711,14 +721,14 @@ bool libmInitBuffers( int opt ,int sync );
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
  */
-void libmSwapBuffers();
+void libmSwapBuffers(libm_draw_info *dinfo);
 
 /*  libmClearBuffers
     libmRender で描画に使うバッファーをクリア（黒色）
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
  */
-void libmClearBuffers();
+void libmClearBuffers(libm_draw_info *dinfo);
 
 
 /*  libmPrintXY
@@ -746,7 +756,7 @@ void libmClearBuffers();
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
  */
-inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str );
+inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
 
 
 
@@ -781,7 +791,7 @@ inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str );
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
  */
-inline int libmPrintfXY( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen ,const char *format, ... );
+inline int libmPrintfXY( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen , libm_draw_info *dinfo, const char *format, ... );
 
 
 
@@ -810,7 +820,7 @@ inline int libmPrintfXY( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen ,co
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
  */
-inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr );
+inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr, libm_draw_info *dinfo );
 
 
 
@@ -820,7 +830,7 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr );
 	画面に描画する準備をする
 	pspDebugScreenInit と似たような動作
  */
-#define	libmDebugScreenInit()		libmInitBuffers(LIBM_DRAW_INIT,PSP_DISPLAY_SETBUF_NEXTFRAME)
+#define	libmDebugScreenInit(dinfo)		libmInitBuffers(LIBM_DRAW_INIT,PSP_DISPLAY_SETBUF_NEXTFRAME, dinfo)
 
 
 
@@ -845,7 +855,7 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr );
     
 	※事前に libmInitBuffers または libmDebugScreenInit を実行してないと正常動作しない
  */
-#define	libmDebugScreenPrint(fg,bg,str)							libmPrintXY(-1,-1,fg,bg,str)
+#define	libmDebugScreenPrint(fg,bg,str, dinfo)							libmPrintXY(-1,-1,fg,bg,str, dinfo)
 
 
 
@@ -875,7 +885,7 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr );
     
 	※事前に libmInitBuffers または libmDebugScreenInit を実行してないと正常動作しない
  */
-#define	libmDebugScreenPrintf(fg,bg,buf,bufLen,format,...)		libmPrintfXY(-1,-1,fg,bg,buf,bufLen,format, __VA_ARGS__)
+#define	libmDebugScreenPrintf(fg,bg,buf,bufLen, dinfo, format,...)		libmPrintfXY(-1,-1,fg,bg,buf,bufLen, dinfo, format, __VA_ARGS__)
 
 
 /*  libmDebugScreenPutChar
@@ -898,7 +908,7 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr );
     
 	※事前に libmInitBuffers または libmDebugScreenInit を実行してないと正常動作しない
  */
-#define	libmDebugScreenPutChar(fg,bg,chr)							libmPrintfXY(-1,-1,fg,bg,chr)
+#define	libmDebugScreenPutChar(fg,bg,chr, dinfo)							libmPrintfXY(-1,-1,fg,bg,chr, dinfo)
 
 
 /*  libmDebugScreenSetXY
@@ -916,7 +926,7 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr );
     
     @return: true = 成功、false = 失敗（X/Yどちらかの値が異常）
  */
-bool libmDebugScreenSetXY( int x ,int y );
+bool libmDebugScreenSetXY( int x ,int y, libm_draw_info *dinfo );
 
 
 /*	libmLine
@@ -939,7 +949,7 @@ bool libmDebugScreenSetXY( int x ,int y );
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void libmLine( int sx, int sy, int ex, int ey, u32 color );
+inline void libmLine( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo );
 
 
 /*	libmPoint
@@ -965,7 +975,7 @@ inline void libmLine( int sx, int sy, int ex, int ey, u32 color );
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void libmPoint( void *adr, u32 src );
+inline void libmPoint( void *adr, u32 src, libm_draw_info *dinfo );
 
 
 /*	libmPointEx
@@ -982,7 +992,7 @@ inline void libmPoint( void *adr, u32 src );
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void libmPointEx( void *adr, u32 src );
+inline void libmPointEx( void *adr, u32 src, libm_draw_info *dinfo );
 
 /*	libmFillRect
 	指定範囲を指定色で塗りつぶす
@@ -1005,7 +1015,7 @@ inline void libmPointEx( void *adr, u32 src );
     
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color );
+inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo );
 
 
 
@@ -1026,7 +1036,7 @@ inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color );
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void libmCircle( int x, int y, u32 radius, u32 color );
+inline void libmCircle( int x, int y, u32 radius, u32 color, libm_draw_info *dinfo );
 
 
 
@@ -1050,7 +1060,7 @@ inline void libmCircle( int x, int y, u32 radius, u32 color );
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void libmFrame( int sx, int sy, int ex, int ey, u32 color );
+inline void libmFrame( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo );
 
 
 /*	libmMakeDrawAddr
@@ -1064,7 +1074,7 @@ inline void libmFrame( int sx, int sy, int ex, int ey, u32 color );
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline void* libmMakeDrawAddr( int x, int y );
+inline void* libmMakeDrawAddr( int x, int y, libm_draw_info *dinfo );
 
 /*	libmConvert8888_XXXX
 	32bit色(R:8 G:8 B:8 A:8)を各フォーマットの色へ変換する
@@ -1149,7 +1159,7 @@ inline u32 libmAlphaBlend5650( u8 alpha, u32 src, u32 dst );
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-inline u32 libmGetColor(void *addr);
+inline u32 libmGetColor(void *addr, libm_draw_info *dinfo);
 
 
 /*	libmGetCurVInfo
@@ -1163,7 +1173,7 @@ inline u32 libmGetColor(void *addr);
 	
 	※事前に libmInitBuffers を実行してないと正常動作しない
 */
-bool libmGetCurVInfo(libm_vram_info *info);
+//bool libmGetCurVInfo(libm_vram_info *info);
 
 
 /*	libmSetCurVInfo
@@ -1178,7 +1188,7 @@ bool libmGetCurVInfo(libm_vram_info *info);
 	@params : width
 	描画幅
 */
-void libmSetCurVInfo(int format, void *buf, int width);
+void libmSetCurVInfo(int format, void *buf, int width, libm_draw_info *dinfo);
 
 
 
@@ -1222,14 +1232,14 @@ int libmLen(const char *str);
     libmPrintXY16
     フォントを16x16に拡大して表示する。それ以外は"libmPrintXY"と同様。
 */
-inline int libmPrintXY16( int x, int y, u32 fg, u32 bg, const char *str );
+inline int libmPrintXY16( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
 
 
 /*
     libmPrintfXY16
     フォントを16x16に拡大して表示する。それ以外は"libmPrintfXY"と同様。
 */
-inline int libmPrintfXY16( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen ,const char *format, ... );
+inline int libmPrintfXY16( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen , libm_draw_info *dinfo, const char *format, ... );
 
 
 /*	libmGetIdxItem
@@ -1253,14 +1263,14 @@ MenuItem* libmGetIdxItem( MenuItem *Item , bool Invalid_Skip , int Point_Idx );
     libmPrintSymbolXY
     文字コード0x00-0xFFのフォントを使用してびょうがする。それ以外は"libmPrintXY"と同様。
 */
-inline int libmPrintSymbolXY( int x, int y, u32 fg, u32 bg, const char *str );
+inline int libmPrintSymbolXY( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
 
 
 /*
     libmPrintSymbolXY16
     文字コード0x00-0xFFのフォントを使用してびょうがする。それ以外は"libmPrintXY16"と同様。
 */
-inline int libmPrintSymbolXY16( int x, int y, u32 fg, u32 bg, const char *str );
+inline int libmPrintSymbolXY16( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
 
 #ifdef __cplusplus
 }
