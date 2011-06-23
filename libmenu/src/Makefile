@@ -8,7 +8,7 @@ MINOR_VERSION = 0
 
 OBJS = main.o syslibc.o memory.o
 
-OBJS	+=	static.o
+#OBJS	+=	static.o
 OBJS	+=	import.o
 
 #ITEM
@@ -54,7 +54,7 @@ OBJS	+=	./Draw/libmClearBuffers.o
 OBJS	+=	./Draw/libmSwapBuffers.o
 OBJS	+=	./Draw/libmMakeDrawAddr.o
 OBJS	+=	./Draw/libmGetColor.o
-OBJS	+=	./Draw/libmGetCurVInfo.o
+#OBJS	+=	./Draw/libmGetCurVInfo.o
 OBJS	+=	./Draw/libmSetCurVInfo.o
 
 #Extension

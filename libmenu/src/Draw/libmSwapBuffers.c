@@ -2,9 +2,9 @@
 
 //‚à‚¤Swap‚·‚ç‚µ‚Ä‚È‚¢EEE
 
-void libmSwapBuffers()
+void libmSwapBuffers(libm_draw_info *dinfo)
 {
-	sceDisplaySetFrameBuf( vinfo.buffer , vinfo.lineWidth , vinfo.format , PSP_DISPLAY_SETBUF_IMMEDIATE );
+	sceDisplaySetFrameBuf( dinfo->vinfo->buffer , dinfo->vinfo->lineWidth , dinfo->vinfo->format , PSP_DISPLAY_SETBUF_IMMEDIATE );
 	sceDisplayWaitVblankStart();
 	sceKernelDelayThread( 11500 );
 }

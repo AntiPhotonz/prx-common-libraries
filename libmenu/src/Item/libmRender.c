@@ -25,9 +25,9 @@
 #endif
 
 
-void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
+void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen, libm_draw_info *dinfo)
 {
-	if (Context && Context->IsOpen && Context->Root && vinfo.buffer && vinfo.lineWidth )
+	if (Context && Context->IsOpen && Context->Root && dinfo->vinfo->buffer && dinfo->vinfo->lineWidth )
 	{
 		u32 bg_color,font_color;
 		
@@ -92,13 +92,13 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 				{
 					case RadioButton:
 					{
-						len = libmPrintfXY( x , y  , font_color, bg_color,buf,bufLen,"(%s)%s",((Curr->Ctrl.RB_Group && (Curr->Ctrl.RB_Group)->Ctrl.Group_Sel == Curr) ? "*" : " "), Curr->Name);
+						len = libmPrintfXY( x , y  , font_color, bg_color,buf,bufLen, dinfo, "(%s)%s",((Curr->Ctrl.RB_Group && (Curr->Ctrl.RB_Group)->Ctrl.Group_Sel == Curr) ? "*" : " "), Curr->Name);
 					}
 					break;
 					
 					case CheckBox:
 					{
-						len = libmPrintfXY( x , y  , font_color, bg_color,buf,bufLen,"[%s]%s",Curr->Ctrl.CB_Checked ? "X" : " ", Curr->Name);
+						len = libmPrintfXY( x , y  , font_color, bg_color,buf,bufLen, dinfo, "[%s]%s",Curr->Ctrl.CB_Checked ? "X" : " ", Curr->Name);
 					}
 					break;
 					
@@ -108,7 +108,7 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 						
 						if(Curr->Ctrl.CNT.Disp == NULL)
 						{
-							len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name);
+							len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name);
 						}
 						else
 						{
@@ -116,7 +116,7 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 							{
 								if(Curr->Ctrl.CNT.Disp->Ctrl.RB_Group && (Curr->Ctrl.CNT.Disp->Ctrl.RB_Group)->Ctrl.Group_Sel->Visible)
 								{
-									len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s:\"%s\"",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,(Curr->Ctrl.CNT.Disp->Ctrl.RB_Group)->Ctrl.Group_Sel->Name);
+									len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s:\"%s\"",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,(Curr->Ctrl.CNT.Disp->Ctrl.RB_Group)->Ctrl.Group_Sel->Name);
 								}
 								else
 								{
@@ -127,7 +127,7 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 							{
 								if(Curr->Ctrl.CNT.Disp->Visible)
 								{
-									len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s:\"%s\"",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,Curr->Ctrl.CNT.Disp->Ctrl.SB.List[Curr->Ctrl.CNT.Disp->Ctrl.SB.Index]);
+									len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s:\"%s\"",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,Curr->Ctrl.CNT.Disp->Ctrl.SB.List[Curr->Ctrl.CNT.Disp->Ctrl.SB.Index]);
 								}
 								else
 								{
@@ -138,7 +138,7 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 							{
 								if(Curr->Ctrl.CNT.Disp->Visible)
 								{
-									len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s:[%s]",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,Curr->Ctrl.CNT.Disp->Ctrl.CB_Checked ? "X" : " ");
+									len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s:[%s]",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,Curr->Ctrl.CNT.Disp->Ctrl.CB_Checked ? "X" : " ");
 								}
 								else
 								{
@@ -151,11 +151,11 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 								{
 									if(!Curr->Ctrl.CNT.Disp->Ctrl.UD.type)
 									{
-										len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s:%d.%d",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,(int)Curr->Ctrl.CNT.Disp->Ctrl.UD.Now,(int)((Curr->Ctrl.CNT.Disp->Ctrl.UD.Now*100)-(((int)Curr->Ctrl.CNT.Disp->Ctrl.UD.Now)*100)));
+										len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s:%d.%d",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,(int)Curr->Ctrl.CNT.Disp->Ctrl.UD.Now,(int)((Curr->Ctrl.CNT.Disp->Ctrl.UD.Now*100)-(((int)Curr->Ctrl.CNT.Disp->Ctrl.UD.Now)*100)));
 									}
 									else
 									{
-										len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s:%d",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,(int)Curr->Ctrl.CNT.Disp->Ctrl.UD.Now);
+										len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s:%d",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name,(int)Curr->Ctrl.CNT.Disp->Ctrl.UD.Now);
 									}
 								}
 								else
@@ -165,14 +165,14 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 							}
 							
 							//関連づけられているアイテムが無効な状態だった、通常表示
-							if(flag)	len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen,"%s%s",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name);
+							if(flag)	len = libmPrintfXY( x,y, font_color, bg_color,buf,bufLen, dinfo, "%s%s",Curr->Ctrl.CNT.IsOpen ? "-" : "+", Curr->Name);
 						}
 					}
 					break;
 					
 					case SelectBox:
 					{
-						len = libmPrintfXY( x, y  , font_color, bg_color,buf,bufLen,"%s<%s[%s]%s>",
+						len = libmPrintfXY( x, y  , font_color, bg_color,buf,bufLen, dinfo, "%s<%s[%s]%s>",
 										Curr->Name ? Curr->Name : "",
 										(Curr->Ctrl.SB.Index > 0 ? PB_SYM_PSP_LEFT : " "),
 										Curr->Ctrl.SB.List[Curr->Ctrl.SB.Index],
@@ -185,11 +185,11 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 					{
 						if(!Curr->Ctrl.UD.type)
 						{
-							len = libmPrintfXY( x, y  , font_color, bg_color,buf,bufLen,"%s<-[%d.%d]+>",Curr->Name ? Curr->Name : "",(int)Curr->Ctrl.UD.Now,(int)((Curr->Ctrl.UD.Now*100)-(((int)Curr->Ctrl.UD.Now)*100)));
+							len = libmPrintfXY( x, y  , font_color, bg_color,buf,bufLen, dinfo, "%s<-[%d.%d]+>",Curr->Name ? Curr->Name : "",(int)Curr->Ctrl.UD.Now,(int)((Curr->Ctrl.UD.Now*100)-(((int)Curr->Ctrl.UD.Now)*100)));
 						}
 						else
 						{
-							len = libmPrintfXY( x, y  , font_color, bg_color,buf,bufLen,"%s<-[%d]+>",Curr->Name ? Curr->Name : "",(int)Curr->Ctrl.UD.Now);
+							len = libmPrintfXY( x, y  , font_color, bg_color,buf,bufLen, dinfo, "%s<-[%d]+>",Curr->Name ? Curr->Name : "",(int)Curr->Ctrl.UD.Now);
 						}
 					}
 					break;
@@ -198,7 +198,7 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 					
 					default:
 					{
-						len = libmPrintXY( x, y  , font_color, bg_color,Curr->Name);
+						len = libmPrintXY( x, y  , font_color, bg_color,Curr->Name, dinfo);
 					}
 					break;
 				}
@@ -206,7 +206,7 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen)
 				//下線が有効なら描画
 				if(Context->MenuInfo.Lines != 0 && Curr->Color.Line != LIBM_NO_DRAW)
 				{
-					libmLine( x, y+LIBM_CHAR_HEIGHT, x+(LIBM_CHAR_WIDTH	*len), y+LIBM_CHAR_HEIGHT, Curr->Color.Line);
+					libmLine( x, y+LIBM_CHAR_HEIGHT, x+(LIBM_CHAR_WIDTH	*len), y+LIBM_CHAR_HEIGHT, Curr->Color.Line, dinfo);
 				}
 				
 				row++;
