@@ -1249,7 +1249,18 @@ inline int libmPrintfXY16( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen ,
 MenuItem* libmGetIdxItem( MenuItem *Item , bool Invalid_Skip , int Point_Idx );
 
 
+/*
+    libmPrintSymbolXY
+    文字コード0x00-0xFFのフォントを使用してびょうがする。それ以外は"libmPrintXY"と同様。
+*/
+inline int libmPrintSymbolXY( int x, int y, u32 fg, u32 bg, const char *str );
 
+
+/*
+    libmPrintSymbolXY16
+    文字コード0x00-0xFFのフォントを使用してびょうがする。それ以外は"libmPrintXY16"と同様。
+*/
+inline int libmPrintSymbolXY16( int x, int y, u32 fg, u32 bg, const char *str );
 
 #ifdef __cplusplus
 }
