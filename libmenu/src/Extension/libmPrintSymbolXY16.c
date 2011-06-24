@@ -43,7 +43,7 @@ inline int libmPrintSymbolXY16( int x, int y, u32 fg, u32 bg, const char *str, l
 		
 		
 		//文字アドレス = 文字コード * 文字高さ（1*8 = 8byte）
-		if( (unsigned char)str[i] <= 0x8C )
+		if( (unsigned char)str[i] <= 0xFF )
 		{
 			glyph = &(font_cg[(unsigned char)str[i] * LIBM_CHAR_HEIGHT]);
 		}
