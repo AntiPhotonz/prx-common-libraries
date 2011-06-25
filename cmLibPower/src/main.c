@@ -24,8 +24,6 @@ int powerControll(int mode)
 			break;
 
 		case REBOOT_MODE:
-			sceKernelDcacheWritebackAll();
-			sceKernelIcacheClearAll();
 			sceKernelExitVSHVSH(0);
 			break;
 
