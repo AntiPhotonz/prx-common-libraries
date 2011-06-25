@@ -2,28 +2,17 @@
 
 inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo )
 {
-	void *start_addr, *draw_addr;
-	u32 offset;
-	int w, h, x;
+	int x, y;
 	
 	if( color == LIBM_NO_DRAW ) return;
 	
 	if( sx > ex ) SWAP( &sx, &ex );
 	if( sy > ey ) SWAP( &sy, &ey );
 	
-	w = ex - sx;
-	h = ey - sy;
-	
-	start_addr = libmMakeDrawAddr(sx, sy, dinfo);
-	
-	for( ; h; h--, start_addr += dinfo->vinfo->lineSize )
-	{
-		offset = 0;
-		
-		for( x = 0; x < w; x++, offset += dinfo->vinfo->pixelSize )
-		{
-			draw_addr = start_addr + offset;
-			libmPoint(draw_addr, color, dinfo );
-		}
-	}
+	for(y = (sy * dinfo->vinfo->lineSize); y < (ey * dinfo->vinfo->lineSize); y += dinfo->vinfo->lineSize){
+        for(x = (sx * dinfo->vinfo->pixelSize); x < (ex * dinfo->vinfo->pixelSize); x += dinfo->vinfo->pixelSize){
+            libmPoint(dinfo->vinfo->buffer + x + y, color, dinfo );
+        }
+    }
 }
+
