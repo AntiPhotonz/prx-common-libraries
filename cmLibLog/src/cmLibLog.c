@@ -1,6 +1,6 @@
 /**
 *	cmLibLog.c
-*	2011/06/21
+*	2011/06/26
 *	by estuibal
 *********************************/
 
@@ -30,7 +30,7 @@
 #define MUL100(x)			( ((x) << 6) + ((x) << 5) + ((x) << 2) )
 #define FALSE_HANDLE(h)		( ((u32)(h)) ^ HANDLE_MASK )
 
-#define OPTLIST_SIZE	32
+#define OPTLIST_SIZE	64
 
 
 PSP_MODULE_INFO("cmLibLog", PSP_MODULE_KERNEL, 0, 1);
@@ -252,7 +252,10 @@ int liblogGetLogName(HLOG hLog, char *buf, size_t bufsize)
 
 int liblogPrint(HLOG hLog, char *text)
 {
-	return WriteLine(hLog, text);
+	if( text != NULL || text[0] != EOS ) {
+		return WriteLine(hLog, text);
+	}
+	return(-1);
 }
 
 int liblogPrintf(HLOG hLog, char *textfmt, ...)
@@ -269,40 +272,94 @@ int liblogPrintf(HLOG hLog, char *textfmt, ...)
 	return(-1);
 }
 
-int liblogPrintBool(HLOG hLog, bool b)
+int liblogPrintBool(HLOG hLog, char *text, bool b)
 {
-	return WriteLine( hLog, (b == false)? "False" : "True" );
-}
-
-int liblogPrintInt(HLOG hLog, int num)
-{
-	char buf[32];
-	_ltoa10( (long)num, buf );
+	char buf[260] = "";
+	if( text != NULL && text[0] != EOS ) {
+		strncpy( buf, text, 255 );
+	}
+	strcat( buf, (b == false)? "False" : "True" );
 	return WriteLine( hLog, buf );
 }
 
-int liblogPrintUint(HLOG hLog, unsigned int num)
+int liblogPrintInt(HLOG hLog, char *text, int num)
 {
-	char buf[32];
-	return WriteLine( hLog, _ultoa10( (unsigned long)num, buf ) );
+	char sznum[32];
+	
+	_ltoa10( (long)num, sznum );
+	if( text != NULL || text[0] != EOS ) {
+		char buf[288] = "";
+		strncpy( buf, text, 255 );
+		strcat( buf, sznum );
+		return WriteLine( hLog, buf );
+	} else {
+		return WriteLine( hLog, sznum );
+	}
+	return 0;
 }
 
-int liblogPrintU64(HLOG hLog, u64 num)
+int liblogPrintUint(HLOG hLog, char *text, unsigned int num)
 {
-	char buf[32];
-	return WriteLine( hLog, _ulltoa10( num, buf ) );
+	char sznum[32];
+	
+	_ultoa10( (unsigned long)num, sznum );
+	if( text != NULL || text[0] != EOS ) {
+		char buf[288] = "";
+		strncpy( buf, text, 255 );
+		strcat( buf, sznum );
+		return WriteLine( hLog, buf );
+	} else {
+		return WriteLine( hLog, sznum );
+	}
+	return 0;
 }
 
-int liblogPrintHex(HLOG hLog, u32 hex)
+int liblogPrintU64(HLOG hLog, char *text, u64 num)
 {
-	char buf[32];
-	return WriteLine( hLog, _ultoahex( hex, buf ) );
+	char sznum[32];
+	
+	_ulltoa10( num, sznum );
+	if( text != NULL || text[0] != EOS ) {
+		char buf[288] = "";
+		strncpy( buf, text, 255 );
+		strcat( buf, sznum );
+		return WriteLine( hLog, buf );
+	} else {
+		return WriteLine( hLog, sznum );
+	}
+	return 0;
 }
 
-int liblogPrintHex64(HLOG hLog, u64 hex)
+int liblogPrintHex(HLOG hLog, char *text, u32 hex)
 {
-	char buf[32];
-	return WriteLine( hLog, _ulltoahex( hex, buf ) );
+	char sznum[32];
+	
+	_ultoahex( hex, sznum );
+	if( text != NULL || text[0] != EOS ) {
+		char buf[288] = "";
+		strncpy( buf, text, 255 );
+		strcat( buf, sznum );
+		return WriteLine( hLog, buf );
+	} else {
+		return WriteLine( hLog, sznum );
+	}
+	return 0;
+}
+
+int liblogPrintHex64(HLOG hLog, char *text, u64 hex)
+{
+	char sznum[32];
+	
+	_ulltoahex( hex, sznum );
+	if( text != NULL || text[0] != EOS ) {
+		char buf[288] = "";
+		strncpy( buf, text, 255 );
+		strcat( buf, sznum );
+		return WriteLine( hLog, buf );
+	} else {
+		return WriteLine( hLog, sznum );
+	}
+	return 0;
 }
 
 int liblogPrintPspModel(HLOG hLog)

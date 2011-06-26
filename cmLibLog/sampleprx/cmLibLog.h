@@ -1,6 +1,6 @@
 /**
 *	cmLibLog.h
-*	2011/06/21
+*	2011/06/26
 *	by estuibal
 *********************/
 
@@ -50,12 +50,12 @@ int liblogDestroyLog(HLOG hLog);		// ƒƒOƒnƒ“ƒhƒ‹‚ð‰ð•ú‚·‚é(I—¹Žž‚ÉŒÄ‚ñ‚Å‚­‚¾‚³
 int liblogClear(HLOG hLog);				// ƒƒO‚ðÁ‹Ž‚µ‚Ü‚·B
 int liblogPrint(HLOG hLog, char *text); // •¶Žš—ñ‚ð’¼Úo—Í‚µ‚Ü‚·
 int liblogPrintf(HLOG hLog, char *textfmt, ...) __attribute__((format(printf, 2, 3))); // ‘Ž®•t
-int liblogPrintBool(HLOG hLog, bool b);	// Bool’l‚Ìo—Í
-int liblogPrintInt(HLOG hLog, int num); // •„†•t‚«32bit®”o—Í
-int liblogPrintUint(HLOG hLog, unsigned int num); // •„†–³32bit®”o—Í
-int liblogPrintU64(HLOG hLog, u64 num);	// •„†–³64bit®”o—Í
-int liblogPrintHex(HLOG hLog, u32 hex);	// 32bit16i”o—Í
-int liblogPrintHex64(HLOG hLog, u64 hex); // 64bit16i”o—Í
+int liblogPrintBool(HLOG hLog, char *text, bool b);	// Bool’l‚Ìo—Í [text][b]
+int liblogPrintInt(HLOG hLog, char *text, int num); // •„†•t‚«32bit®”o—Í [text][num]
+int liblogPrintUint(HLOG hLog, char *text, unsigned int num); // •„†–³32bit®”o—Í [text][num]
+int liblogPrintU64(HLOG hLog, char *text, u64 num);	// •„†–³64bit®”o—Í [text][num]
+int liblogPrintHex(HLOG hLog, char *text, u32 hex);	// 32bit16i”o—Í [text][hex]
+int liblogPrintHex64(HLOG hLog, char *text, u64 hex); // 64bit16i”o—Í [text][hex]
 int liblogPrintPspModel(HLOG hLog);		// PSPƒ‚ƒfƒ‹‚Ìo—Í(Fat/Slim2000/Slim3000/Go)
 int liblogPrintMaxFreeMem(HLOG hLog);	// ƒƒO‹L˜^Žž‚ÌÅ‘å‹ó‚«ƒƒ‚ƒŠ—e—Ê‚Ìo—Í
 
@@ -68,7 +68,7 @@ int liblogGetLogName(HLOG hLog, char *buf, size_t bufsize); // ƒƒOƒtƒ@ƒCƒ‹‚Ì–¼‘
 #define liblogGetFlags(hLog)  ( (u32)(((liblogOpt *)TRUE_HANDLE(hLog))->flags) )
 #define liblogGetBreakChar(hLog)  ( (int)(((liblogOpt *)TRUE_HANDLE(hLog))->break_char) )
 
-#define liblogPrintAddr(hLog, addr)  liblogPrintHex( (HLOG)(hLog), (u32)(addr) );
+#define liblogPrintAddr(hLog, text, addr)  liblogPrintHex( (HLOG)(hLog), (char *)(text), (u32)(addr) );
 
 #ifdef __cplusplus
 }
