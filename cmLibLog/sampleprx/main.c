@@ -1,6 +1,6 @@
 /**
 *	sample_prx
-*	2011/06/21
+*	2011/06/26
 *	by estuibal
 *************************/
 
@@ -79,7 +79,7 @@ int main_thread( SceSize args, void *argp )
 	
 	HLOG hLog1 = liblogCreateLog( &opt1 ); // ログのハンドルを生成
 	HLOG hLog2 = liblogCreateLog( &opt2 ); // 以後このハンドル使用.引数のliblogOpt構造体は消してもよい
-	if( hLog1 == 0 || hLog2 == 0 ) {
+	if( hLog1 == 0 || hLog2 == 0 ) { // ログハンドルが0だとエラー
 		return sceKernelExitDeleteThread( 0 );
 	}
 	
@@ -90,18 +90,18 @@ int main_thread( SceSize args, void *argp )
 	liblogPrintf( hLog1, "%d - liblog%s[0x%X]", 12345, "Printf", hLog1 ); // printf関数の書式付き
 	liblogPrintf( hLog2, "%d - liblog%s[0x%x]", 6789, "Printf", hLog2 );
 	
-	liblogPrintBool( hLog1, false ); // Bool値の出力
-	liblogPrintBool( hLog1, true );
+	liblogPrintBool( hLog1, "Bool = ", false ); // Bool値の出力
+	liblogPrintBool( hLog1, "Bool = ", true );
 	
-	liblogPrintInt( hLog2, 0x12345 ); 				// 符号付き32bit整数出力
-	liblogPrintInt( hLog2, -654321 ); 				// マイナス記号も出力可
-	liblogPrintUint( hLog2, -123 );					// 符号無32bit整数出力
-	liblogPrintU64( hLog1, 0xFFFFFFFFFFFFFFFF );	// 符号無64bit整数出力
-	liblogPrintHex( hLog2, 0xABCDEF );				// 32bit16進数出力
-	liblogPrintHex64( hLog2, 0xABCDEFFFFF );		// 64bit16進数出力
-	liblogPrintAddr( hLog2, TRUE_HANDLE( hLog2 ) );	// ポインタ出力等(liblogPrintHexのマクロ)
-	liblogPrintPspModel( hLog1 );					// PSPモデルの出力,モジュール番号も
-	liblogPrintMaxFreeMem( hLog1 );					// 記録時のメモリ空き容量出力
+	liblogPrintInt( hLog2, "Int = ", 0x12345 ); // 符号付き32bit整数出力
+	liblogPrintInt( hLog2, "Int = ", -654321 ); // マイナス記号も出力可
+	liblogPrintUint( hLog2, "unsigned int = ", -123 ); // 符号無32bit整数出力
+	liblogPrintU64( hLog1, "unsigned long long = ", 0xFFFFFFFFFFFFFFFF ); // 符号無64bit整数出力
+	liblogPrintHex( hLog2, "unsigned long (hex) = ", 0xABCDEF ); // 32bit16進数出力
+	liblogPrintHex64( hLog2, "unsigned long long = ", 0xABCDEFFFFF ); // 64bit16進数出力
+	liblogPrintAddr( hLog2, "Addr = ", TRUE_HANDLE( hLog2 ) ); // ポインタ出力等(liblogPrintHexのマクロ)
+	liblogPrintPspModel( hLog1 ); // PSPモデルの出力,モジュール番号も
+	liblogPrintMaxFreeMem( hLog1 ); // 記録時のメモリ空き容量出力
 	
 	
 	// ログハンドルの処理
