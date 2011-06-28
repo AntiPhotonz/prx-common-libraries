@@ -44,6 +44,7 @@ enum
 #define LIBM_FONT_CG 1
 #define LIBM_FONT_HANKAKU_KANA 2
 #define LIBM_FONT_SJIS 3
+#define LIBM_FONT_ICON 4
 
 typedef enum
 {
@@ -1261,16 +1262,44 @@ MenuItem* libmGetIdxItem( MenuItem *Item , bool Invalid_Skip , int Point_Idx );
 
 /*
     libmPrintSymbolXY
-    文字コード0x00-0xFFのフォントを使用してびょうがする。それ以外は"libmPrintXY"と同様。
+    font_icon内のフォントを使って描画する。
+    
+    @params : int x
+	表示位置 X
+
+	
+	@params : int y
+	表示位置 Y
+	
+	@params : u32 color1
+	フォント色1(32bit)
+	0 だと描画しない
+	
+	@params : u32 color2
+	フォント色2(32bit)
+	0 だと描画しない
+	
+	@params : u32 color3
+	フォント色3(32bit)
+	0 だと描画しない
+	
+	@params : u32 color0
+	背景色(32bit)
+	0 だと描画しない
+	
+	@params : const char *str
+    描画対象 文字列
+    
+    @return: 描画した文字数
 */
-inline int libmPrintSymbolXY( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
+inline int libmPrintSymbolXY( int x, int y, u32 color1, u32 color2, u32 color3, u32 color0, const char *str, libm_draw_info *dinfo );
 
 
 /*
     libmPrintSymbolXY16
-    文字コード0x00-0xFFのフォントを使用してびょうがする。それ以外は"libmPrintXY16"と同様。
+    フォントを16x16に拡大して表示する。それ以外は"libmPrintSymbolXY"と同様。
 */
-inline int libmPrintSymbolXY16( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
+inline int libmPrintSymbolXY16( int x, int y, u32 color1, u32 color2, u32 color3, u32 color0, const char *str, libm_draw_info *dinfo );
 
 #ifdef __cplusplus
 }

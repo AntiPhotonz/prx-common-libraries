@@ -2,8 +2,9 @@
 #include "memory.h"
 
 extern const char *font_cg, *font_hankaku_kana, *font_sjis;
+extern const char *font_icon;
 
-static int loaded_cg = 0, loaded_hankaku_kana = 0, loaded_sjis = 0;
+static int loaded_cg = 0, loaded_hankaku_kana = 0, loaded_sjis = 0, loaded_icon = 0;
 
 int libmLoadFont(int flag){
     SceUID fd;
@@ -59,6 +60,22 @@ int libmLoadFont(int flag){
             }
             break;
         
+        case LIBM_FONT_ICON:
+            if(loaded_icon){
+                return 0;
+            }
+            else{
+                // file open
+                fd = sceIoOpen("ms0:/seplugins/lib/font/icon.bin", PSP_O_RDONLY, 0777);
+                if(fd < 0){
+                    fd = sceIoOpen("ef0:/seplugins/lib/font/icon.bin", PSP_O_RDONLY, 0777);
+                    if(fd < 0){
+                        return -1;
+                    }
+                }
+            }
+            break;
+        
         default:
             return -1;
     }
@@ -99,6 +116,11 @@ int libmLoadFont(int flag){
         case LIBM_FONT_SJIS:
             font_sjis = font_buf;
             loaded_sjis = 1;
+            break;
+        
+        case LIBM_FONT_ICON:
+            font_icon = font_buf;
+            loaded_icon = 1;
             break;
     }
     
