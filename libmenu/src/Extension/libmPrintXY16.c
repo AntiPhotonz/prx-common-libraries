@@ -29,7 +29,7 @@ inline int libmPrintXY16( int x, int y, u32 fg, u32 bg, const char *str, libm_dr
 	{
 		if( ( (dinfo->vinfo->opt & LIBM_DRAW_RETURN) && x > DRAW_CHR_XMAX  ) || (unsigned char)str[i] == '\n' )
 		{
-			y += LIBM_CHAR_HEIGHT;
+			y += LIBM_CHAR_HEIGHT * 2;
 			x = 0;
 		}
 		
