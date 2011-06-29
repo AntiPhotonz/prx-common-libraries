@@ -1,7 +1,7 @@
 /**
 *	cmLibLog.h
-*	2011/06/26
-*	by estuibal
+*	2011/06/29
+*	estuibal
 *********************/
 
 #ifndef _CM_LIB_LOG_H_

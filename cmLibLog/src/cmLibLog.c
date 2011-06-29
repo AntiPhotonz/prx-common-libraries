@@ -1,7 +1,7 @@
 /**
 *	cmLibLog.c
-*	2011/06/26
-*	by estuibal
+*	2011/06/29
+*	estuibal
 *********************************/
 
 #include <pspkernel.h>
@@ -33,7 +33,7 @@
 #define OPTLIST_SIZE	64
 
 
-PSP_MODULE_INFO("cmLibLog", PSP_MODULE_KERNEL, 0, 1);
+PSP_MODULE_INFO( "cmLibLog", PSP_MODULE_KERNEL, 0, 3 );
 
 
 typedef struct _tag_OPTLIST_ {
