@@ -26,7 +26,7 @@ inline int libmPrintSymbolXY16( int x, int y, u32 color1, u32 color2, u32 color3
 	
 	for( i = 0,cnt = 0; str[i]; i++,cnt++ )
 	{
-		if( ( (dinfo->vinfo->opt & LIBM_DRAW_RETURN) && x > DRAW_CHR_XMAX  ) || (unsigned char)str[i] == '\n' )
+		if( ( (dinfo->vinfo->opt & LIBM_DRAW_RETURN) && x > DRAW_CHR_XMAX  ) )
 		{
 			y += LIBM_CHAR_HEIGHT * 2;
 			x = 0;
@@ -35,7 +35,7 @@ inline int libmPrintSymbolXY16( int x, int y, u32 color1, u32 color2, u32 color3
 		if( (dinfo->vinfo->opt & LIBM_DRAW_RETURN) && y > DRAW_CHR_YMAX ) y = 0;
 		
 		//‘¦À‚ÉŽŸ‚Ì•¶Žš‚Ö
-		if( (unsigned char)str[i] == '\n' || (!(dinfo->vinfo->opt & LIBM_DRAW_RETURN) && (x > DRAW_CHR_XMAX || y > DRAW_CHR_YMAX)) || x < 0 || y < 0 ) continue;
+		if( (!(dinfo->vinfo->opt & LIBM_DRAW_RETURN) && (x > DRAW_CHR_XMAX || y > DRAW_CHR_YMAX)) || x < 0 || y < 0 ) continue;
 		
 		put_addr = libmMakeDrawAddr( x, y, dinfo );
 		
