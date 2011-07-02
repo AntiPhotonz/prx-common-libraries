@@ -18,7 +18,7 @@
 #include <math.h>
 
 
-#include "libmenu.h"
+#include "cmlibmenu.h"
 
 #ifdef __cplusplus
 extern "C" {
