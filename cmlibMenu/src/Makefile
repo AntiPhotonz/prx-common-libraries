@@ -1,7 +1,7 @@
 all:
 	psp-build-exports -s exports.exp
 
-TARGET = prxlibmenu
+TARGET = cmlibmenu
 
 MAJOR_VERSION = 1
 MINOR_VERSION = 0

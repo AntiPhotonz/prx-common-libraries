@@ -2,7 +2,7 @@
 
 #include "pspstub.s"
 
-	STUB_START "prxlibmenu",0x40090000,0x00350005
+	STUB_START "cmlibMenu",0x40090000,0x00350005
 	STUB_FUNC  0x177A922B,libmIsInvalidItem
 	STUB_FUNC  0xC076E2D7,libmGetPrevItem
 	STUB_FUNC  0x30C9C4D9,libmGetNextItem
