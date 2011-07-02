@@ -8,7 +8,7 @@ PSP_EXPORT_FUNC_HASH(module_start)
 PSP_EXPORT_VAR_HASH(module_info)
 PSP_EXPORT_END
 
-PSP_EXPORT_START(cmlibaudio, 0, 0x4009)
+PSP_EXPORT_START(cmlibAudio, 0, 0x4009)
 PSP_EXPORT_FUNC_HASH(libAudioGetVolume)
 PSP_EXPORT_FUNC_HASH(libAudioSetVolume)
 PSP_EXPORT_FUNC_HASH(libAudioMuteOn)
