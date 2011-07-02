@@ -107,21 +107,7 @@ bool libAudioMuteSetAgain(void)
 
 int sceSysregAudioIoEnable(int no);
 int sceSysregAudioIoDisable(int no);
-/*
-void libAudioIoEna()
-{
-	int k1 = pspSdkSetK1(0);
-	sceSysregAudioIoEnable(0);
-	pspSdkSetK1(k1);
-}
 
-void libAudioIoDis()
-{
-	int k1 = pspSdkSetK1(0);
-	sceSysregAudioIoDisable(0);
-	pspSdkSetK1(k1);
-}
-*/
 bool libAudioIoSet()
 {
 	if(ioflag < 0)ioflag = 0;

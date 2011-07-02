@@ -4,11 +4,6 @@ cmlibAudio by ABCanG
 オーディオ系（？）をまとめたものです。
 ミュート関連は競合しないようになっているはずです。
 
-【モジュール情報】
-　ファイル名：cmlibaudio.prx
-　モジュール名：cmlibAudio
-　ライブラリ名：cmliAaudio
-
 【使い方】
 　1.プログラムのソースファイルに"cmlibaudio.h"をインクルードしてください。
 　　"libmenu.h"にはlibmenuの関数などが定義されています。
