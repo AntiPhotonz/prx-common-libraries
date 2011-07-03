@@ -1,5 +1,5 @@
-TARGET = mask_sample
-OBJS = main.o cmLibMask.o
+TARGET = cmlibCtrl_sample
+OBJS = main.o cmlibCtrl.o
 
 USE_KERNEL_LIBC = 1
 USE_KERNEL_LIBS = 1

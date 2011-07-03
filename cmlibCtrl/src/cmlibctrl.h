@@ -1,6 +1,6 @@
 
-#ifndef _CM_LIB_MASK_
-#define	_CM_LIB_MASK_
+#ifndef _CM_LIB_CTRL_
+#define	_CM_LIB_CTRL_
 
 
 #include <pspkernel.h>
@@ -18,11 +18,11 @@
  * 一つでもオンにしているプラグインがあったらボタンの入力は無効化されます。
  * 
  * @param status - それぞれのプラグイン内でのオン/オフを保存するポインタ。
- * 		maskAllButtonOnとmaskAllButtonOff以外でこの値を変更するとおかしくなります。
+ * 		libCtrlMaskAllButtonOnとlibCtrlMaskAllButtonOff以外でこの値を変更するとおかしくなります。
  *
  * @return 0 成功, < 0 失敗（既にオンになっている）
  */
-int maskAllButtonOn(bool *status);
+int libCtrlMaskAllButtonOn(bool *status);
 
 /**
  * ユーザーモードで使えるボタンの入力をすべて有効にする
@@ -30,18 +30,18 @@ int maskAllButtonOn(bool *status);
  * すべてのプラグインがオフにしてないとボタンの入力が有効になりません。
  * 
  * @param status - それぞれのプラグイン内でのオン/オフを保存するポインタ。
- * 		maskAllButtonOnとmaskAllButtonOff以外でこの値を変更するとおかしくなります。
+ * 		libCtrlMaskAllButtonOnとlibCtrlMaskAllButtonOff以外でこの値を変更するとおかしくなります。
  *
  * @return 0 成功, < 0 失敗（既にオフになっている）
  */
-int maskAllButtonOff(bool *status);
+int libCtrlMaskAllButtonOff(bool *status);
 
 /**
  * ボタンの入力がすべて有効かどうか調べる
  *
  * @return true 有効, false 無効
  */
-bool maskAllButtonStatus();
+bool libCtrlMaskAllButtonStatus();
 
 /**
  * ボタンの入力の有効/無効を再セットする
@@ -51,7 +51,7 @@ bool maskAllButtonStatus();
  *
  * @return true 有効, false 無効
  */
-bool maskAllButtonAgain();
+bool libCtrlMaskAllButtonAgain();
 
 /**
  * 指定したボタンの入力を無効にする（他のプラグインと競合する可能性があります）
@@ -61,7 +61,7 @@ bool maskAllButtonAgain();
  *
  * @return 常に0
  */
-int maskButtonOn(int PspCtrlButtons);
+int libCtrlMaskButtonOn(int PspCtrlButtons);
 
 /**
  * 指定したボタンの入力を有効にする（他のプラグインと競合する可能性があります）
@@ -71,7 +71,7 @@ int maskButtonOn(int PspCtrlButtons);
  *
  * @return 常に0
  */
-int maskButtonOff(int PspCtrlButtons);
+int libCtrlMaskButtonOff(int PspCtrlButtons);
 
 /**
  * 指定したボタンの有効/無効を調べます
@@ -81,6 +81,22 @@ int maskButtonOff(int PspCtrlButtons);
  *
  * @return true 有効, false 無効
  */
-bool maskButtonStatus(int PspCtrlButtons);
+bool libCtrlMaskButtonStatus(int PspCtrlButtons);
+
+/**
+ * 指定したボタンのが押されているかどうかを調べます
+ * sceCtrlPeekBufferPositive(&pad, 1);を呼ぶ必要がありません。
+ * if(pad.Buttons & PspCtrlButtons)と同じと思ってください。
+ *
+ * 例：if((cmCtrlCheckButton(PSP_CTRL_HOME)) (HOMEが押されたときの処理) ;
+ * 
+ * @param PspCtrlButtons - 調べたいボタン
+ *
+ * @return true 有効, false 無効
+ *
+ */
+int libCtrlCheckButton(int PspCtrlButtons);
+
+
 
 #endif

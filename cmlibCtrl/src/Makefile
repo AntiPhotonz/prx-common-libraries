@@ -1,7 +1,7 @@
 release: all
 	psp-build-exports -s exports.exp
 
-TARGET = cmLibMask
+TARGET = cmlibctrl
 
 OBJS = main.o
 
