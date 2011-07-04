@@ -81,22 +81,25 @@ int init(void)
 //メイン
 int main_thread(SceSize args, void *argp)
 {
-
 	init();
+	SceCtrlData pad;
 
 	while (1)
 	{
 		sceKernelDelayThread(50000);
-		if((libCtrlCheckButton(PSP_CTRL_HOME))&&(libCtrlCheckButton(PSP_CTRL_TRIANGLE)))
-		//if(pad.Buttons & button)と同じように使う
+		sceCtrlPeekBufferPositive(&pad, 1);
+		if(pad.Buttons & (PSP_CTRL_HOME + PSP_CTRL_TRIANGLE))
+		//こういう方法もある
 		{	
 			libCtrlMaskAllButtonOn(&status);
-			//アドレスを渡さないとおかしくなる
+			//アドレスを渡さないと動かない
 		}
-		else if((libCtrlCheckButton(PSP_CTRL_HOME))&&(libCtrlCheckButton(PSP_CTRL_CIRCLE)))
+		else if(pad.Buttons & (PSP_CTRL_HOME | PSP_CTRL_CIRCLE))
+		//こういう書き方も可
 		{
-			libCtrlMaskAllButtonOff(&status);
-			//アドレスを渡さないとおかしくなる
+			if(libCtrlCountButtons((PSP_CTRL_HOME + PSP_CTRL_CIRCLE),3))
+			//複数渡すときは「+」か「|」でつなぐ。
+				libCtrlMaskAllButtonOff(&status);
 		}
 		
 	}

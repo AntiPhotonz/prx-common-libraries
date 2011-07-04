@@ -16,7 +16,9 @@ PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonAgain)
 PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonOn)
 PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonOff)
 PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonStatus)
-PSP_EXPORT_FUNC_HASH(libCtrlCheckButton)
+PSP_EXPORT_FUNC_HASH(libCtrlCountButtons)
+PSP_EXPORT_FUNC_HASH(libCtrlWaitButtonUp)
+PSP_EXPORT_FUNC_HASH(libCtrlWaitButtonDown)
 PSP_EXPORT_END
 
 PSP_END_EXPORTS

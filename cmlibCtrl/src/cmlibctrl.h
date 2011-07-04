@@ -12,6 +12,11 @@
 #include <string.h>
 
 
+#define PSP_CTRL_ALL (PSP_CTRL_SELECT | PSP_CTRL_START | PSP_CTRL_UP | PSP_CTRL_RIGHT | \
+PSP_CTRL_DOWN | PSP_CTRL_LEFT | PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_TRIANGLE | \
+PSP_CTRL_CIRCLE | PSP_CTRL_CROSS | PSP_CTRL_SQUARE | PSP_CTRL_NOTE | PSP_CTRL_HOME | \
+PSP_CTRL_SCREEN | PSP_CTRL_VOLUP | PSP_CTRL_VOLDOWN )
+
 /**
  * ユーザーモードで使えるボタンの入力をすべて無効にする
  * 他のプラグインもこの関数を使っている場合、
@@ -55,7 +60,7 @@ bool libCtrlMaskAllButtonAgain();
 
 /**
  * 指定したボタンの入力を無効にする（他のプラグインと競合する可能性があります）
- * 上と←を無効にしたい場合は引数に(PSP_CTRL_UP + PSP_CTRL_RIGHT)と入力してください
+ * 複数渡すときは「+」か「|」でつないで下さい。
  * 
  * @param PspCtrlButtons - 無効にしたいボタン
  *
@@ -65,7 +70,7 @@ int libCtrlMaskButtonOn(int PspCtrlButtons);
 
 /**
  * 指定したボタンの入力を有効にする（他のプラグインと競合する可能性があります）
- * 上と←を有効にしたい場合は引数に(PSP_CTRL_UP + PSP_CTRL_RIGHT)と入力してください
+ * 複数渡すときは「+」か「|」でつないで下さい。
  * 
  * @param PspCtrlButtons - 有効にしたいボタン
  *
@@ -75,7 +80,7 @@ int libCtrlMaskButtonOff(int PspCtrlButtons);
 
 /**
  * 指定したボタンの有効/無効を調べます
- * 引数に(PSP_CTRL_UP + PSP_CTRL_RIGHT)と入力した場合どうなるかは分かりません。
+ * 引数に複数渡すとどうなるかは不明
  * 
  * @param PspCtrlButtons - 調べたいボタン
  *
@@ -84,19 +89,38 @@ int libCtrlMaskButtonOff(int PspCtrlButtons);
 bool libCtrlMaskButtonStatus(int PspCtrlButtons);
 
 /**
- * 指定したボタンのが押されているかどうかを調べます
- * sceCtrlPeekBufferPositive(&pad, 1);を呼ぶ必要がありません。
- * if(pad.Buttons & PspCtrlButtons)と同じと思ってください。
- *
- * 例：if((cmCtrlCheckButton(PSP_CTRL_HOME)) (HOMEが押されたときの処理) ;
+ * 指定したボタンが長押しされているかどうかを調べます
+ * 引数に複数渡すときは「+」か「|」でつないで下さい。
  * 
- * @param PspCtrlButtons - 調べたいボタン
+ * @param buttons - 調べたいボタン
+ * @param count - 長押しの秒数
  *
- * @return true 有効, false 無効
+ * @return 1 指定時間まで押した , 0 指定時間になる前に離した
  *
  */
-int libCtrlCheckButton(int PspCtrlButtons);
+int libCtrlCountButtons(u32 buttons, int count);
 
+/**
+ * 指定したボタンが離されるまで待つ
+ * 引数に複数渡すときは「+」か「|」でつないで下さい。
+ * 
+ * @param buttons - ボタン(0を入れると全てのボタンになります)
+ *
+ * @return 0
+ *
+ */
+int libCtrlWaitButtonUp(u32 buttons);
+
+/**
+ * 指定したボタンが押されるまで待つ
+ * 引数に複数渡すときは「+」か「|」でつないで下さい。
+ * 
+ * @param buttons - ボタン(0を入れると全てのボタンになります)
+ *
+ * @return 0
+ *
+ */
+int libCtrlWaitButtonDown(u32 buttons);
 
 
 #endif
