@@ -8,9 +8,7 @@ int libmCloseAllContainer(MenuContext* Context)
 		Context->Active = Context->Active->Parent;
 		Context->Active->Ctrl.CNT.IsOpen = false;
 	}
-	//ƒƒjƒ…[‚ª•Â‚¶‚ç‚ê‚½
-	Context->Params.Action	= Menu_Close;
-	Context->IsOpen 		= false;
+	Context->Params.Action = Menu_Back
 
 	return 0;
 }

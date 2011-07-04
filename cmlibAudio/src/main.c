@@ -27,7 +27,10 @@ int libAudioGetVolume(void)
 
 int libAudioSetVolume(int value)
 {
-  return sceImposeSetParam(PSP_IMPOSE_MAIN_VOLUME, value);
+  int buf = value;
+  if(buf > 30)buf = 30;
+  if(buf < 0)buf = 0;
+  return sceImposeSetParam(PSP_IMPOSE_MAIN_VOLUME, buf);
 }
 
 ////////////////////////////////////////////////////////////////////////////////
