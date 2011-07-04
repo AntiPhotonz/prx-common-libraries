@@ -6,12 +6,9 @@
 #include "cmlibctrl.h"
 
 
-PSP_MODULE_INFO("cmlibCtrl", PSP_MODULE_KERNEL, 1, 0);
+PSP_MODULE_INFO("cmlibCtrl", PSP_MODULE_KERNEL, 1, 1);
 
-SceCtrlData pad;
 int flag = 0;
-int button = 0;
-int ret = 0;
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -124,41 +121,77 @@ bool libCtrlMaskButtonStatus(int PspCtrlButtons)
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//  libCtrlCheckButton
+//  libCtrlCountButtons		Thanks plum
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-int libCtrlCheckButton(int PspCtrlButtons)
+int libCtrlCountButtons(u32 buttons, int count)
 {
-  button = PspCtrlButtons;
-  while(button)sceKernelDelayThread(1000);
-  int ret2 = ret;
-  ret = 0;
-  return ret2;
+	SceCtrlData pad;
+	clock_t time;
+
+	// 指定するボタンをセット
+	pad.Buttons = buttons;
+
+	// 現在の時間 + 指定した時間
+	count = 1000000 * count;		//count秒
+	time = sceKernelLibcClock() + count;
+
+	// ボタンが離れるまでループ
+	while((pad.Buttons & buttons) == buttons)
+	{
+		// ディレイ
+		sceKernelDelayThread(50000);
+
+		// パッド情報を取得する
+		sceCtrlPeekBufferPositive(&pad, 1);
+		// 現在の時間が指定した時間を過ぎたら
+		if(sceKernelLibcClock() > time)
+			return 1;
+	}
+
+	return 0;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-//  MainThread
+//  libCtrlWaitButtonUp		Thanks SnyFbSx
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-int main_thread(SceSize args, void *argp)
+int libCtrlWaitButtonUp(u32 buttons)
 {
-//  sceCtrlSetSamplingCycle(0);
-//  sceCtrlSetSamplingMode(1);
-  while (1)
-  {
-    sceCtrlPeekBufferPositive(&pad, 1);
-    if(button > 0){
-        ret = (pad.Buttons & button);
-        button = 0;
-    }
-    sceKernelDelayThread(1000);
-  }
-  return 0;
+	SceCtrlData pad;
+
+	if(!buttons)buttons = PSP_CTRL_ALL;
+	sceCtrlPeekBufferPositive( &pad, 1 );
+	while( (pad.Buttons & buttons) != 0 ){
+		sceCtrlPeekBufferPositive( &pad, 1 );
+		sceKernelDelayThread( 50000 );
+	}
+
+	return 0;
 }
 
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+//  libCtrlWaitButtonDown
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+int libCtrlWaitButtonDown(u32 buttons)
+{
+	SceCtrlData pad;
+
+	if(!buttons)buttons = PSP_CTRL_ALL;
+	sceCtrlPeekBufferPositive( &pad, 1 );
+	while( (pad.Buttons & buttons) == 0 ){
+		sceCtrlPeekBufferPositive( &pad, 1 );
+		sceKernelDelayThread( 50000 );
+	}
+
+	return 0;
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
@@ -168,12 +201,10 @@ int main_thread(SceSize args, void *argp)
 
 int module_start(SceSize args, void *argp)
 {
-  int thid = sceKernelCreateThread("cmLibCtrl", main_thread, 32, 0x800, 0, NULL);
-  if(thid >= 0)sceKernelStartThread(thid, args, argp);
-  return 0;
+	return 0;
 }
 
 int module_stop(SceSize args, void *argp)
 {
-  return 0;
+	return 0;
 }

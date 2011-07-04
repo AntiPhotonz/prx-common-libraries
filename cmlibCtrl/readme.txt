@@ -16,6 +16,11 @@ cmibCtrl by ABCanG
 
 
 /////Changelog/////
+*1.1 (2011.07.04)
+[-]libCtrlCheckButton‚ğíœ
+[+]libCtrlCountButtons‚ğ’Ç‰Á
+[+]libCtrlWaitButtonUp‚ğ’Ç‰Á
+[+]libCtrlWaitButtonDown‚ğ’Ç‰Á
 
 *1.0 (2011.07.03)
 [] Å‰‚ÌƒŠƒŠ[ƒXB
