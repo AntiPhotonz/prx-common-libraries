@@ -1,0 +1,22 @@
+# Define the exports for the prx
+PSP_BEGIN_EXPORTS
+
+# These four lines are mandatory (although you can add other functions like module_stop)
+# syslib is a psynonym for the single mandatory export.
+PSP_EXPORT_START(syslib, 0, 0x8000)
+PSP_EXPORT_FUNC_HASH(module_start)
+PSP_EXPORT_VAR_HASH(module_info)
+PSP_EXPORT_END
+
+PSP_EXPORT_START(cmlibCtrl, 0, 0x4009)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonOn)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonOff)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonStatus)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonAgain)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonOn)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonOff)
+PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonStatus)
+PSP_EXPORT_FUNC_HASH(libCtrlCheckButton)
+PSP_EXPORT_END
+
+PSP_END_EXPORTS
