@@ -128,7 +128,7 @@ bool libAudioIoSet()
 
 int libAudioIoEnable(bool *status)
 {
-	if(*status != false){
+	if(*status == true){
 		*status = false;
 		ioflag --;
 		libAudioIoSet();
@@ -145,7 +145,7 @@ int libAudioIoEnable(bool *status)
 
 int libAudioIoDisable(bool *status)
 {
-	if(*status == false){
+	if(*status != true){
 		*status = true;
 		ioflag ++;
 		libAudioIoSet();
