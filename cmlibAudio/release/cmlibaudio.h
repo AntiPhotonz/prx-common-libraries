@@ -14,7 +14,7 @@
  *
  * @return 現在の音量
  */
-int libAudioGetVolume(void);
+int libaudioGetVolume(void);
 
 /**
  * 音量を設定する
@@ -23,34 +23,34 @@ int libAudioGetVolume(void);
  *
  * @return < 0 失敗
  */
-int libAudioSetVolume(int value);
+int libaudioSetVolume(int value);
 
 /**
  * ミュートを有効にする
  * 
  * @param status - それぞれのプラグイン内での有効/無効を保存するポインタ。
- * 		libAudioMuteOnとlibAudioMuteOff以外でこの値を変更するとおかしくなります。
+ * 		libaudioMuteOnとlibaudioMuteOff以外でこの値を変更するとおかしくなります。
  *
  * @return 0 成功, < 0 失敗（既に有効になっている）
  */
-int libAudioMuteOn(bool *status);
+int libaudioMuteOn(bool *status);
 
 /**
  * ミュートを無効にする
  * 
  * @param status - それぞれのプラグイン内での有効/無効を保存するポインタ。
- * 		libAudioMuteOnとlibAudioMuteOff以外でこの値を変更するとおかしくなります。
+ * 		libaudioMuteOnとlibaudioMuteOff以外でこの値を変更するとおかしくなります。
  *
  * @return 0 成功, < 0 失敗（既に無効になっている）
  */
-int libAudioMuteOff(bool *status);
+int libaudioMuteOff(bool *status);
 
 /**
  * 現在ミュートかどうか調べる
  *
  * @return 1 有効, 0 無効
  */
-int libAudioMuteGetStatus(void);
+int libaudioMuteGetStatus(void);
 
 /**
  * ミュートの有効/無効を再セットする
@@ -60,36 +60,36 @@ int libAudioMuteGetStatus(void);
  *
  * @return true 有効, false 無効
  */
-bool libAudioMuteSetAgain(void);
+bool libaudioMuteSetAgain(void);
 
 /**
  * 音の出力を有効にする
  * ミュートとは少し違います。
  * 
  * @param status - それぞれのプラグイン内での有効/無効を保存するポインタ。
- * 		libAudioIoEnableとlibAudioIoDisable以外でこの値を変更するとおかしくなります。
+ * 		libaudioIoEnableとlibaudioIoDisable以外でこの値を変更するとおかしくなります。
  *
  * @return 0 成功, < 0 失敗（既に有効になっている）
  */
-int libAudioIoEnable(bool *status);
+int libaudioIoEnable(bool *status);
 
 /**
  * 音の出力を無効にする
  * ミュートとは少し違います。
  * 
  * @param status - それぞれのプラグイン内での有効/無効を保存するポインタ。
- * 		libAudioIoEnableとlibAudioIoDisable以外でこの値を変更するとおかしくなります。
+ * 		libaudioIoEnableとlibaudioIoDisable以外でこの値を変更するとおかしくなります。
  *
  * @return 0 成功, < 0 失敗（既に無効になっている）
  */
-int libAudioIoDisable(bool *status);
+int libaudioIoDisable(bool *status);
 
 /**
  * 音の出力の有効/無効を調べる
  * 
  * @return true 有効, false 無効
  */
-bool libAudioIoGetStatus(void);
+bool libaudioIoGetStatus(void);
 
 /**
  * 音の出力の有効/無効を再セットする
@@ -99,7 +99,7 @@ bool libAudioIoGetStatus(void);
  *
  * @return true 有効, false 無効
  */
-bool libAudioIoSetAgain(void);
+bool libaudioIoSetAgain(void);
 
 
 #endif

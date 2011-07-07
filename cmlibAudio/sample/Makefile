@@ -1,5 +1,5 @@
 TARGET = cmlibAudio_sample
-OBJS = main.o cmlibaudio.o
+OBJS = main.o cmlibAudio.o
 
 USE_KERNEL_LIBC = 1
 USE_KERNEL_LIBS = 1
