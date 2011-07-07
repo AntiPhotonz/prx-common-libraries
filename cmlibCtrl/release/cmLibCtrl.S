@@ -3,14 +3,14 @@
 #include "pspstub.s"
 
 	STUB_START "cmlibCtrl",0x40090000,0x000A0005
-	STUB_FUNC  0xD6247E23,libCtrlMaskAllButtonOn
-	STUB_FUNC  0xFC2F5EEA,libCtrlMaskAllButtonOff
-	STUB_FUNC  0x8F4F3F5D,libCtrlMaskAllButtonStatus
-	STUB_FUNC  0xBEBE49D7,libCtrlMaskAllButtonAgain
-	STUB_FUNC  0x8A4B458C,libCtrlMaskButtonOn
-	STUB_FUNC  0x516F2112,libCtrlMaskButtonOff
-	STUB_FUNC  0x59B5EC72,libCtrlMaskButtonStatus
-	STUB_FUNC  0x43799B05,libCtrlCountButtons
-	STUB_FUNC  0xFC8CB94A,libCtrlWaitButtonUp
-	STUB_FUNC  0x38EDC4F5,libCtrlWaitButtonDown
+	STUB_FUNC  0xD5D3042B,libctrlMaskAllButtonOn
+	STUB_FUNC  0x36823094,libctrlMaskAllButtonOff
+	STUB_FUNC  0x04D833DB,libctrlMaskAllButtonStatus
+	STUB_FUNC  0xDE6B3EED,libctrlMaskAllButtonAgain
+	STUB_FUNC  0xCBA5391D,libctrlMaskButtonOn
+	STUB_FUNC  0x88814A36,libctrlMaskButtonOff
+	STUB_FUNC  0x9E80CCEC,libctrlMaskButtonStatus
+	STUB_FUNC  0x490D9E7B,libctrlCountButtons
+	STUB_FUNC  0xDB6A1035,libctrlWaitButtonUp
+	STUB_FUNC  0xD76D3495,libctrlWaitButtonDown
 	STUB_END

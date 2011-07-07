@@ -9,16 +9,16 @@ PSP_EXPORT_VAR_HASH(module_info)
 PSP_EXPORT_END
 
 PSP_EXPORT_START(cmlibCtrl, 0, 0x4009)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonOn)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonOff)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonStatus)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskAllButtonAgain)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonOn)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonOff)
-PSP_EXPORT_FUNC_HASH(libCtrlMaskButtonStatus)
-PSP_EXPORT_FUNC_HASH(libCtrlCountButtons)
-PSP_EXPORT_FUNC_HASH(libCtrlWaitButtonUp)
-PSP_EXPORT_FUNC_HASH(libCtrlWaitButtonDown)
+PSP_EXPORT_FUNC_HASH(libctrlMaskAllButtonOn)
+PSP_EXPORT_FUNC_HASH(libctrlMaskAllButtonOff)
+PSP_EXPORT_FUNC_HASH(libctrlMaskAllButtonStatus)
+PSP_EXPORT_FUNC_HASH(libctrlMaskAllButtonAgain)
+PSP_EXPORT_FUNC_HASH(libctrlMaskButtonOn)
+PSP_EXPORT_FUNC_HASH(libctrlMaskButtonOff)
+PSP_EXPORT_FUNC_HASH(libctrlMaskButtonStatus)
+PSP_EXPORT_FUNC_HASH(libctrlCountButtons)
+PSP_EXPORT_FUNC_HASH(libctrlWaitButtonUp)
+PSP_EXPORT_FUNC_HASH(libctrlWaitButtonDown)
 PSP_EXPORT_END
 
 PSP_END_EXPORTS

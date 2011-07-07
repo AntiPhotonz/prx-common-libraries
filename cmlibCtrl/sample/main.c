@@ -91,15 +91,15 @@ int main_thread(SceSize args, void *argp)
 		if(pad.Buttons & (PSP_CTRL_HOME + PSP_CTRL_TRIANGLE))
 		//こういう方法もある
 		{	
-			libCtrlMaskAllButtonOn(&status);
+			libctrlMaskAllButtonOn(&status);
 			//アドレスを渡さないと動かない
 		}
 		else if(pad.Buttons & (PSP_CTRL_HOME | PSP_CTRL_CIRCLE))
 		//こういう書き方も可
 		{
-			if(libCtrlCountButtons((PSP_CTRL_HOME + PSP_CTRL_CIRCLE),3))
+			if(libctrlCountButtons((PSP_CTRL_HOME + PSP_CTRL_CIRCLE),3))
 			//複数渡すときは「+」か「|」でつなぐ。
-				libCtrlMaskAllButtonOff(&status);
+				libctrlMaskAllButtonOff(&status);
 		}
 		
 	}
