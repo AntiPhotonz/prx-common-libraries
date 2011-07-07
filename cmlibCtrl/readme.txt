@@ -16,6 +16,11 @@ cmibCtrl by ABCanG
 
 
 /////Changelog/////
+*1.2 (2011.07.07)
+[!]関数名を「libCtrl」→「libctrl」に変更
+[!]libctrlWaitButtonUpを修正
+[!]libctrlWaitButtonDownを修正
+
 *1.1 (2011.07.04)
 [-]libCtrlCheckButtonを削除
 [+]libCtrlCountButtonsを追加
