@@ -3,14 +3,14 @@
 #include "pspstub.s"
 
 	STUB_START "cmlibAudio",0x40090000,0x000A0005
-	STUB_FUNC  0xB0F5E81C,libAudioGetVolume
-	STUB_FUNC  0x0D957783,libAudioSetVolume
-	STUB_FUNC  0x51FC8DA5,libAudioMuteOn
-	STUB_FUNC  0x91C754D2,libAudioMuteOff
-	STUB_FUNC  0xAD3F932A,libAudioMuteGetStatus
-	STUB_FUNC  0x87EF3CFA,libAudioMuteSetAgain
-	STUB_FUNC  0xF5856E31,libAudioIoEnable
-	STUB_FUNC  0xA614957F,libAudioIoDisable
-	STUB_FUNC  0x8B511909,libAudioIoGetStatus
-	STUB_FUNC  0xFD5C4065,libAudioIoSetAgain
+	STUB_FUNC  0xF5BCBCE4,libaudioGetVolume
+	STUB_FUNC  0xDB8C37B5,libaudioSetVolume
+	STUB_FUNC  0x281D1BA3,libaudioMuteOn
+	STUB_FUNC  0xDB253A1A,libaudioMuteOff
+	STUB_FUNC  0xC096D1A7,libaudioMuteGetStatus
+	STUB_FUNC  0x55D33ED4,libaudioMuteSetAgain
+	STUB_FUNC  0x05B5AF43,libaudioIoEnable
+	STUB_FUNC  0x6ED876CB,libaudioIoDisable
+	STUB_FUNC  0x74494A09,libaudioIoGetStatus
+	STUB_FUNC  0xF0A9A317,libaudioIoSetAgain
 	STUB_END

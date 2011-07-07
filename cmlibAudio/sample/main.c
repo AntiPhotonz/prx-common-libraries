@@ -66,7 +66,7 @@ int init(void)
 	{
 		if(sceKernelFindModuleByName("sceKernelLibrary")){
 			// prxlibmenu loading Check
-			load_module("cmlibAudio",cmLibAudio_path);
+			load_module("cmlibaudio",cmLibAudio_path);
 
 			break;
 		}
@@ -95,24 +95,24 @@ int main_thread(SceSize args, void *argp)
 		
 		if((pad.Buttons & PSP_CTRL_HOME)&&(pad.Buttons & PSP_CTRL_TRIANGLE))
 		{	
-			libAudioSetVolume(0);
+			libaudioSetVolume(0);
 		}
 		else if((pad.Buttons & PSP_CTRL_HOME)&&(pad.Buttons & PSP_CTRL_CIRCLE))
 		{
-			libAudioMuteOn(&mutestatus);
+			libaudioMuteOn(&mutestatus);
 			//ƒAƒhƒŒƒX‚ð“n‚³‚È‚¢‚Æ‚¨‚©‚µ‚­‚È‚é
 		}
 		else if((pad.Buttons & PSP_CTRL_HOME)&&(pad.Buttons & PSP_CTRL_CROSS))
 		{
-			libAudioMuteOff(&mutestatus);
+			libaudioMuteOff(&mutestatus);
 		}
 		else if((pad.Buttons & PSP_CTRL_HOME)&&(pad.Buttons & PSP_CTRL_SQUARE))
 		{
-			libAudioIoDisable(&iostatus);
+			libaudioIoDisable(&iostatus);
 		}
 		else if((pad.Buttons & PSP_CTRL_HOME)&&(pad.Buttons & PSP_CTRL_START))
 		{
-			libAudioIoEnable(&iostatus);
+			libaudioIoEnable(&iostatus);
 		}
 	}
 

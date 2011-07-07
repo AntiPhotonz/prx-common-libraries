@@ -18,5 +18,7 @@ cmlibAudio by ABCanG
 
 /////Changelog/////
 
+[!]関数名を「libAudio」→「libaudio」に変更(2011.07.07)
+
 *1.0 (2011.07.02)
 [] 最初のリリース。

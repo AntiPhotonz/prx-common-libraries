@@ -9,16 +9,16 @@ PSP_EXPORT_VAR_HASH(module_info)
 PSP_EXPORT_END
 
 PSP_EXPORT_START(cmlibAudio, 0, 0x4009)
-PSP_EXPORT_FUNC_HASH(libAudioGetVolume)
-PSP_EXPORT_FUNC_HASH(libAudioSetVolume)
-PSP_EXPORT_FUNC_HASH(libAudioMuteOn)
-PSP_EXPORT_FUNC_HASH(libAudioMuteOff)
-PSP_EXPORT_FUNC_HASH(libAudioMuteGetStatus)
-PSP_EXPORT_FUNC_HASH(libAudioMuteSetAgain)
-PSP_EXPORT_FUNC_HASH(libAudioIoEnable)
-PSP_EXPORT_FUNC_HASH(libAudioIoDisable)
-PSP_EXPORT_FUNC_HASH(libAudioIoGetStatus)
-PSP_EXPORT_FUNC_HASH(libAudioIoSetAgain)
+PSP_EXPORT_FUNC_HASH(libaudioGetVolume)
+PSP_EXPORT_FUNC_HASH(libaudioSetVolume)
+PSP_EXPORT_FUNC_HASH(libaudioMuteOn)
+PSP_EXPORT_FUNC_HASH(libaudioMuteOff)
+PSP_EXPORT_FUNC_HASH(libaudioMuteGetStatus)
+PSP_EXPORT_FUNC_HASH(libaudioMuteSetAgain)
+PSP_EXPORT_FUNC_HASH(libaudioIoEnable)
+PSP_EXPORT_FUNC_HASH(libaudioIoDisable)
+PSP_EXPORT_FUNC_HASH(libaudioIoGetStatus)
+PSP_EXPORT_FUNC_HASH(libaudioIoSetAgain)
 PSP_EXPORT_END
 
 PSP_END_EXPORTS
