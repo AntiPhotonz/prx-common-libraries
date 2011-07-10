@@ -3,18 +3,18 @@
 #include "pspstub.s"
 
 	STUB_START "cmlibPower",0x40090000,0x000E0005
-	STUB_FUNC  0x256E1F79,powerControll
-	STUB_FUNC  0x10CE1161,exeSoftReset
-	STUB_FUNC  0x4C327D27,setCpuClock
-	STUB_FUNC  0xD5B5063F,getCpuClock
-	STUB_FUNC  0xD67A5BBB,getChargeStatus
-	STUB_FUNC  0x0BD86ED2,getBatteryLifePer
-	STUB_FUNC  0x0F1AA56F,getBatteryLifeTime
-	STUB_FUNC  0x911840EB,getBatteryTemp
-	STUB_FUNC  0x14CDE3B3,getBatteryVolt
-	STUB_FUNC  0x5E86A953,isPowerOnline
-	STUB_FUNC  0x2D9A9B39,isBatteryExist
-	STUB_FUNC  0x899C1A19,isLowBattery
-	STUB_FUNC  0x19594B5E,isBatteryCharging
-	STUB_FUNC  0x00008950,getPowerInfo
+	STUB_FUNC  0x04BDE8E2,libPowerControll
+	STUB_FUNC  0x7B9CE7F9,libExeSoftReset
+	STUB_FUNC  0xC1684665,libSetCpuClock
+	STUB_FUNC  0x2707003B,libGetCpuClock
+	STUB_FUNC  0x9870F0B0,libGetChargeStatus
+	STUB_FUNC  0xA0FB7B88,libGetBatteryLifePer
+	STUB_FUNC  0xA2922AA2,libGetBatteryLifeTime
+	STUB_FUNC  0x3FDAD4C3,libGetBatteryTemp
+	STUB_FUNC  0x1D0B5DC4,libGetBatteryVolt
+	STUB_FUNC  0x2EC95275,libIsPowerOnline
+	STUB_FUNC  0x81502A81,libIsBatteryExist
+	STUB_FUNC  0x9557B46A,libIsLowBattery
+	STUB_FUNC  0x941319EB,libIsBatteryCharging
+	STUB_FUNC  0x6DCF2BAF,libGetPowerInfo
 	STUB_END

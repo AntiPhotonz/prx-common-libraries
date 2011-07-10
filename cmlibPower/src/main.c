@@ -16,7 +16,7 @@ PSP_MODULE_INFO("cmlibPower", PSP_MODULE_KERNEL, 1, 0);
 //#define REBOOT_MODE   1(cmlibpower.h)
 //#define SHUTDOWN_MODE 2(cmlibpower.h)
 //---------------------------
-int powerControll(int mode)
+int libPowerControll(int mode)
 {
 	switch(mode) {
 		case SLEEP_MODE:
@@ -44,7 +44,7 @@ int powerControll(int mode)
 ////////////////////////////////////////////////////////////////////////////////
 #define EBOOT_PATH "disc0:/PSP_GAME/SYSDIR/EBOOT.BIN"
 //---------------------
-void exeSoftReset(void)
+void libExeSoftReset(void)
 {
 	int k1 = pspSdkSetK1(0);
 	
@@ -78,7 +78,7 @@ void exeSoftReset(void)
 //  SET CPU INFO
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int setCpuClock(int cpuClock)
+int libSetCpuClock(int cpuClock)
 {
 	
 	scePowerSetCpuClockFrequency(cpuClock);
@@ -92,7 +92,7 @@ int setCpuClock(int cpuClock)
 //  GET CPU INFO
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-CPU_INFO getCpuClock(void)
+CPU_INFO libGetCpuClock(void)
 {
 	CPU_INFO info;
 	
@@ -107,7 +107,7 @@ CPU_INFO getCpuClock(void)
 //  GET CHARGE STATUS
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int getChargeStatus(void)
+int libGetChargeStatus(void)
 {
 	
 	return scePowerGetBatteryChargingStatus();
@@ -118,7 +118,7 @@ int getChargeStatus(void)
 //  GET BATTERY LIFE PARCENT
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int getBatteryLifePer(void)
+int libGetBatteryLifePer(void)
 {
 	
 	return scePowerGetBatteryLifePercent();
@@ -129,7 +129,7 @@ int getBatteryLifePer(void)
 //  GET BATTERY LIFE TIME
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int getBatteryLifeTime(void)
+int libGetBatteryLifeTime(void)
 {
 	
 	return scePowerGetBatteryLifeTime();
@@ -140,7 +140,7 @@ int getBatteryLifeTime(void)
 //  GET BATTERY TEMP
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int getBatteryTemp(void)
+int libGetBatteryTemp(void)
 {
 	
 	return scePowerGetBatteryTemp();
@@ -151,7 +151,7 @@ int getBatteryTemp(void)
 //  GET BATTERY VOLT
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-float getBatteryVolt(void)
+float libGetBatteryVolt(void)
 {
 	float result = (float) scePowerGetBatteryVolt() / 1000.0;
 	return result;
@@ -162,7 +162,7 @@ float getBatteryVolt(void)
 //  IS POWER ONLINE
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int isPowerOnline(void)
+int libIsPowerOnline(void)
 {
 	
 	return scePowerIsPowerOnline();
@@ -173,7 +173,7 @@ int isPowerOnline(void)
 //  IS BATTERY EXIST
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int isBatteryExist(void)
+int libIsBatteryExist(void)
 {
 	
 	return scePowerIsBatteryExist();
@@ -184,7 +184,7 @@ int isBatteryExist(void)
 //  IS LOW BATTERY
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int isLowBattery(void)
+int libIsLowBattery(void)
 {
 	
 	return scePowerIsLowBattery();
@@ -195,7 +195,7 @@ int isLowBattery(void)
 //  IS BATTERY CHARGING
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-int isBatteryCharging(void)
+int libIsBatteryCharging(void)
 {
 	
 	return scePowerIsBatteryCharging();
@@ -206,26 +206,26 @@ int isBatteryCharging(void)
 //  GET POWER INFO
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
-POWER_INFO getPowerInfo(void)
+POWER_INFO libGetPowerInfo(void)
 {
 	POWER_INFO info;
 	
-	info.chargeStatus	= getChargeStatus();
-	info.lifePer		= getBatteryLifePer();
-	info.lifeTime		= getBatteryLifeTime();
+	info.chargeStatus	= libGetChargeStatus();
+	info.lifePer		= libGetBatteryLifePer();
+	info.lifeTime		= libGetBatteryLifeTime();
 
-	CPU_INFO cupInfo	= getCpuClock();
+	CPU_INFO cupInfo	= libGetCpuClock();
 	info.cpuClock		= 0;
 	info.busClock		= 0;
 	info.cpuClock		= cupInfo.cpuClock;
 	info.busClock		= cupInfo.busClock;
 
-	info.temp			= getBatteryTemp();
-	info.volt			= getBatteryVolt();
-	info.acStatus		= isPowerOnline();
-	info.isExist		= isBatteryExist();
-	info.isLow			= isLowBattery();
-	info.isCharging		= isBatteryCharging();
+	info.temp			= libGetBatteryTemp();
+	info.volt			= libGetBatteryVolt();
+	info.acStatus		= libIsPowerOnline();
+	info.isExist		= libIsBatteryExist();
+	info.isLow			= libIsLowBattery();
+	info.isCharging		= libIsBatteryCharging();
 	
 	return info;
 }
