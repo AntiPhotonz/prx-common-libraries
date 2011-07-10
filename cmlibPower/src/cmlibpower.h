@@ -32,20 +32,20 @@ typedef struct {
 #define POWER_ONLINE  1
 #define POWER_OFFLINE 0
 
-int  powerControll(int mode);
-void exeSoftReset(void);
-int setCpuClock(int cpuClock);
-CPU_INFO getCpuClock(void);
-int getChargeStatus(void);
-int getBatteryLifePer(void);
-int getBatteryLifeTime(void);
-int getBatteryTemp(void);
-float getBatteryVolt(void);
-int isPowerOnline(void);
-int isBatteryExist(void);
-int isLowBattery(void);
-int isBatteryCharging(void);
-POWER_INFO getPowerInfo(void);
+int  libPowerControll(int mode);
+void libExeSoftReset(void);
+int  libSetCpuClock(int cpuClock);
+CPU_INFO libGetCpuClock(void);
+int  libGetChargeStatus(void);
+int  libGetBatteryLifePer(void);
+int  libGetBatteryLifeTime(void);
+int  libGetBatteryTemp(void);
+float libGetBatteryVolt(void);
+int  libIsPowerOnline(void);
+int  libIsBatteryExist(void);
+int  libIsLowBattery(void);
+int  libIsBatteryCharging(void);
+POWER_INFO libGetPowerInfo(void);
 
 #endif
 
