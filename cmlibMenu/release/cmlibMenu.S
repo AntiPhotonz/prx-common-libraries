@@ -2,7 +2,7 @@
 
 #include "pspstub.s"
 
-	STUB_START "cmlibMenu",0x40090000,0x00350005
+	STUB_START "cmlibMenu",0x40090000,0x00360005
 	STUB_FUNC  0x177A922B,libmIsInvalidItem
 	STUB_FUNC  0xC076E2D7,libmGetPrevItem
 	STUB_FUNC  0x30C9C4D9,libmGetNextItem
@@ -56,4 +56,5 @@
 	STUB_FUNC  0x0C545004,libmGetIdxItem
 	STUB_FUNC  0x698B739C,libmPrintSymbolXY
 	STUB_FUNC  0x11CC532D,libmPrintSymbolXY16
+	STUB_FUNC  0xEFE94F84,libmCloseAllContainer
 	STUB_END

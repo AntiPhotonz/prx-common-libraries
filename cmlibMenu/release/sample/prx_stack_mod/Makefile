@@ -9,7 +9,7 @@ USE_KERNEL_LIBS	=	1
 
 OBJS		=	exports.o 	\
 			syslibc.o 	\
-			prxlibmenu.o	\
+			cmlibMenu.o	\
 			main.o
 
 ifeq ($(PSP_HEN_VERSION),635)
@@ -30,4 +30,3 @@ LIBS		=
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build_prx.mak
-

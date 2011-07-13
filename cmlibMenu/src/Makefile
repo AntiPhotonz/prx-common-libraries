@@ -8,7 +8,6 @@ MINOR_VERSION = 0
 
 OBJS = main.o syslibc.o memory.o
 
-#OBJS	+=	static.o
 OBJS	+=	import.o
 
 #ITEM
@@ -65,6 +64,7 @@ OBJS	+=	./Extension/libmPrintfXY16.o
 OBJS	+=	./Extension/libmGetIdxItem.o
 OBJS	+=	./Extension/libmPrintSymbolXY.o
 OBJS	+=	./Extension/libmPrintSymbolXY16.o
+OBJS	+=	./Extension/libmCloseAllContainer.o
 
 BUILD_PRX = 1
 PRX_EXPORTS = exports.exp

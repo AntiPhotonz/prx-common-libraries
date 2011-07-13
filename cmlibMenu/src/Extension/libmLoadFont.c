@@ -88,7 +88,7 @@ int libmLoadFont(int flag){
     }
     
     // malloc
-    font_buf = psp_malloc(size);
+    font_buf = psp_malloc(1, size);
     if(font_buf == NULL){
         sceIoClose(fd);
         return -1;

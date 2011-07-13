@@ -3,11 +3,11 @@
 
 #include <pspkernel.h>
 
-void *psp_malloc(SceSize size){
+void *psp_malloc(int partition, SceSize size){
     SceUID memid;
     void *ret;
     
-    memid = sceKernelAllocPartitionMemory(2, "mem", 0, size + sizeof(SceUID), NULL);
+    memid = sceKernelAllocPartitionMemory(partition, "", 0, size + sizeof(SceUID), NULL);
     if(memid < 0) return NULL;
     ret = sceKernelGetBlockHeadAddr(memid);
     *(SceUID*)ret = memid;
