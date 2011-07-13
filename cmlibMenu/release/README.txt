@@ -12,7 +12,7 @@ project: http://code.google.com/p/prx-common-libraries/
  - Draw Ascii and Japanese(sjis) 8x8 bitmap font.
  - Draw 2bit color icon.
  - Can draw 16x16 mode(zoom).
- - Draw line, circle, frame.
+ - Draw line, circle and frame.
  - Support alpha blending.
  - Can make a menu easily.
  - Support RadioButton, CheckBox, SelectBox, UpDownControl, Spacer, TriggerButton.
