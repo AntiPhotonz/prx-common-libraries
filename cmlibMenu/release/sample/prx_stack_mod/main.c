@@ -11,7 +11,7 @@
 #include <string.h>
 #include <stdarg.h>
 
-#include "libmenu.h"
+#include "cmlibmenu.h"
 
 #include "color.h"
 
@@ -60,6 +60,8 @@ static MenuItem item_list[ITEM_COUNT];
 static MenuItem *AlphaAFA,*AlphaABA,*AlphaNFA,*AlphaNBA,*sync_trigger;
 static libmOpt opt;
 
+libm_draw_info dinfo;
+libm_vram_info vinfo;
 
 enum
 {
@@ -229,8 +231,7 @@ void MenuCreate()
 	//行間
 	Context.MenuInfo.Lines			= 1;
 	
-	
-	libmAddItem(&Context,NULL,libmCreateSpacer(&opt,"メニュー サンプル"),YELLOGREEN,DARKGREEN,NoAction,0);
+	libmAddItem(&Context,NULL,libmCreateSpacer(&opt, "メニュー サンプル"),YELLOGREEN,DARKGREEN,NoAction,0);
 	
 	libmAddItem(&Context,NULL,libmCreateTriggerButton(&opt,"トリガーボタン"),RED,SetAlpha(GREEN,0x66),Trigger_Push,0);
 	
@@ -456,8 +457,8 @@ int libmExecTCmd( int cmd )
 
 
 
-char ms_libmenu_path[] = { "ms0:/seplugins/lib/prxlibmenu.prx"};
-char ef_libmenu_path[] = { "ef0:/seplugins/lib/prxlibmenu.prx"};
+char ms_libmenu_path[] = { "ms0:/seplugins/lib/cmlibmenu.prx"};
+char ef_libmenu_path[] = { "ef0:/seplugins/lib/cmlibmenu.prx"};
 //------------------------------------------------------
 int LoadStartModule(char *module)
 {
@@ -477,11 +478,11 @@ int init(void)
 	{
 		if(sceKernelFindModuleByName("sceKernelLibrary")){
 			// prxlibmenu loading Check
-			if( sceKernelFindModuleByName("prxlibmenu") == NULL ) {
+			if( sceKernelFindModuleByName("cmlibMenu") == NULL ) {
 				// load prxlibmenu
 				LoadStartModule(ms_libmenu_path);
 				
-				if( sceKernelFindModuleByName("prxlibmenu") == NULL ){
+				if( sceKernelFindModuleByName("cmlibMenu") == NULL ){
 					// PSP Go Built-in Memory Support
 					LoadStartModule(ef_libmenu_path);
 				}
@@ -543,10 +544,15 @@ int threadMain(SceSize args, void *argp)
 	//初期ロードチェック
 	init();
 	
+	memset(&dinfo, 0, sizeof(dinfo));
+	memset(&vinfo, 0, sizeof(vinfo));
+	dinfo.vinfo = &vinfo;
+	
 	// load font
-	libmLoadFont(FONT_SJIS);
-	libmLoadFont(FONT_CG);
-	//libmLoadFont(FONT_HANKAKU_KANA);
+	libmLoadFont(LIBM_FONT_SJIS);
+	libmLoadFont(LIBM_FONT_CG);
+	libmLoadFont(LIBM_FONT_ICON);
+	//libmLoadFont(LIBM_FONT_HANKAKU_KANA);
 	
 	//メニュー作成
 	MenuCreate();
@@ -569,12 +575,13 @@ int threadMain(SceSize args, void *argp)
 		{
 			if( StopThread )
 			{
-				libmGetCurVInfo(&vram_tmp);
+				//libmGetCurVInfo(&vram_tmp);
+				vram_tmp = *(dinfo.vinfo);
 				
 				//他スレッドをサスペンド
 				while(!libmExecTCmd( LIBM_TCMD_SUSPEND ));
 				
-				while(!libmInitBuffers(false,PSP_DISPLAY_SETBUF_NEXTFRAME));
+				while(!libmInitBuffers(false,PSP_DISPLAY_SETBUF_NEXTFRAME, &dinfo));
 			}
 		}
 		else if(Params->Action == Menu_Close)
@@ -693,20 +700,60 @@ int threadMain(SceSize args, void *argp)
 			}
 			else
 			{
-				libmClearBuffers();
-				libmRender(&Context,20,20,str,256);
-				libmSwapBuffers();
+				libmClearBuffers(&dinfo);
+				libmRender(&Context,20,20,str,256, &dinfo);
+				libmSwapBuffers(&dinfo);
 			}
 		}
-		else if( libmInitBuffers(draw_opt,PSP_DISPLAY_SETBUF_NEXTFRAME) )
+		else if( libmInitBuffers(draw_opt,PSP_DISPLAY_SETBUF_NEXTFRAME, &dinfo) )
 		{
 			//通常のメニュー描画
 			
-			libmRender(&Context,22,20,str,256);
+			libmRender(&Context,22,20,str,256, &dinfo);
 			
 			if( libmIsOpen(&Context) )
 			{
-				libmPrintXY(0,264,SetAlpha(WHITE,0xFF),SetAlpha(BLACK,0xFF),"×=選択、△=戻る");
+				libmPrintXY16(0,256,SetAlpha(WHITE,0xFF),SetAlpha(BLACK,0xFF),"×=選択、△=戻る", &dinfo);
+				libmPrintSymbolXY16(4, 220, 0xffff0000, 0xff00ff00, 0xff0000ff, 0, "\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f", &dinfo);
+				
+				/*
+				// 4
+				libmPrintSymbolXY(50, 220, 0xffffffff, 0xff00ff00, 0xff00ff00, SetAlpha(BLACK,0xFF), "\x01\x02", &dinfo);
+				
+				// 3
+				libmPrintSymbolXY(70, 220, 0xffffffff, 0xff000000, 0xff00ff80, SetAlpha(BLACK,0xFF), "\x01", &dinfo);
+				libmPrintSymbolXY(78, 220, 0xffffffff, 0xff00ff80, 0xff00ff80, SetAlpha(BLACK,0xFF), "\x02", &dinfo);
+				
+				// 2
+				libmPrintSymbolXY(90, 220, 0xffffffff, 0xff000000, 0xff000000, SetAlpha(BLACK,0xFF), "\x01", &dinfo);
+				libmPrintSymbolXY(98, 220, 0xffffffff, 0xff00ffff, 0xff00ffff, SetAlpha(BLACK,0xFF), "\x02", &dinfo);
+				
+				// 1
+				libmPrintSymbolXY(110, 220, 0xffffffff, 0xff000000, 0xff000000, SetAlpha(BLACK,0xFF), "\x01", &dinfo);
+				libmPrintSymbolXY(118, 220, 0xffffffff, 0xff000000, 0xff0080ff, SetAlpha(BLACK,0xFF), "\x02", &dinfo);
+				
+				// 0
+				libmPrintSymbolXY(130, 220, 0xff0000ff, 0xff000000, 0xff000000, SetAlpha(BLACK,0xFF), "\x01\x02", &dinfo);
+				
+				
+				// 4
+				libmPrintSymbolXY16(50, 230, 0xffffffff, 0xff00ff00, 0xff00ff00, SetAlpha(BLACK,0xFF), "\x01\x02", &dinfo);
+				
+				// 3
+				libmPrintSymbolXY16(90, 230, 0xffffffff, 0xff000000, 0xff00ff80, SetAlpha(BLACK,0xFF), "\x01", &dinfo);
+				libmPrintSymbolXY16(106, 230, 0xffffffff, 0xff00ff80, 0xff00ff80, SetAlpha(BLACK,0xFF), "\x02", &dinfo);
+				
+				// 2
+				libmPrintSymbolXY16(130, 230, 0xffffffff, 0xff000000, 0xff000000, SetAlpha(BLACK,0xFF), "\x01", &dinfo);
+				libmPrintSymbolXY16(146, 230, 0xffffffff, 0xff00ffff, 0xff00ffff, SetAlpha(BLACK,0xFF), "\x02", &dinfo);
+				
+				// 1
+				libmPrintSymbolXY16(170, 230, 0xffffffff, 0xff000000, 0xff000000, SetAlpha(BLACK,0xFF), "\x01", &dinfo);
+				libmPrintSymbolXY16(186, 230, 0xffffffff, 0xff000000, 0xff0080ff, SetAlpha(BLACK,0xFF), "\x02", &dinfo);
+				
+				// 0
+				libmPrintSymbolXY16(210, 230, 0xff0000ff, 0xff000000, 0xff000000, SetAlpha(BLACK,0xFF), "\x01\x02", &dinfo);
+				*/
 			}
 			
 			sceDisplayWaitVblankStart();
