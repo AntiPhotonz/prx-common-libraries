@@ -11,7 +11,7 @@ extern "C" {
 
 
 
-// libmInitBuffers ‚Å‘æ1ˆø”‚Éw’èo—ˆ‚éVRAM‰Šú‰»ƒIƒvƒVƒ‡ƒ“
+// used by libmInitBuffers.
 enum
 {
 	LIBM_DRAW_INIT8888	= 0x01 ,
@@ -27,11 +27,11 @@ enum
 
 #define	LIBM_DRAW_INIT			(LIBM_FMT_MASK | LIBM_DRAW_RETURN)
 
-//libmDebugScreenSetXY‚Åw’è‰Â”\‚ÈX,Y‚ÌÅ‘å’l
+// Max X and Y. used libmDebugScreenSetXY.
 #define	LIBM_SETX_MAX			59
 #define	LIBM_SETY_MAX			33
 
-//libmenu“à•”ƒtƒHƒ“ƒg‚Ìc‰¡ƒTƒCƒY
+// font size
 #define LIBM_CHAR_WIDTH			8
 #define LIBM_CHAR_HEIGHT		8
 
@@ -61,92 +61,90 @@ typedef enum
 
 
 
-// libmGetHandle‚ğÀsŒã‚É Action ‚ğQÆ‚µ‚Ä“¾‚ç‚ê‚éƒƒjƒ…[‚Ìó‘Ô
+// State of the menu which get from MenuParams.Action after calling the libmGetHandle.
 typedef enum
 {
-	Menu_None = 0,	//‰½‚à‚È‚µ
-	Menu_Show,		//ƒƒjƒ…[‚ª•\¦‚³‚ê‚½
-	Menu_Up,		//ƒAƒCƒeƒ€‘I‘ğó‘Ô‚Å "ã" ‚Éw’è‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-	Menu_Down,		//ƒAƒCƒeƒ€‘I‘ğó‘Ô‚Å "‰º" ‚Éw’è‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-	Menu_Left,		//ƒAƒCƒeƒ€‘I‘ğó‘Ô‚Å "¶" ‚Éw’è‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-	Menu_Right,		//ƒAƒCƒeƒ€‘I‘ğó‘Ô‚Å "‰E" ‚Éw’è‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-	Menu_Select,	//ƒAƒCƒeƒ€‘I‘ğó‘Ô‚Å "‘I‘ğ" ‚Éw’è‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-	Menu_Back,		//ƒAƒCƒeƒ€‘I‘ğó‘Ô‚Å "–ß‚é" ‚Éw’è‚³‚ê‚Ä‚¢‚éƒ{ƒ^ƒ“‚ª‰Ÿ‚³‚ê‚½
-	Menu_Close		//ƒƒjƒ…[‚ª•Â‚¶‚ç‚ê‚½
+	Menu_None = 0,	// none
+	Menu_Show,		// The menu was displayed.
+	Menu_Up,		// The MenuContext.HotKey.Up was pushed.
+	Menu_Down,		// The MenuContext.HotKey.Down was pushed.
+	Menu_Left,		// The MenuContext.HotKey.Left was pushed.
+	Menu_Right,		// The MenuContext.HotKey.Right was pushed.
+	Menu_Select,	// The MenuContext.HotKey.Select was pushed.
+	Menu_Back,		// The MenuContext.HotKey.Back was pushed.
+	Menu_Close		// The menu was closed.
 } MenuResult;
 
 
-// libmOptAtype‚Öw’è‰Â”\‚Èƒ^ƒCƒvˆê——
+// libmOpt, type
 typedef enum
 {
-	LIBM_OPT_NONE,	//–³Œø
-	LIBM_OPT_LIST,	//ƒvƒƒOƒ‰ƒ€ã‚Ì•Ï”‚©‚çƒƒjƒ…[ì¬
-	LIBM_OPT_FUNC,	//ƒƒ‚ƒŠ‚©‚ç•Ï”‚ğ“®“IŠm•Û‚µ‚Äƒƒjƒ…[ì¬
+	LIBM_OPT_NONE,	//Disable
+	LIBM_OPT_LIST,	//Stack
+	LIBM_OPT_FUNC,	//Heap
 } optType;
 
 
 
 typedef struct MenuItem
 {
-	struct MenuItem			*Parent;		//ƒAƒCƒeƒ€‚Ìe ( NULL = Root )
-	struct MenuItem			*Next;			//ƒAƒCƒeƒ€‚ÌŸ
-	struct MenuItem			*Prev;			//ƒAƒCƒeƒ€‚Ì‘O
-	struct MenuItem			*Children;		//ƒAƒCƒeƒ€‚Ìq
+	struct MenuItem			*Parent;		// parent of the item (NULL = Root)
+	struct MenuItem			*Next;			// next item
+	struct MenuItem			*Prev;			// prev item
+	struct MenuItem			*Children;		// children of the item
 	
 	
-	const char				*Name;			//ƒAƒCƒeƒ€–¼i•\¦‚³‚ê‚éj
-	int						Type;			//ƒAƒCƒeƒ€‚Ìƒ^ƒCƒv
-	int						actionID;		//ƒAƒCƒeƒ€‚ª‘I‘ğ‚³‚ê‚½‚è‚µ‚½‚ÉAhandleMenu‚Ì•Ô‹p’l‚Ö‘—‚éactionID
-	int						Data;			//ƒAƒCƒeƒ€’l
+	const char				*Name;			// item name (be displayed)
+	int						Type;			// type of the item
+	int						actionID;		// actionID
+	int						Data;			// value of the item
 	
-	bool					Visible;		//ƒAƒCƒeƒ€‚Ì‰Â‹ó‘Ô( ture ,false )
-	bool					Disable;		//ƒAƒCƒeƒ€‚Ì—LŒøE–³Œø ó‘Ô
+	bool					Visible;		// visible of the item (true, false)
+	bool					Disable;		// state of Enable/Disable of the item
 	
 	
-	//”ñƒAƒNƒeƒBƒu‚ÌƒAƒCƒeƒ€•`‰æF
-	//w’è‚ª‚È‚¯‚ê‚Î Context ‚Ì’ÊíF
-	
+	// color of inactive items
 	struct
 	{
-		u32 				Font;			//ƒtƒHƒ“ƒg
-		u32 				Back;			//”wŒi
-		u32					Line;			//‰ºü
+		u32 				Font;			// font
+		u32 				Back;			// background
+		u32					Line;			// underline
 	}Color;
 	
 	
 	union
 	{
-		//ƒ‰ƒWƒIƒ{ƒ^ƒ“—p
-		struct MenuItem		*RB_Group;		//ƒOƒ‹[ƒvæ‚Ö‚Ìƒ|ƒCƒ“ƒ^[
+		// RadioButton
+		struct MenuItem		*RB_Group;		// pointer of group
 		
-		//ƒ‰ƒWƒIƒ{ƒ^ƒ“EƒOƒ‹[ƒv—p
-		struct MenuItem		*Group_Sel;		//‘I‘ğ’†ƒAƒCƒeƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^[
+		// RadioButtonGroup
+		struct MenuItem		*Group_Sel;		// pointer of selected item
 		
-		//ƒRƒ“ƒeƒi[—p
+		// Container
 		struct
 		{
-			bool			IsOpen;			//ŠJ•Âó‘Ô
-			struct MenuItem	*Disp;			//ŠÖ˜A•t‚¯‚Äó‘Ô•\¦‚³‚¹‚éƒAƒCƒeƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^[
+			bool			IsOpen;			// state of open/close
+			struct MenuItem	*Disp;			// pointer of associated item
 		}CNT;
 		
-		//ƒ`ƒFƒbƒNƒ{ƒbƒNƒX—p
-		bool				CB_Checked; 	//‘I‘ğó‘Ô
+		// CheckBox
+		bool				CB_Checked; 	// state of select
 		
-		//ƒŠƒXƒgƒ{ƒbƒNƒX—p
+		// SelectBox
 		struct
 		{
-			const char		**List;			//ƒŠƒXƒg‚Ö‚Ìƒ|ƒCƒ“ƒ^[
-			int				Index;			//‘I‘ğ’†‚Ìindex
+			const char		**List;			// pointer to list
+			int				Index;			// selected index
 		}SB;
 		
-		//ƒAƒbƒvƒ_ƒEƒ“—p
+		// UpDownControl
 		struct
 		{
-			float			Now;			//Œ»İ’n
-			float			Step;			//Step’l (+/-)
-			float			Min;			//Å¬’l
-			float			Max;			//Å‘å’l
-			bool			type;			//•\¦ƒ^ƒCƒv ( true = ®” , false = ¬” )
+			float			Now;			// now value
+			float			Step;			// step value (+/-)
+			float			Min;			// minimum value
+			float			Max;			// maximum value
+			bool			type;			// type (true = integer, false = decimal
 		}UD;
 		
 	}Ctrl;
@@ -165,20 +163,20 @@ typedef struct
 {
 	struct
 	{
-		//ƒƒjƒ…[—pƒAƒCƒeƒ€‚ğƒƒ‚ƒŠ‚©‚ç“®“IŠm•Û‚·‚éê‡‚Éİ’è
+		// case of using heap
 		void* (*malloc_p)(SceSize size) ;
 		void  (*free_p) (void *ptr) ;
 	}func;
 	
 	struct
 	{
-		//ƒƒjƒ…[—pƒAƒCƒeƒ€Šm•Û‚ğƒXƒ^ƒbƒNã‚Ì•Ï”‚É‚·‚éê‡‚Éİ’è
+		// case of using stack
 		MenuItem *val;
 		int size;
 	} list;
 	
-	//ƒƒjƒ…[—pƒAƒCƒeƒ€‚ÌŠm•Û•û–@
-	optType type;	//LIBM_OPT_LIST => ƒXƒ^ƒbƒNã‚Ì•Ï”ALIBM_OPT_FUNC => “®“IŠm•Û
+	// type of allocating mamory for items
+	optType type;	//LIBM_OPT_LIST -> stack, LIBM_OPT_FUNC -> heap
 	
 	int count;
 	
@@ -188,44 +186,44 @@ typedef struct
 
 typedef struct MenuContext
 {
-	//ƒƒjƒ…[‘€ì—p‚ÌKey
+	// control key
 	struct
 	{
-		u32 				Show;			//•\¦
-		u32					Back;			//•Â‚¶‚éA–ß‚é
-		u32					Select;			//‘I‘ğ
-		u32					Up;				//ã‚ÖˆÚ“®
-		u32					Down;			//‰º‚ÖˆÚ“®
-		u32					Left;			//¶‚ÖˆÚ“®
-		u32					Right;			//‰E‚ÖˆÚ“®
+		u32 				Show;			// show key
+		u32					Back;			// back key
+		u32					Select;			// select key
+		u32					Up;				// up key
+		u32					Down;			// down key
+		u32					Left;			// left key
+		u32					Right;			// right key
 	}HotKey;
 	
 	struct
 	{
-		u32					Active_Font;	//ƒAƒNƒeƒBƒu ƒAƒCƒeƒ€‚ÌƒtƒHƒ“ƒgF
-		u32					Active_Back;	//ƒAƒNƒeƒBƒu ƒAƒCƒeƒ€‚Ì”wŒiF
+		u32					Active_Font;	// font color of active item
+		u32					Active_Back;	// background color of active item
 		
-		u32					Normal_Font;	//”ñƒAƒNƒeƒBƒu ƒAƒCƒeƒ€‚ÌƒtƒHƒ“ƒgF
-		u32					Normal_Back;	//”ñƒAƒNƒeƒBƒu ƒAƒCƒeƒ€‚Ì”wŒiF
+		u32					Normal_Font;	// font color of inactive item
+		u32					Normal_Back;	// background color of inactive item
 		
-		u32					Disable_Font;	//–³Œø‚ÈƒAƒCƒeƒ€‚ÌƒtƒHƒ“ƒgF
-		u32					Disable_Back;	//–³Œø‚ÈƒAƒCƒeƒ€‚Ì”wŒiF
+		u32					Disable_Font;	// font color of disable item
+		u32					Disable_Back;	// background color of disable item
 	}Color;
 	
-	//ƒƒjƒ…[•\¦‚ÉŠÖ‚·‚éİ’è
+	// settings of menu display
 	struct
 	{
-		bool				Type;			//ƒƒjƒ…[‚Ìƒ^ƒCƒv ( true = ƒAƒNƒeƒBƒu‚È€–Ú‚Ì‚İ , false = ‘S‘Ì )
-		bool				AutoReturn;		//ƒƒjƒ…[Åã•”E‰º•”‚Å©“®ƒ^[ƒ“‚·‚é‚©‚Ç‚¤‚©
-		u32					Lines;			//sŠÔiƒfƒtƒHƒ‹ƒg = 1A0‚¾‚Æ‰ºü•`‰æ‚ª–³Œø‚Éj
+		bool				Type;			// menu type (true = display only active item, false = all )
+		bool				AutoReturn;		// auto return on top and bottom
+		u32					Lines;			// between the lines (default = 1)
 	}MenuInfo;
 	
 	MenuParams				Params;
 	
-	bool 					IsOpen;			//ƒƒjƒ…[‚ª•\¦’†‚©‚Ç‚¤‚©(•\¦A”ñ•\¦j
-	SceCtrlData				LastState;		//˜A‘±“®ì–h~—pA‘Oƒpƒbƒhî•ñ‚ğ•Û
-	MenuItem				*Root;			//rootƒAƒCƒeƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^[
-	MenuItem				*Active;		//Œ»İƒAƒNƒeƒBƒu‚ÈƒAƒCƒeƒ€‚Ö‚Ìƒ|ƒCƒ“ƒ^
+	bool 					IsOpen;			// open/close
+	SceCtrlData				LastState;		// holds last pad data
+	MenuItem				*Root;			// pointer to root item
+	MenuItem				*Active;		// pointer to active item
 	
 	libmOpt *opt;
 	
@@ -236,17 +234,17 @@ typedef struct MenuContext
 
 typedef struct
 {
-	void	*buffer;	//•`‰æ‘ÎÛ‚ÌŠî€VRAMƒAƒhƒŒƒX
+	void	*buffer;	// vram address
 	
-	int	width;			//‰æ–Ê•
-	int	height;			//‰æ–Ê‚
+	int	width;			// display width
+	int	height;			// display height
 	
-	int	format;			//ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg
-	int	lineWidth;		//‰æ–Ê•i•`‰æ‚Ég‚í‚ê‚Ä‚¢‚éÀÛ‚Ì•j
+	int	format;			// pixel format
+	int	lineWidth;		// buffer width
 	
-	int	frameSize;		//1‰æ–Ê‚ ‚½‚è‚ÌƒTƒCƒY(byte)
-	int	lineSize;		//1ƒ‰ƒCƒ“‚ ‚½‚è‚ÌƒTƒCƒY(byte)
-	u8	pixelSize;		//ƒsƒNƒZƒ‹ƒTƒCƒY
+	int	frameSize;		// size per frame (byte)
+	int	lineSize;		// size per line (byte)
+	u8	pixelSize;		// pixel size
 	int opt;
 	
 } libm_vram_info;
@@ -263,41 +261,40 @@ typedef struct{
 } libm_draw_info;
 
 /*	#########################################################
-	#					ƒƒjƒ…[ŠÖ˜A						#
+    #				        Menu       						#
 	#########################################################
 */
 
 
 /*	libmSetActiveItem
-    ƒƒjƒ…[ã‚ÅƒAƒNƒeƒBƒu‚ÈƒAƒCƒeƒ€‚ğİ’è‚·‚é
+    Set active item.
     
-    @param: MenuContext *Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @param: MenuItem *Item
-    ƒAƒNƒeƒBƒuw’è‚·‚éƒAƒCƒeƒ€‚ğw’è
+    @param: *Item
+    target MenuItem
  */
 #define	libmSetActive(Context,Item)		(Context)->Active = Item
 
 /*	libmGetActiveItem
-    ƒƒjƒ…[ã‚ÅƒAƒNƒeƒBƒu‚ÈƒAƒCƒeƒ€‚ğæ“¾‚·‚é
+    Get active item.
     
-    @param: MenuContext *Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @return: Œ»İƒAƒNƒeƒBƒu‚ÈƒAƒCƒeƒ€ (MenuItem*)
+    @return: active item (MenuItem*)
  */
 #define	libmGetActive(Context)			(Context)->Active
 
 
 /*	libmIsOpen
-    ƒƒjƒ…[‚Ì•\¦/”ñ•\¦ ó‘Ô‚ğæ“¾
+    Get show/hide status of menu.
     
-    @param: MenuContext *Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @return : •\¦/”ñ•\¦‚Ìó‘Ô
-    false = ”ñ•\¦Atrue = •\¦
+    @return : true = show, false = hide
  */
 #define libmIsOpen(Context)				(Context)->IsOpen
 
@@ -306,112 +303,111 @@ typedef struct{
 #define	libmSetLineColor(item,color)	(item)->Color.Line = color
 
 /*	libmIsInvalidItem
-    ƒAƒCƒeƒ€‚ª‘I‘ğ•s‰Â (ƒXƒy[ƒT[A”ñ•\¦A–³Œøj‚È•¨‚©‚ğ’²‚×‚é
+    Check the item is invalid(spacer, hide, disable).
     
-    @param: MenuItem *Item
-    ‘ÎÛ‚ÌƒAƒCƒeƒ€
+    @param: *Item
+    target MenuItem
     
-    @return : false = ‘I‘ğ•s‰ÂƒAƒCƒeƒ€Atrue = ‘I‘ğ‰Â”\ƒAƒCƒeƒ€
+    @return : false = invalid item, true = valid item
  */
 bool libmIsInvalidItem(MenuItem *Item);
 
 /*	libmGetPrevItem
-    Šî€‚æ‚è‘O‚ÌƒAƒCƒeƒ€‚ğŒŸõ‚·‚é
+    Get prev item.
     
-    @param: MenuItem *Item
-    ŒŸõ‚ÌŠî€‚Æ‚·‚éƒAƒCƒeƒ€
+    @param: *Item
+    base item
     
-    @param: bool Invalid_Skip
-    –³Œø‚ÈƒAƒCƒeƒ€ (ƒXƒy[ƒT[A”ñ•\¦A–³Œøj‚ğœŠO‚µ‚ÄŒŸõ‚·‚é‚Ç‚¤‚©
+    @param: Invalid_Skip
+    Whether to enable Invalid_Skip.
     
-    @return : —LŒø‚ÈƒAƒCƒeƒ€A‚È‚¯‚ê‚Î NULL
+    @return : valid item. or NULL.
  */
 MenuItem* libmGetPrevItem( MenuItem *Item , bool Invalid_Skip );
 
 
 /*	libmGetNextItem
-    Šî€‚æ‚èŒã‚ÌƒAƒCƒeƒ€‚ğŒŸõ‚·‚é
+    Get next item.
     
-    @param: MenuItem *Item
-    ŒŸõ‚ÌŠî€‚Æ‚·‚éƒAƒCƒeƒ€
+    @param: *Item
+    base item
     
-    @param: bool Invalid_Skip
-    –³Œø‚ÈƒAƒCƒeƒ€ (ƒXƒy[ƒT[A”ñ•\¦A–³Œøj‚ğœŠO‚µ‚ÄŒŸõ‚·‚é‚Ç‚¤‚©
+    @param: Invalid_Skip
+    Whether to enable Invalid_Skip.
     
-    @return : —LŒø‚ÈƒAƒCƒeƒ€A‚È‚¯‚ê‚Î NULL
+    @return : valid item. or NULL.
  */
 MenuItem* libmGetNextItem( MenuItem *Item , bool Invalid_Skip );
 
 
 
 /*	libmGetBottomItem
-    Šî€‚©‚çŒŸõ‚µ‚Äˆê”ÔÅŒã‚É‚ ‚éƒAƒCƒeƒ€‚ğ’²‚×‚é
+    Get bottom item.
     
-    @param: MenuItem *Item
-    ŒŸõ‚ÌŠî€‚Æ‚·‚éƒAƒCƒeƒ€
+    @param: *Item
+    base item
     
-    @param: bool Invalid_Skip
-    –³Œø‚ÈƒAƒCƒeƒ€ (ƒXƒy[ƒT[A”ñ•\¦A–³Œøj‚ğœŠO‚µ‚ÄŒŸõ‚·‚é‚Ç‚¤‚©
+    @param: Invalid_Skip
+    Whether to enable Invalid_Skip.
     
-    @return : —LŒø‚ÈƒAƒCƒeƒ€A‚È‚¯‚ê‚Î NULL
+    @return : valid item. or NULL.
  */
 MenuItem* libmGetBottomItem( MenuItem *Item , bool Invalid_Skip );
 	
 
 /*	libmGetTopItem
-    Šî€‚©‚çŒŸõ‚µ‚Äˆê”ÔÅ‰‚É‚ ‚éƒAƒCƒeƒ€‚ğ’²‚×‚é
+    Get top item.
     
-    @param: MenuItem *Item
-    ŒŸõ‚ÌŠî€‚Æ‚·‚éƒAƒCƒeƒ€
+    @param: *Item
+    base item
     
-    @param: bool Invalid_Skip
-    –³Œø‚ÈƒAƒCƒeƒ€ (ƒXƒy[ƒT[A”ñ•\¦A–³Œøj‚ğœŠO‚µ‚ÄŒŸõ‚·‚é‚Ç‚¤‚©
+    @param: Invalid_Skip
+    Whether to enable Invalid_Skip.
     
-    @return : —LŒø‚ÈƒAƒCƒeƒ€A‚È‚¯‚ê‚Î NULL
+    @return : valid item. or NULL.
  */
 MenuItem* libmGetTopItem( MenuItem *Item , bool Invalid_Skip );
 
 /*	libmSetOpt
-    ƒƒjƒ…[ contextAitem ì¬‚ÌƒIƒvƒVƒ‡ƒ“‚ğw’è
+    Set option
     
-    @param: MenuContext* Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @param: libmOpt *opt
-	
-	EƒAƒCƒeƒ€—p‚Ìƒƒ‚ƒŠ‚ğ•Ï”‚©‚çŠm•Û‚·‚éê‡‚Í‚±‚Ì‚æ‚¤‚ÈŠ´‚¶‚Åİ’è
+    @param: *opt
+    option
+    
+    ex.)
+    
+    - use stack -
 	opt.type = LIBM_OPT_LIST;
-	opt.list.val	= item_list;			( item_list ‚Í MenuItem* ‚Ì”z—ñ )
-	opt.list.size 	= sizeof(item_list);	(opt.list.val‚Åw’è‚µ‚½”z—ñƒTƒCƒYj
+	opt.list.val	= item_list;			(item_list is array of MenuItem*)
+	opt.list.size 	= sizeof(item_list);
 	libmSetOpt(&opt);
-	
-	EƒAƒCƒeƒ€—p‚Ìƒƒ‚ƒŠ‚ğ“®“IŠm•Û‚·‚éê‡‚Í‚±‚Ì‚æ‚¤‚ÈŠ´‚¶‚Åİ’è
-	
-	
+		
+	- use heap -
 	opt.type = LIBM_OPT_FUNC;
-	opt.func.malloc_p	= ƒƒ‚ƒŠŠm•ÛŠÖ”;
-	opt.func.free_p		= ƒƒ‚ƒŠ‰ğ•úŠÖ”;
+	opt.func.malloc_p	= (alloc memory function);
+	opt.func.free_p		= (free memory function);
 	libmSetOpt(&opt);
-	
     
-    @return : İ’èo—ˆ‚½‚©‚Ç‚¤‚©
-    false = ¸”sAtrue = ¬Œ÷
+    @return : true = success, false = failed
  */
 
-bool libmSetOpt(MenuContext* Context , libmOpt *opt );
+bool libmSetOpt(MenuContext *Context , libmOpt *opt );
 
 
 
 
 /*	libmCreateContext
-    ƒƒjƒ…[ ƒRƒ“ƒeƒLƒXƒg‚ğì¬
+    Create MenuContext.
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @return: ì¬‚µ‚½ƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
+    @return: created MenuContext
     
-    ì¬‚É¬Œ÷‚·‚é‚ÆˆÈ‰º‚Ì’l‚ª‰Šú’l‚Æ‚µ‚Ä©“®İ’è‚³‚ê‚é
+    * The following values â€‹â€‹are set automatically
     
 	context->HotKey.Show			= PSP_CTRL_NOTE ;
 	context->HotKey.Back			= PSP_CTRL_CIRCLE;
@@ -439,92 +435,79 @@ bool libmSetOpt(MenuContext* Context , libmOpt *opt );
 MenuContext* libmCreateContext(libmOpt *opt);
 
 /*	libmRemoveContext
-    ƒƒjƒ…[ ƒRƒ“ƒeƒLƒXƒg‚ğíœiƒƒ‚ƒŠ‰ğ•új‚·‚é
+    Remove MenuContext.
     
-    @param: MenuContext* Context
-    íœ‚·‚éƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
-    
-    ¦libmSetOpt‚Åƒƒ‚ƒŠ“®“IŠm•Û‚·‚éİ’è‚Ìê‡‚Ì‚İƒƒ‚ƒŠ‰ğ•ú
-    
+    @param: *Context
+    target MenuContext
  */
-void libmRemoveContext(MenuContext* Context);
+void libmRemoveContext(MenuContext *Context);
 
 /*  libmAddItem
-    ƒƒjƒ…[ ƒRƒ“ƒeƒLƒXƒg‚ÉƒAƒCƒeƒ€‚ğ’Ç‰Á‚·‚é
+    Add item to context.
     
-    @param: MenuContext* Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @param: MenuItem* Parent
-    ƒAƒCƒeƒ€’Ç‰Á‘ÎÛ‚Ìe(ƒAƒCƒeƒ€j
+    @param: *Parent
+    target MenuItem
 	
-    @param: MenuItem* Item
-    ’Ç‰Á‚·‚éƒAƒCƒeƒ€
+    @param: *Item
+    add  item
     
-    @param: u32 font_color
-    ’Ç‰Á‚·‚éƒAƒCƒeƒ€‚ÌƒtƒHƒ“ƒgF
-    0 ‚ğw’è‚·‚é‚Æ•`‰æ‚µ‚È‚¢
+    @param: font_color
+    font color
     
-    @param: u32 back_color
-    ’Ç‰Á‚·‚éƒAƒCƒeƒ€‚Ì”wŒiF
-    0 ‚ğw’è‚·‚é‚Æ•`‰æ‚µ‚È‚¢
+    @param: back_color
+    back color
     
-    @param: int actionID
-    ƒAƒCƒeƒ€‚ª‘€ì‚³‚ê‚½ÛA‹æ•Ê‚·‚é‚½‚ß‚ÌID(ƒAƒNƒVƒ‡ƒ“j
+    @param: actionID
+    actionID
     
-    @param: int Data
-    ƒAƒCƒeƒ€‚ª‘€ì‚³‚ê‚½ÛA‹æ•Ê‚·‚é‚½‚ß‚ÌID(ƒAƒCƒeƒ€ŒÅ—Lj
+    @param: Data
+    value of the item
     
-    @return: ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return: created item
  */
-MenuItem* libmAddItem(MenuContext* Context, MenuItem* Parent, MenuItem* Item,u32 font_color,u32 back_color, int actionID, int Data);
+MenuItem* libmAddItem(MenuContext *Context, MenuItem *Parent, MenuItem *Item,u32 font_color,u32 back_color, int actionID, int Data);
 
 /*	libmRemoveItem
-    ƒAƒCƒeƒ€‚ğíœiƒƒ‚ƒŠ‰ğ•új‚·‚é
+    Remove item.
     
-    @param: MenuContext* Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @param: MenuItem* Item
-    ‘ÎÛ‚ÌƒAƒCƒeƒ€
+    @param: *Item
+    target MenuItem
     
-    ¦libmSetOpt‚Åƒƒ‚ƒŠ“®“IŠm•Û‚·‚éİ’è‚Ìê‡‚Ì‚İƒƒ‚ƒŠ‰ğ•ú
-    @
-    @‘ÎÛ‚ªƒRƒ“ƒeƒi[‚¾‚Á‚½ê‡‚ÍA
-    @’†‚É‚ ‚é‘SƒAƒCƒeƒ€‚à“¯íœ
+    If target item is container, remove all item in it.
  */
-void libmRemoveItem( MenuContext *context , MenuItem* Item );
+void libmRemoveItem( MenuContext *context , MenuItem *Item );
 
 /*	libmGetHandle
-    ƒƒjƒ…[ã‚Ì“®ì‚ğæ“¾‚·‚éi•`‰æ‚Í‚³‚ê‚È‚¢j
+    Get action on menu.
     
-    @param: MenuContext* Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒRƒ“ƒeƒLƒXƒg
+    @param: *Context
+    target MenuContext
     
-    @param: SceCtrlData* Input
-    Key“ü—Í( SceCtrlData )
+    @param: *Input
+    Key
     
-    @return: MenuParams (‘I‘ğ‚³‚ê‚½ƒAƒCƒeƒ€Aƒƒjƒ…[‚Ìó‘Ô‚È‚Çj
+    @return: MenuParams
  */
 
-MenuParams* libmGetHandle(MenuContext* Context, SceCtrlData* Input);
+MenuParams* libmGetHandle(MenuContext *Context, SceCtrlData *Input);
 
 /*  libmRender
-    ‰æ–Ê‚Öƒƒjƒ…[‚ğ•`‰æ‚·‚é
+    Draw menu.
     
-    @param: MenuContext* Context
-    ‘ÎÛ‚Ìƒƒjƒ…[ context
+    @param: *Context
+    target MenuContext
     
-    @param:  int PosX
-    ƒƒjƒ…[‚Ì•\¦ˆÊ’u X
+    @param: PosX
+    Position X
     
-    @param: int PosY
-    ƒƒjƒ…[‚Ì•\¦ˆÊ’u Y
-    
-    
-    ƒƒjƒ…[•\¦‚É‘¼ƒXƒŒƒbƒh’â~‚ğ—LŒø‚É‚µ‚Ä‚¢‚éê‡
-    •\¦(‘¼ƒXƒŒƒbƒh’â~)’†‚É HOMEƒ{ƒ^ƒ“ ‚ª‰Ÿ‚³‚ê‚é‚Æ
-    ƒQ[ƒ€I—¹‚ğ‰Â”\‚É‚·‚é‚½‚ß‚É©“®‚Å‘¼ƒXƒŒƒbƒhÄŠJ + ƒƒjƒ…[‚ğ•Â‚¶‚é
+    @param: PosY
+    Position Y
  */
 void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen, libm_draw_info *dinfo);
 
@@ -532,149 +515,143 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen, l
 
 
 /*  libmCreateContainer
-    ƒAƒCƒeƒ€ì¬iƒRƒ“ƒeƒi[j
+    Create Container.
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @param: const char* Name
-    ƒRƒ“ƒeƒi–¼
+    @param: *Name
+    Container name
     
-    @return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return : created item
  */
-MenuItem* libmCreateContainer(libmOpt *opt ,const char* Name);
+MenuItem* libmCreateContainer(libmOpt *opt ,const char *Name);
 
 /*  libmCreateRadioButton
-    ƒAƒCƒeƒ€ì¬iƒ‰ƒWƒIƒ{ƒ^ƒ“j
+    Create RadioButton.
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @param: const char* Name
-    ƒ‰ƒWƒIƒ{ƒ^ƒ“–¼
+    @param: *Name
+    RadioButton name
     
-    @param: bool State
-    ‘I‘ğó‘Ô
+    @param: State
+    state
     
-    @param: MenuItem * Group
-  @ŠÖ˜A•t‚¯‚éƒ‰ƒWƒIƒ{ƒ^ƒ“ ƒOƒ‹[ƒv
-  @libmCreateRadioButtonGroup‚Åì¬
-  @w’è•K{
-  @
-	@return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
-	
-	libmAddItem‚ÅÀÛ‚É’Ç‰Á‚·‚é‚ÍA
-	Parent(e)‚ªƒRƒ“ƒeƒi[ ‚Ü‚½‚Í NULL‚Å‚È‚¢‚Æ–³‹‚³‚ê‚é
+    @param: *Group
+    RadioButtonGroup which associate with. (created by libmCreateRadioButtonGroup)
+  ã€€
+	@return : created item
  */
-MenuItem* libmCreateRadioButton(libmOpt *opt ,const char* Name, bool State,MenuItem * Group);
+MenuItem* libmCreateRadioButton(libmOpt *opt, const char *Name, bool State, MenuItem *Group);
 
 /*  libmCreateRadioButtonGroup
-    ƒAƒCƒeƒ€‚ğì¬iƒ‰ƒWƒIƒ{ƒ^ƒ“ ƒOƒ‹[ƒv)
+    Create RadioButtonGroup.
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return : created item
  */
 MenuItem* libmCreateRadioButtonGroup(libmOpt *opt);
 
 
 
 /*  libmCreateCheckBox
-    ƒAƒCƒeƒ€ì¬iƒ`ƒFƒbƒNƒ{ƒbƒNƒXj
+    Create CheckBox.
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @param: const char* Name
-    ƒ`ƒFƒbƒNƒ{ƒbƒNƒX–¼
+    @param: *Name
+    CheckBox name
     
-    @param: bool State
-    ‘I‘ğó‘Ô
+    @param: State
+    state
     
-	@return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+	@return : created item
  */
-MenuItem* libmCreateCheckBox(libmOpt *opt ,const char* Name, bool State);
+MenuItem* libmCreateCheckBox(libmOpt *opt ,const char *Name, bool State);
 
 /*  libmCreateSelectBox
-    ƒAƒCƒeƒ€ì¬iƒ`ƒFƒbƒNƒ{ƒbƒNƒXj
+    Create SelectBox.
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @param: const char* Name
-    ƒZƒŒƒNƒgƒ{ƒbƒNƒX–¼
+    @param: *Name
+    SelectBox name
     
-    @param: const char *List[]
-    ƒZƒŒƒNƒgƒ{ƒbƒNƒX‚É•\¦‚·‚éƒAƒCƒeƒ€ƒŠƒXƒg
-    const char *‚Ì”z—ñAÅŒã‚ÉNULL‚ª•K—v
+    @param: *List[]
+    show list. (the last is NULL)
     
-    @param: int Selected
-    ƒŠƒXƒg‚©‚çÅ‰‚É‘I‘ğÏ‚İ‚Æ‚·‚éˆÊ’u
+    @param: Selected
+    initial position
     
-    @return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return : created item
  */
-MenuItem* libmCreateSelectBox(libmOpt *opt ,const char* Name, const char *List[],int Selected);
+MenuItem* libmCreateSelectBox(libmOpt *opt ,const char *Name, const char *List[],int Selected);
 
 /*  libmCreateUpDownCtrl
-    ƒAƒCƒeƒ€‚ğì¬iƒAƒbƒvƒ_ƒEƒ“ƒRƒ“ƒgƒ[ƒ‹j
+    Create UpDownControl
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @param: const char* Name
-    ƒAƒbƒvƒ_ƒEƒ“ƒRƒ“ƒgƒ[ƒ‹–¼
+    @param: *Name
+    UpDownControl name
     
-    @param: float Now
-    Œ»İ’l
+    @param: Now
+    now value
     
-    @param: float Step
-    ‘Œ¸’l
+    @param: Step
+    step value
     
-    @param: float Min
-    Å¬’l
+    @param: Min
+    minimum value
     
-    @param: float Max
-    Å‘å’l
+    @param: Max
+    maximum value
     
-    @param: bool type
-    false = •`‰æ‚ÉŒ»İ’l‚ğ¬”“_•\¦‚³‚¹‚é ( 00.00 ‚Ì‚æ‚¤‚ÈŠ´‚¶j
-    true = •`‰æ‚ÉŒ»İ’l‚ğ®”•\¦‚·‚é
+    @param: type
+    false = display in decimal
+    true = display in integer
     
-    @return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return : created item
  */
-MenuItem* libmCreateUpDownCtrl(libmOpt *opt ,const char* Name,float Now,float Step,float Min, float Max,bool type);
+MenuItem* libmCreateUpDownCtrl(libmOpt *opt ,const char *Name,float Now,float Step,float Min, float Max,bool type);
 
 /*  libmCreateSpacer
-    ƒAƒCƒeƒ€‚ğì¬iƒXƒy[ƒT[j
+    Create Spacer
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-    @param: const char* Name
-    ƒXƒy[ƒT[–¼
+    @param: *Name
+    Spacer name
     
-    @return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return : created item
  */
-MenuItem* libmCreateSpacer(libmOpt *opt ,const char* Name);
+MenuItem* libmCreateSpacer(libmOpt *opt ,const char *Name);
 
 /*  libmCreateTriggerButton
-    ƒAƒCƒeƒ€‚ğì¬iƒgƒŠƒK[ƒ{ƒ^ƒ“)
+    Create TriggerButton
     
-    @param: libmOpt *opt
-    ‘ÎÛ‚Ìƒƒjƒ…[ƒIƒvƒVƒ‡ƒ“
+    @param: *opt
+    target option
     
-	@param: const char* Name
-    ƒgƒŠƒK[ƒ{ƒ^ƒ“–¼
+	@param: *Name
+    TriggerButton name
     
-    @return : ì¬‚³‚ê‚½ƒAƒCƒeƒ€
+    @return : created item
  */
-MenuItem* libmCreateTriggerButton(libmOpt *opt ,const char* Name);
+MenuItem* libmCreateTriggerButton(libmOpt *opt ,const char *Name);
 
 
 
 /*	#############################################################
-	#							•`‰æ							#
+	#							Draw							#
 	#############################################################
 */
 
@@ -682,144 +659,145 @@ MenuItem* libmCreateTriggerButton(libmOpt *opt ,const char* Name);
 
 
 /*  libmInitBuffers
-    Œ»İ‚ÌƒfƒBƒXƒvƒŒƒC‚Ìó‘Ô‚É‡‚í‚¹‚Ä•`‰æ€”õ‚ğ‚·‚é
+    To prepare the drawing.
     
-    @param: int opt
-	€”õ‚·‚éÛ‚Éİ’è‚·‚é•`‰æƒIƒvƒVƒ‡ƒ“
-	ˆÈ‰º‚©‚ç—LŒø‚É‚µ‚½‚¢•¨‚ğİ’è
+    @param: opt
+	option
 	
-	LIBM_DRAW_INIT8888		ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg8888‚Å‰Šú‰»
-	LIBM_DRAW_INIT4444		ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg4444‚Å‰Šú‰»
-	LIBM_DRAW_INIT5650		ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg5650‚Å‰Šú‰»
-	LIBM_DRAW_INIT5551		ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg5551‚Å‰Šú‰»
-	LIBM_DRAW_BLEND			”wŒi“§‰ß‚ğ—LŒø‚É‚·‚é
-	LIBM_DRAW_RETURN		•¶š‚ª•`‰æˆÊ’u‚ª‰æ–ÊŠO‚¾‚Á‚½ê‡‚ÍÜ‚è•Ô‚µ‚Ä•\¦‚³‚¹‚é
+	LIBM_DRAW_INIT8888		init pixelformat8888
+	LIBM_DRAW_INIT4444		init pixelformat4444
+	LIBM_DRAW_INIT5650		init pixelformat5650
+	LIBM_DRAW_INIT5551		init pixelformat5551
+	LIBM_DRAW_BLEND			enable alpha blending
+	LIBM_DRAW_RETURN		enable fold back
 	
-	LIBM_DRAW_INIT			ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg8888A•¶š‚Í©“®Ü‚è•Ô‚µ‚Å‰æ–Ê‚ğ‰Šú‰»‚·‚é
-							å‚É©ìƒAƒvƒŠ‚Ålibmenu‚Ì•¶š•`‰æŠÖ”‚ğ pspDebugScreenXXXX ‚Ì—l‚Ég‚¦‚é‚æ‚¤‚É‚·‚é
+	LIBM_DRAW_INIT			init pixelformat8888 & enable fold back
     
-    @param: int sync
-    “¯Šú‘ÎÛ
+    @param: sync
+    sync
     
-	PSP_DISPLAY_SETBUF_IMMEDIATE
-	PSP_DISPLAY_SETBUF_NEXTFRAME
-	‚Ì‚Ç‚¿‚ç‚©‚ğw’è
+	PSP_DISPLAY_SETBUF_IMMEDIATE or PSP_DISPLAY_SETBUF_NEXTFRAME
 	
-	¦opt ‚É LIBM_DRAW_INIT‚ğw’è‚µ‚½ê‡‚ÍAsync ‚É PSP_DISPLAY_SETBUF_NEXTFRAME ‚ğw’è
+	* If opt = LIBM_DRAW_INIT, sync = PSP_DISPLAY_SETBUF_NEXTFRAME.
     
-    @return: true = ¬Œ÷Afalse = ¸”s
+    @param: *dinfo
+    Pointer of libm_draw_info.
+    
+    @return: true = success, false = failed
  */
 bool libmInitBuffers( int opt ,int sync, libm_draw_info *dinfo );
 
 
 
 /*  libmSwapBuffers
-    libmRender ‚Å•`‰æ‚Ég‚¤ƒoƒbƒtƒ@[‚Ì•ÏX
+    Swap buffers.
     
-	ƒƒjƒ…[•\¦‚ÉƒXƒŒƒbƒh’â~‚·‚é‚æ‚¤‚Éİ’è‚µ‚½ê‡
-	‚±‚ê‚ğg‚¤‚Æƒ_ƒuƒ‹ƒoƒbƒtƒ@ƒŠƒ“ƒO‚Ì‚æ‚¤‚È‚±‚Æ‚ªo—ˆ‚é‚ª
-	À‘•‚Í“K“–‚È‚Ì‚Å•Ï‚È“®‚«‚ğ‚·‚é‚©‚à‚µ‚ê‚È‚¢
+    @param: *dinfo
+    Pointer of libm_draw_info.
 	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 void libmSwapBuffers(libm_draw_info *dinfo);
 
 /*  libmClearBuffers
-    libmRender ‚Å•`‰æ‚Ég‚¤ƒoƒbƒtƒ@[‚ğƒNƒŠƒAi•Fj
+    Clear buffers.
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+    @param: *dinfo
+    Pointer of libm_draw_info.
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 void libmClearBuffers(libm_draw_info *dinfo);
 
 
 /*  libmPrintXY
+	Draw string.
 	
-	libmenu‚Ì“à•”ƒtƒHƒ“ƒg‚ğg‚Á‚Ä •¶š—ñ ‚ğ•`‰æ‚·‚éiÀ•Ww’è‚ ‚èj
+	@param: x
+	Position X.
 	
-	@params : int x
-	•\¦ˆÊ’u X
+	@param: y
+	Position Y.
 	
-	@params : int y
-	•\¦ˆÊ’u Y
+	@param: fg
+	font color. 0 is no drawing.
 	
-	@params : unsigned int fg
-	ƒtƒHƒ“ƒgF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: bg
+	back color. 0 is no drawing.
 	
-	@params : unsigned int bg
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
-	
-	@params : const char *str
-    •`‰æ‘ÎÛ •¶š—ñ
+	@param: *str
+    string
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @param: *dinfo
+    Pointer of libm_draw_info.
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+    @return: Length of drawn string
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
 
 
 
 /*  libmPrintfXY
+	Draw string with format.
 	
-	libmenu‚Ì“à•”ƒtƒHƒ“ƒg‚ğg‚Á‚Ä ‘®•t‚«•¶š—ñ ‚ğ•`‰æ‚·‚éiÀ•Ww’è‚ ‚èj
+	@param: x
+	Position X.
 	
-	@params : int x
-	•\¦ˆÊ’u X
+	@param: y
+	Position Y.
 	
-	@params : int y
-	•\¦ˆÊ’u Y
+	@param: fg
+	font color. 0 is no drawing.
 	
-	@params : unsigned int fg
-	ƒtƒHƒ“ƒgF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: bg
+	back color. 0 is no drawing.
 	
-	@params : unsigned int bg
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: *buf
+	Buffer used in this function.
 	
-	@params : char *buf
-	‘®‚©‚ç•¶š—ñ‚ğ¶¬‚·‚éÛ‚Ég‚í‚ê‚éƒoƒbƒtƒ@[
+	@param: bufLen
+	Size of buf.
 	
-	@params : int bufLen
-	ƒoƒbƒtƒ@[ƒTƒCƒYichar *bufj
+	@param: *dinfo
+    Pointer of libm_draw_info.
 	
 	@params : format, ...
-    •`‰æ‘ÎÛ ‘®•t‚« •¶š—ñ
+    string with format.
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @return: Length of drawn string.
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 inline int libmPrintfXY( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen , libm_draw_info *dinfo, const char *format, ... );
 
 
 
 /*  libmPutCharXY
+	Draw a character.
 	
-	libmenu‚Ì“à•”ƒtƒHƒ“ƒg‚ğg‚Á‚Ä •¶š ‚ğ•`‰æ‚·‚éiÀ•Ww’è‚ ‚èj
+	@param: x
+	Position X.
 	
-	@params : int x
-	•\¦ˆÊ’u X
+	@param: y
+	Position Y.
 	
-	@params : int y
-	•\¦ˆÊ’u Y
+	@param: fg
+	font color. 0 is no drawing.
 	
-	@params : unsigned int fg
-	ƒtƒHƒ“ƒgF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: bg
+	back color. 0 is no drawing.
 	
-	@params : unsigned int bg
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
-	
-	@params : const char *str
-    •`‰æ‘ÎÛ •¶š
+	@param: chr
+    character
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @param: *dinfo
+    Pointer of libm_draw_info.
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+    @return: Length of drawn string.
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr, libm_draw_info *dinfo );
 
@@ -827,9 +805,12 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr, libm_dra
 
 
 /*  libmDebugScreenInit
+	Init screen. Like pspDebugScreenInit.
 	
-	‰æ–Ê‚É•`‰æ‚·‚é€”õ‚ğ‚·‚é
-	pspDebugScreenInit ‚Æ—‚½‚æ‚¤‚È“®ì
+	@param: *dinfo
+    Pointer of libm_draw_info.
+    
+    @return: true = successã€false = failed
  */
 #define	libmDebugScreenInit(dinfo)		libmInitBuffers(LIBM_DRAW_INIT,PSP_DISPLAY_SETBUF_NEXTFRAME, dinfo)
 
@@ -837,265 +818,276 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr, libm_dra
 
 
 /*  libmDebugScreenPrint
+	Draw string. Like pspDebugScreenPrintf.
 	
-	libmenu‚Ì“à•”ƒtƒHƒ“ƒg‚ğg‚Á‚Ä •¶š—ñ ‚ğ•`‰æ‚·‚éiÀ•Ww’è‚È‚µj
-	pspDebugScreenPrintf ‚Æ—‚½‚æ‚¤‚È“®ì
+	@param: fg
+	font color. 0 is no drawing.
 	
-	@params : unsigned int fg
-	ƒtƒHƒ“ƒgF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: bg
+	back color. 0 is no drawing.
 	
-	@params : unsigned int bg
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
-	
-	@params : const char *str
-    •`‰æ‘ÎÛ •¶š—ñ
+	@param: *str
+    string
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @param: *dinfo
+    Pointer of libm_draw_info.
     
-	¦–‘O‚É libmInitBuffers ‚Ü‚½‚Í libmDebugScreenInit ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+    @return: Length of drawn string.
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 #define	libmDebugScreenPrint(fg,bg,str, dinfo)							libmPrintXY(-1,-1,fg,bg,str, dinfo)
 
 
 
 /*  libmDebugScreenPrintf
+	Draw string with format. Like pspDebugScreenPrintf.
 	
-	libmenu‚Ì“à•”ƒtƒHƒ“ƒg‚ğg‚Á‚Ä ‘®•t‚«•¶š—ñ ‚ğ•`‰æ‚·‚éiÀ•Ww’è‚È‚µj
-	pspDebugScreenPrintf ‚Æ—‚½‚æ‚¤‚È“®ì
+	@param: fg
+	font color. 0 is no drawing.
 	
-	@params : unsigned int fg
-	ƒtƒHƒ“ƒgF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: bg
+	back color. 0 is no drawing.
 	
-	@params : unsigned int bg
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: *buf
+	Buffer used in this function.
 	
-	@params : char *buf
-	‘®‚©‚ç•¶š—ñ‚ğ¶¬‚·‚éÛ‚Ég‚í‚ê‚éƒoƒbƒtƒ@[
+	@param: bufLen
+	Size of buf.
 	
-	@params : int bufLen
-	ƒoƒbƒtƒ@[ƒTƒCƒYichar *bufj
+	@param: *dinfo
+    Pointer of libm_draw_info.
 	
 	@params : format, ...
-    •`‰æ‘ÎÛ ‘®•t‚« •¶š—ñ
+    string with format.
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @return: Length of drawn string.
     
-	¦–‘O‚É libmInitBuffers ‚Ü‚½‚Í libmDebugScreenInit ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 #define	libmDebugScreenPrintf(fg,bg,buf,bufLen, dinfo, format,...)		libmPrintfXY(-1,-1,fg,bg,buf,bufLen, dinfo, format, __VA_ARGS__)
 
 
 /*  libmDebugScreenPutChar
+	Draw a character. Like pspDebugScreenPrintf.
 	
-	libmenu‚Ì“à•”ƒtƒHƒ“ƒg‚ğg‚Á‚Ä •¶š ‚ğ•`‰æ‚·‚éiÀ•Ww’è‚È‚µj
-	pspDebugScreenPrintf ‚Æ—‚½‚æ‚¤‚È“®ì
+	@param: fg
+	font color. 0 is no drawing.
 	
-	@params : unsigned int fg
-	ƒtƒHƒ“ƒgF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: bg
+	back color. 0 is no drawing.
 	
-	@params : unsigned int bg
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
-	
-	@params : const char *str
-    •`‰æ‘ÎÛ •¶š
+	@param: chr
+    character
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @param: *dinfo
+    Pointer of libm_draw_info.
     
-	¦–‘O‚É libmInitBuffers ‚Ü‚½‚Í libmDebugScreenInit ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+    @return: Length of drawn string.
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
  */
 #define	libmDebugScreenPutChar(fg,bg,chr, dinfo)							libmPrintfXY(-1,-1,fg,bg,chr, dinfo)
 
 
 /*  libmDebugScreenSetXY
+	Set global XY position.
 	
-	À•Ww’è‚È‚µ‚Ì•¶š/•¶š—ñ•`‰æŠÖ”‚Å
-	•`‰æ‚ğŠJn‚·‚éˆÊ’u‚ğw’è‚·‚é
+	@param:x
+	Psition X. (0 - 59)
 	
-	@params : int x
-	•`‰æŠJnˆÊ’uX@(0 - 59)
-	1•¶š 8x8 ƒhƒbƒg‚È‚Ì‚Å1sÅ‘å60•¶š‚Ü‚Å
-	
-	@params : int y
-	•`‰æŠJnˆÊ’uY@(0 - 33)
-	1•¶š 8x8 ƒhƒbƒg‚È‚Ì‚Å1—ñÅ‘å34•¶š‚Ü‚Å
+	@param: y
+	Position Y. (0 - 33)
     
-    @return: true = ¬Œ÷Afalse = ¸”siX/Y‚Ç‚¿‚ç‚©‚Ì’l‚ªˆÙíj
+    @param: *dinfo
+    Pointer of libm_draw_info.
+    
+    @return: true = success, false = failed
  */
 bool libmDebugScreenSetXY( int x ,int y, libm_draw_info *dinfo );
 
 
 /*	libmLine
-	‰æ–Ê‚Éü‚ğ•`‰æ‚·‚é
+    Draw line.
 	
-	@params : int sx
-	•`‰æŠJnˆÊ’uX
+	@param: sx
+	Start position X.
 	
 	@params : int sy
-	•`‰æŠJnˆÊ’uY
+	Start position Y.
 	
 	@params : int ex
-	•`‰æI—¹ˆÊ’uX
+	End position X.
 	
 	@params : int ey
-	•`‰æI—¹ˆÊ’uY
+	End position Y.
     
 	@params : u32 color
-	•`‰æF(32bit)
+	color
 	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	@param: *dinfo
+    Pointer of libm_draw_info.
+	
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void libmLine( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo );
 
 
 /*	libmPoint
-	‰æ–Ê‚É“_‚ğ•`‰æ‚·‚é
-	¦w’è‚µ‚½32bitF‚ğŒ»İ‚Ì‰æ–Êİ’è‚É‡‚í‚¹‚Ä©“®•ÏŠ·‚µ‚Ä
+    Draw point.
 	
-	@params : void *adr
-	•`‰æ‚·‚éVRAMƒAƒhƒŒƒX
-	(libmMakeDrawAddr‚ÅÀ•W‚ğƒAƒhƒŒƒX‚Ö•ÏŠ·)
+	@param: *adr
+	Draw address. (use libmMakeDrawAddr)
 	
-	@params : u32 color
-	•`‰æF(32bit)
+	@param: src
+	color
     
-    g—p—á
+    @param: *dinfo
+    Pointer of libm_draw_info.
+    
+    ex.)
     
     if( libmInitBuffers(false,PSP_DISPLAY_SETBUF_NEXTFRAME) )
     {
- 		//X=50,Y=100‚ÌˆÊ’u‚ÉÔ‚¢“_‚ğ•`‰æ‚·‚é
- 		void *adr = libmMakeDrawAddr(50,100);
+ 		// X=50, Y=100
+ 		void *adr = libmMakeDrawAddr(50,100, &dinfo);
  		u32 color = libmMake32bitColor(255,0,0,255);
-    	libmPoint(adr,color);
+    	libmPoint(adr,color, &dinfo);
     }
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void libmPoint( void *adr, u32 src, libm_draw_info *dinfo );
 
 
 /*	libmPointEx
-	‰æ–Ê‚É“_‚ğ•`‰æ‚·‚é
-	¦‰æ–Êİ’è‚É‡‚í‚¹‚Ä•ÏŠ·Ï‚İ‚ÌF‚ğw’è
+	Draw point.
 	
-	@params : void *adr
-	•`‰æ‚·‚éVRAMƒAƒhƒŒƒX
-	(libmMakeDrawAddr‚ÅÀ•W‚ğƒAƒhƒŒƒX‚Ö•ÏŠ·)
+	@param: *adr
+	Draw address. (use libmMakeDrawAddr)
 	
-	@params : u32 color
-	‰æ–Êİ’è‚É‡‚í‚¹‚Ä•ÏŠ·Ï‚İ‚Ì•`‰æF
-	
+	@param: src
+	color
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+    @param: *dinfo
+    Pointer of libm_draw_info.
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void libmPointEx( void *adr, u32 src, libm_draw_info *dinfo );
 
 /*	libmFillRect
-	w’è”ÍˆÍ‚ğw’èF‚Å“h‚è‚Â‚Ô‚·
+	Fill the range.
 	
-	@params : int sx
-	ŠJnˆÊ’uX (0-480)
+	@param: sx
+	Start position X. (0 - 480)
 	
-	@params : int sy
-	ŠJnˆÊ’uY (0-272)
+	@param: sy
+	Start position Y. (0 - 272)
 	
-	@params : int ex
-	I—¹ˆÊ’uX (0-480)
+	@param: ex
+	End position X. (0 - 480)
 	
-	@params : int ey
-	I—¹ˆÊ’uY (0-272)
-	
-	@params : u32 color
-	•`‰æF(32bit)
-	
+	@param: ey
+	End position Y. (0 - 272)
     
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	@param: color
+	color
+	
+	@param: *dinfo
+    Pointer of libm_draw_info.
+	
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void libmFillRect( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo );
 
 
 
 /*	libmCircle
-	‰æ–Ê‚É‰~‚ğ•`‰æ‚·‚é
+    Draw circle.
 	
-	@params : int x
-	ŠJnˆÊ’uX (0-480)
+	@param: x
+	Position X.
 	
-	@params : int y
-	ŠJnˆÊ’uY (0-272)
+	@param: y
+	Position Y.
 	
-	@params : u32 radius
-	‰~‚Ì”¼Œa
+	@param: radius
+	radius
 	
-	@params : u32 color
-	•`‰æF(32bit)
+	@param: color
+	color
 	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	@param: *dinfo
+    Pointer of libm_draw_info.
+	
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void libmCircle( int x, int y, u32 radius, u32 color, libm_draw_info *dinfo );
 
 
 
 /*	libmFrame
-	‰æ–Ê‚É˜g‚ğ•`‰æ‚·‚é
+    Draw frame.
+
+	@param: sx
+	Start position X. (0 - 480)
 	
-	@params : int sx
-	ŠJnˆÊ’uX (0-480)
+	@param: sy
+	Start position Y. (0 - 272)
 	
-	@params : int sy
-	ŠJnˆÊ’uY (0-272)
+	@param: ex
+	End position X. (0 - 480)
 	
-	@params : int ex
-	I—¹ˆÊ’uX (0-480)
+	@param: ey
+	End position Y. (0 - 272)
+    
+	@param: color
+	color
 	
-	@params : int ey
-	I—¹ˆÊ’uY (0-272)
+	@param: *dinfo
+    Pointer of libm_draw_info.
 	
-	@params : u32 color
-	•`‰æF(32bit)
-	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void libmFrame( int sx, int sy, int ex, int ey, u32 color, libm_draw_info *dinfo );
 
 
 /*	libmMakeDrawAddr
-	À•W‚ğŒ»İ‚Ì‰æ–Êİ’è‚É‡‚í‚¹‚ÄVRAMƒAƒhƒŒƒX‚É•ÏŠ·‚·‚é
+	Convert position -> vram address.
 	
-	@params : int x
-	•`‰æˆÊ’uX (0-480)
+	@param: x
+	Position X. (0 - 480)
 	
-	@params : int y
-	•`‰æˆÊ’uY (0-272)
+	@param: y
+	Position Y. (0 - 272)
 	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	@param: *dinfo
+    Pointer of libm_draw_info.
+	
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline void* libmMakeDrawAddr( int x, int y, libm_draw_info *dinfo );
 
 /*	libmConvert8888_XXXX
-	32bitF(R:8 G:8 B:8 A:8)‚ğŠeƒtƒH[ƒ}ƒbƒg‚ÌF‚Ö•ÏŠ·‚·‚é
+	Convert color. (8888 -> XXXX)
 	
-	@params : u32 src
-	•ÏŠ·Œ³‚ÌF
+	@param: src
+	color
 	
-    @return: w’èƒtƒH[ƒ}ƒbƒg‚Ö•ÏŠ·‚³‚ê‚½F
+    @return: Converted color.
 */
 inline u32 libmConvert8888_5650( u32 src );
 inline u32 libmConvert8888_5551( u32 src );
 inline u32 libmConvert8888_4444( u32 src );
 
 /*	libmConvertXXXX_8888
-	ŠeƒtƒH[ƒ}ƒbƒg‚ÌF‚ğ32bitF(R:8 G:8 B:8 A:8)‚Ö•ÏŠ·‚·‚é
+	Convert color. (XXXX -> 8888)
 	
-	@params : u32 src
-	•ÏŠ·Œ³‚ÌF
+	@param: src
+	color
 	
-    @return: •ÏŠ·‚³‚ê‚½32bitF(8888ƒtƒH[ƒ}ƒbƒg)
+    @return: Converted color.
 */
 inline u32 libmConvert4444_8888(u32 src);
 inline u32 libmConvert5551_8888(u32 src);
@@ -1105,20 +1097,18 @@ inline u32 libmConvert5650_8888(u32 src);
 
 
 /*	libmAlphaBlendXXXX
-	ŠeƒtƒH[ƒ}ƒbƒg‚ÌF(srcAdst)‚Éƒ¿ƒuƒŒƒ“ƒh‚·‚é
+	Alpha blending.
 	
-	@params : u8 alpha
-	ƒuƒŒƒ“ƒh‚·‚éƒAƒ‹ƒtƒ@’l (0-255)
+	@param: alpha
+	alpha (0-255)
 	
-	@params : u32 src
-	ƒuƒŒƒ“ƒh‚·‚éFiŒ³j
-	¦ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚É‡‚í‚¹‚Ä•ÏŠ·Ï‚İ‚ÌF
+	@param: src
+	color (source)
 	
-	@params : u32 dst
-	ƒuƒŒƒ“ƒh‚·‚éFiæj
-	¦ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg‚É‡‚í‚¹‚Ä•ÏŠ·Ï‚İ‚ÌF
+	@param: dst
+	coor (destination)
 	
-    @return: ƒ¿ƒuƒŒƒ“ƒh‚³‚ê‚½F
+    @return: blended color.
 */
 inline u32 libmAlphaBlend8888( u8 alpha, u32 src, u32 dst );
 inline u32 libmAlphaBlend4444( u8 alpha, u32 src, u32 dst );
@@ -1128,73 +1118,55 @@ inline u32 libmAlphaBlend5650( u8 alpha, u32 src, u32 dst );
 
 
 /*	libmMake32bitColor
-	RGBA‚©‚ç32bit(8888ƒtƒH[ƒ}ƒbƒg)‚ÌF‚ğ¶¬‚·‚é
+	Make 32bit color.
 	
-	@params : u8 R
+	@param: R
 	Color Red (0-255)
 	
-	@params : u8 G
+	@param: G
 	Color Green (0-255)
 	
-	@params : u8 B
+	@param: B
 	Color Blue (0-255)
 	
-	@params : u8 A
+	@param: A
 	Alpha (0-255)
 	
-	@return : 8888ƒtƒH[ƒ}ƒbƒg‚Ì32bitF
+	@return : 32bit color
 */
 #define	libmMake32bitColor(R,G,B,A)	 ((R & 255) | ((G & 255) << 8) | ((B & 255) << 16) | ((A & 255) << 24))
 
 
 /*	libmGetColor
-	w’è‚µ‚½À•WXY‚©‚ç•`‰æF‚ğæ“¾
+	Get color from address.
 	
-	@params : int x
-	À•WX(0-480)
+	@param: addr
+	address
 	
-	@params : int y
-	À•WX(0-272)
+	@return : color
 	
-	@return : w’è‚µ‚½À•W‚©‚ç“¾‚½F
-	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline u32 libmGetColor(void *addr, libm_draw_info *dinfo);
 
 
-/*	libmGetCurVInfo
-	libmenu Še•`‰æŠÖ”‚Åg‚í‚ê‚Ä‚¢‚éŒ»İ‚ÌŠeİ’è‚ğæ“¾
-	¦æ“¾o—ˆ‚éî•ñ‚É‚Â‚¢‚Ä‚Í libm_vram_info ‚Ì’è‹`•”•ª‚ğQÆ
-	
-	@params : libm_vram_info *info
-	æ“¾æ‚Ì•Ï”
-	
-	@return : true = ¬Œ÷Afalse = ¸”s
-	
-	¦–‘O‚É libmInitBuffers ‚ğÀs‚µ‚Ä‚È‚¢‚Æ³í“®ì‚µ‚È‚¢
-*/
-//bool libmGetCurVInfo(libm_vram_info *info);
-
-
 /*	libmSetCurVInfo
-	libmenu Še•`‰æŠÖ”‚Åg‚í‚ê‚Ä‚¢‚éŒ»İ‚Ìİ’è‚ğ•ÏX‚·‚é
+    Set vram info.
 	
-	@params : format
-	ƒsƒNƒZƒ‹ƒtƒH[ƒ}ƒbƒg
+	@param: format
+	pixel format
 	
-	@params : buf
-	•`‰ææ‚ÌŠî€VRAMƒAƒhƒŒƒX
+	@param: buf
+	vram address.
 	
 	@params : width
-	•`‰æ•
+	width
 */
 void libmSetCurVInfo(int format, void *buf, int width, libm_draw_info *dinfo);
 
 
 
 /*	#############################################################
-
 	#							Extension						#
 	#############################################################
 
@@ -1202,107 +1174,116 @@ void libmSetCurVInfo(int format, void *buf, int width, libm_draw_info *dinfo);
 
 /*
     libmLoadFont
-    ƒtƒHƒ“ƒg‚ğƒ[ƒh‚µ‚Ü‚·B•¶š‚ğ•`‰æ‚·‚é‘O‚ÉA‚±‚ÌŠÖ”‚Å•K—v‚ÈƒtƒHƒ“ƒg‚ğƒ[ƒh‚µ‚Ä‚­‚¾‚³‚¢B
+    load font.
     
-    @params : flag
-    ƒ[ƒh‚·‚éƒtƒHƒ“ƒgB
-    ˆÈ‰º‚©‚çƒ[ƒh‚µ‚½‚¢‚à‚Ì‚ğİ’èB
+    @param: flag
+    which font
     
-    FONT_CG             "/seplugins/lib/font/cg.bin"‚ğƒ[ƒh‚µ‚Ü‚·
-    FONT_HANKAKU_KANA   "/seplugins/lib/font/hankaku_kana.bin"‚ğƒ[ƒh‚µ‚Ü‚·
-    FONT_SJIS           "/seplugins/lib/font/sjis.bin"‚ğƒ[ƒh‚µ‚Ü‚·
+    LIBM_FONT_CG             "/seplugins/lib/font/cg.bin" (ascii)
+    LIBM_FONT_HANKAKU_KANA   "/seplugins/lib/font/hankaku_kana.bin" (japanese hankaku kana)
+    LIBM_FONT_SJIS           "/seplugins/lib/font/sjis.bin" (japanese)
+    LIBM_FONT_ICON           "/seplugins/lib/font/icon.bin" (2bit color icon)
     
-    @return : 0 = ¬Œ÷A -1 = ¸”s
+    @return : 0 = success, -1 = failed
 */
 int libmLoadFont(int flag);
 
 
 /*
     libmLen
-    ˆø”‚É“n‚³‚ê‚½•¶š—ñ‚Ì•¶š”‚ğ•Ô‚µ‚Ü‚·B
+    Get length of string.
     
     @param : str
-    •¶š—ñ
+    string
     
-    @return : •¶š”
+    @return : Length of string
 */
 int libmLen(const char *str);
 
 
 /*
     libmPrintXY16
-    ƒtƒHƒ“ƒg‚ğ16x16‚ÉŠg‘å‚µ‚Ä•\¦‚·‚éB‚»‚êˆÈŠO‚Í"libmPrintXY"‚Æ“¯—lB
+    Draw string. (zoom 16x16)
 */
 inline int libmPrintXY16( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo );
 
 
 /*
     libmPrintfXY16
-    ƒtƒHƒ“ƒg‚ğ16x16‚ÉŠg‘å‚µ‚Ä•\¦‚·‚éB‚»‚êˆÈŠO‚Í"libmPrintfXY"‚Æ“¯—lB
+    Draw string with format. (zoom 16x16)
 */
 inline int libmPrintfXY16( int x, int y, u32 fg, u32 bg, char *buf ,int bufLen , libm_draw_info *dinfo, const char *format, ... );
 
 
 /*	libmGetIdxItem
-    æ“ª‚©‚çŒŸõ‚µ‚Äw’è””Ô–Ú‚É‚ ‚éƒAƒCƒeƒ€‚ğ’²‚×‚é
+    Get item.
     
-    @param: MenuItem *Item
-    ŒŸõ‚ÌŠî€‚Æ‚·‚éƒAƒCƒeƒ€
+    @param: *Item
+    base item
     
-    @param: bool Invalid_Skip
-    –³Œø‚ÈƒAƒCƒeƒ€ (ƒXƒy[ƒT[A”ñ•\¦A–³Œøj‚ğœŠO‚µ‚ÄŒŸõ‚·‚é‚Ç‚¤‚©
+    @param: Invalid_Skip
+    Whether to enable Invalid_Skip.
     
-    @param: int Point_Idx
-    w’è””Ô–Ú‚Ì‚à‚Ì 
+    @param: Point_Idx
+    number
     
-    @return : —LŒø‚ÈƒAƒCƒeƒ€A‚È‚¯‚ê‚Î NULL
+    @return : Valid item or NULL.
  */
 MenuItem* libmGetIdxItem( MenuItem *Item , bool Invalid_Skip , int Point_Idx );
 
 
 /*
     libmPrintSymbolXY
-    font_icon“à‚ÌƒtƒHƒ“ƒg‚ğg‚Á‚Ä•`‰æ‚·‚éB
+    Draw icon.
     
-    @params : int x
-	•\¦ˆÊ’u X
-
+    @param: x
+	Position X.
 	
-	@params : int y
-	•\¦ˆÊ’u Y
+	@param: y
+	Position Y.
 	
-	@params : u32 color1
-	ƒtƒHƒ“ƒgF1(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: color1
+	color1
 	
-	@params : u32 color2
-	ƒtƒHƒ“ƒgF2(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: color2
+	color2
 	
-	@params : u32 color3
-	ƒtƒHƒ“ƒgF3(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: color3
+	color3
 	
-	@params : u32 color0
-	”wŒiF(32bit)
-	0 ‚¾‚Æ•`‰æ‚µ‚È‚¢
+	@param: color0
+	color0
 	
-	@params : const char *str
-    •`‰æ‘ÎÛ •¶š—ñ
+	@param: *str
+    string
     
-    @return: •`‰æ‚µ‚½•¶š”
+    @return: Length of drawn string
+    
+	* Before calling this function, you must beforehand call the libmInitBuffers.
 */
 inline int libmPrintSymbolXY( int x, int y, u32 color1, u32 color2, u32 color3, u32 color0, const char *str, libm_draw_info *dinfo );
 
 
 /*
     libmPrintSymbolXY16
-    ƒtƒHƒ“ƒg‚ğ16x16‚ÉŠg‘å‚µ‚Ä•\¦‚·‚éB‚»‚êˆÈŠO‚Í"libmPrintSymbolXY"‚Æ“¯—lB
+    Draw icon. (zoom 16x16)
 */
 inline int libmPrintSymbolXY16( int x, int y, u32 color1, u32 color2, u32 color3, u32 color0, const char *str, libm_draw_info *dinfo );
+
+/*
+    libmCloseAllContainer
+    Close all container.
+    
+    @param: *Context
+    target Context
+    
+    @return : 0 on success, -1 on already closed.
+*/
+int libmCloseAllContainer(MenuContext *Context);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
+
