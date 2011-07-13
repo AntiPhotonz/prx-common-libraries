@@ -407,7 +407,7 @@ bool libmSetOpt(MenuContext *Context , libmOpt *opt );
     
     @return: created MenuContext
     
-    * The following values ​​are set automatically
+    * The following values are set automatically
     
 	context->HotKey.Show			= PSP_CTRL_NOTE ;
 	context->HotKey.Back			= PSP_CTRL_CIRCLE;
@@ -541,7 +541,7 @@ MenuItem* libmCreateContainer(libmOpt *opt ,const char *Name);
     
     @param: *Group
     RadioButtonGroup which associate with. (created by libmCreateRadioButtonGroup)
-  　
+    
 	@return : created item
  */
 MenuItem* libmCreateRadioButton(libmOpt *opt, const char *Name, bool State, MenuItem *Group);
@@ -810,7 +810,7 @@ inline int libmPutCharXY( int x, int y, u32 fg, u32 bg, const char chr, libm_dra
 	@param: *dinfo
     Pointer of libm_draw_info.
     
-    @return: true = success、false = failed
+    @return: true = success, false = failed
  */
 #define	libmDebugScreenInit(dinfo)		libmInitBuffers(LIBM_DRAW_INIT,PSP_DISPLAY_SETBUF_NEXTFRAME, dinfo)
 
