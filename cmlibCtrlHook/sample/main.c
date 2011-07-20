@@ -4,7 +4,7 @@
 #include <pspkernel.h>
 #include <pspctrl.h>
 #include <pspdisplay_kernel.h>
-#include "ctrlhook.h"
+#include "cmlibctrlhook.h"
 
 // info
 PSP_MODULE_INFO("test_ctrl", 0x1000, 0, 1);
