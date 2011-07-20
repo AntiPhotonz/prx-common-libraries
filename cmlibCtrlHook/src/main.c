@@ -1,10 +1,10 @@
-// ctrl_control_ver0.2		by plum
+// cmlib_ctrl_control_ver0.2		by plum
 
 // header
 #include <pspkernel.h>
 #include <pspctrl.h>
 #include <string.h>
-#include "ctrlhook.h"
+#include "cmlibctrlhook.h"
 
 // define
 #define NOP 0x00000000
