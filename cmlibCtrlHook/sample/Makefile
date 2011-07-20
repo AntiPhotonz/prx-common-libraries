@@ -13,7 +13,7 @@ CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
 LIBDIR = 
-LIBS = -lpspkernel -lc -lpspuser ctrlhook.a
+LIBS = -lpspkernel -lc -lpspuser cmlibctrlhook.a
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 include $(PSPSDK)/lib/build_prx.mak

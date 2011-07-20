@@ -1,5 +1,5 @@
-#ifndef __CTRLHOOK_H__
-#define __CTRLHOOK_H__
+#ifndef __CMLIBCTRLHOOK_H__
+#define __CMLIBCTRLHOOK_H__
 
 // header
 #include <pspkernel.h>
