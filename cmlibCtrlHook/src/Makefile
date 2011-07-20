@@ -1,4 +1,4 @@
-TARGET_LIB = ctrlhook.a
+TARGET_LIB = cmlibctrlhook.a
 OBJS = main.o
 
 INCDIR = 
