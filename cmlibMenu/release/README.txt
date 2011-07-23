@@ -32,7 +32,7 @@ project: http://code.google.com/p/prx-common-libraries/
 
 3.Add in your Makefile,
 
- OBJS += cmlibMenu.S
+ LIBS += -lcmlibMenu
 
 4.Copy "lib" to /seplugins.
 
