@@ -7,6 +7,9 @@ extern const char *font_icon;
 static int loaded_cg = 0, loaded_hankaku_kana = 0, loaded_sjis = 0, loaded_icon = 0;
 
 int libmLoadFont(int flag){
+    volatile u32 ra;
+    asm volatile("move %0, $ra\n" : "=r"(ra));
+    
     SceUID fd;
     SceSize size, readsize;
     char *font_buf;
@@ -88,7 +91,7 @@ int libmLoadFont(int flag){
     }
     
     // malloc
-    font_buf = psp_malloc(1, size);
+    font_buf = psp_malloc((ra & 0x80000000) ? 1 : 2, size);
     if(font_buf == NULL){
         sceIoClose(fd);
         return -1;
