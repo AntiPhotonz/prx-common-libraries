@@ -9,4 +9,4 @@ all:
 clean:
 	make -C libs clean
 	make -C fonts clean
-	make  -f Makefile.PSP clean
+	make -f Makefile.PSP clean

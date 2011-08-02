@@ -1,2 +1,6 @@
+*1.1 (2011
+[+] Added font.
+[!] Fixed libmLoadFont.
+
 *1.0 (2011.07.13)
 [] First release!
