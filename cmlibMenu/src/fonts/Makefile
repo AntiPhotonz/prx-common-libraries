@@ -3,5 +3,5 @@ all:
 	./mkfont
 
 clean:
-	rm *.bin
-	rm mkfont
+	rm -f *.bin
+	rm -f mkfont
