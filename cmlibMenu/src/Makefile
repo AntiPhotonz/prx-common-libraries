@@ -5,6 +5,7 @@ all:
 	cp fonts/*.bin ../release/lib/font
 	make -f Makefile.PSP
 	cp cmlibmenu.prx ../release/lib
+	cp cmlibmenu.h ../release
 
 clean:
 	make -C libs clean

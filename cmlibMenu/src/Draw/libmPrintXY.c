@@ -13,7 +13,7 @@
 
 const char *font_cg = NULL, *font_hankaku_kana = NULL, *font_sjis = NULL;
 
-const char no_font[] = {0xFF, 0xC3, 0xA5, 0x99, 0x99, 0xA5, 0xC3, 0xFF};
+const char no_font[] = {0x7F, 0x63, 0x55, 0x49, 0x49, 0x55, 0x63, 0x7F};
 
 inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo )
 {

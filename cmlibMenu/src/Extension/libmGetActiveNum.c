@@ -1,18 +1,5 @@
-/*	libmGetActiveNum
-	現在のアイテムが指定したアイテムから何番目にあるか調べます
-	
-	@param: *Context
-	target MenuContext
-	
-	@param: *Item
-	target MenuItem(NULLで先頭(コンテナ内の場合はそのコンテナ内の先頭)が対象になる)
-	
-	@param: Invalid_Skip
-	Whether to enable Invalid_Skip.
-	
-	@return : 0 = Active is target MenuItem, -1 = failed
+#include "common.h"
 
- */
 int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip )
 {
 	MenuItem *now = libmGetActive(Context);
@@ -33,3 +20,4 @@ int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip )
 	}
 	return -1;
 }
+
