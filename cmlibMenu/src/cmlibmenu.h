@@ -1270,6 +1270,7 @@ inline int libmPrintSymbolXY( int x, int y, u32 color1, u32 color2, u32 color3, 
 */
 inline int libmPrintSymbolXY16( int x, int y, u32 color1, u32 color2, u32 color3, u32 color0, const char *str, libm_draw_info *dinfo );
 
+
 /*
     libmCloseAllContainer
     Close all container.
@@ -1280,6 +1281,23 @@ inline int libmPrintSymbolXY16( int x, int y, u32 color1, u32 color2, u32 color3
     @return : 0 on success, -1 on already closed.
 */
 int libmCloseAllContainer(MenuContext *Context);
+
+
+/*	libmGetActiveNum
+	check the current item is Nth of the specified item.
+	
+	@param: *Context
+	target MenuContext
+	
+	@param: *Item
+	target MenuItem (if NULL, the target becomes the top)
+	
+	@param: Invalid_Skip
+	Whether to enable Invalid_Skip.
+	
+	@return : 0 = Active is target MenuItem, -1 = failed
+ */
+int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip );
 
 #ifdef __cplusplus
 }
