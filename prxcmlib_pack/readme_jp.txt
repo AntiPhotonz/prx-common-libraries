@@ -9,5 +9,5 @@
 ・cmlibAudio　ver 1.0
 ・cmlibCtrl  ver 1.2
 ・cmLibLog   ver 0.4
-・cmlibMenu  ver 1.1
+・cmlibMenu  ver 1.2
 ・cmlibPower ver 1.0
