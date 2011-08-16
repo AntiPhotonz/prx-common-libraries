@@ -1,3 +1,7 @@
+*1.3 (2011.08.16)
+[+] Added font.
+[!] Changed, load font into user memory.
+
 *1.2 (2011.08.05)
 [+] Added libmGetActiveNum.
 [+] Added font.
