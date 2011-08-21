@@ -5,9 +5,9 @@
 基本的には「lib」フォルダをそのままseplugins内に配置すればOKです。
 
 
-*モジュール情報(2011/08/16現在)
+*モジュール情報(2011/08/21現在)
 ・cmlibAudio　ver 1.0
 ・cmlibCtrl  ver 1.2
 ・cmLibLog   ver 0.4
-・cmlibMenu  ver 1.3
+・cmlibMenu  ver 1.4
 ・cmlibPower ver 1.0
