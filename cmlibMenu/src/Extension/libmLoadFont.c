@@ -43,7 +43,7 @@ int libmLoadFont(int flag){
     }
     
     // malloc
-    font_buf = psp_malloc(2, size);
+    font_buf = psp_malloc(1, size);
     if(font_buf == NULL){
         sceIoClose(fd);
         pspSdkSetK1(k1);
