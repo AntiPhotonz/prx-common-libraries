@@ -1,7 +1,7 @@
 TARGET = cmlibmenu
 
 MAJOR_VERSION = 1
-MINOR_VERSION = 4
+MINOR_VERSION = 5
 
 OBJS = main.o syslibc.o memory.o
 
