@@ -1,3 +1,6 @@
+*1.5 (2011.08.25)
+[+] Added font.
+
 *1.4 (2011.08.21)
 [!] Fix the method to allocate memory for font
 
