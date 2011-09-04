@@ -1299,6 +1299,65 @@ int libmCloseAllContainer(MenuContext *Context);
  */
 int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip );
 
+
+/*	libmInitBuffers_ForHook
+	libmHookDisplayHanderで登録する関数内のみで使うlibmInitBuffersです。
+	
+    @param: opt
+	option
+	
+	LIBM_DRAW_INIT8888		init pixelformat8888(cannot use)
+	LIBM_DRAW_INIT4444		init pixelformat4444(cannot use)
+	LIBM_DRAW_INIT5650		init pixelformat5650(cannot use)
+	LIBM_DRAW_INIT5551		init pixelformat5551(cannot use)
+	LIBM_DRAW_BLEND			enable alpha blending
+	LIBM_DRAW_RETURN		enable fold back
+	
+	LIBM_DRAW_INIT			init pixelformat8888 & enable fold back(cannot use)
+    
+    @param: topaddr, bufferwidth, pixelformat, sync
+    sceDisplaySetFrameBuf_Patchedの引数
+
+    @param: *dinfo
+    Pointer of libm_draw_info.
+    
+    @return: true = success, false = failed
+ */
+bool libmInitBuffers_ForHook( int opt, void *topaddr, int bufferwidth, int pixelformat, int sync, libm_draw_info *dinfo );
+
+
+/*	libmHookDisplayHander
+	フックしたsceDisplaySetFrameBufに処理を割りこませます。
+	
+	@param: (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync)
+	target Function
+
+	@return : previous
+
+	@example
+
+	int (*previous)(void *topaddr, int bufferwidth, int pixelformat, int sync);
+
+	int sceDisplaySetFrameBuf_Patched(void *topaddr, int bufferwidth, int pixelformat, int sync)
+	{
+		libmInitBuffers_ForHook( 0, topaddr, bufferwidth, pixelformat, sync, &dinfo )
+		{
+			Drow(&dinfo);
+		}
+		return previous ? previous(topaddr, bufferwidth, pixelformat, sync) : 0;
+	}
+
+	int module_start(SceSize args, void *argp)
+	{
+		previous = libmHookDisplayHander(sceDisplaySetFrameBuf_Patched);
+
+		return 0;
+	}
+
+ */
+void* libmHookDisplayHander(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync));
+
+
 #ifdef __cplusplus
 }
 #endif

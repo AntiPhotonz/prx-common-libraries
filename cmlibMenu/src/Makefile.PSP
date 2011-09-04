@@ -63,6 +63,8 @@ OBJS	+=	./Extension/libmPrintSymbolXY.o
 OBJS	+=	./Extension/libmPrintSymbolXY16.o
 OBJS	+=	./Extension/libmCloseAllContainer.o
 OBJS	+=	./Extension/libmGetActiveNum.o
+OBJS	+=	./Extension/libmHookDisplayHander.o
+OBJS	+=	./Extension/libmInitBuffers_ForHook.o
 
 BUILD_PRX = 1
 PRX_EXPORTS = exports.exp
@@ -77,7 +79,7 @@ ASFLAGS 	= $(CFLAGS)
 
 LIBDIR		= 
 LDFLAGS		= -mno-crt0 -nostartfiles
-LIBS		=
+LIBS		= -lpspsystemctrl_kernel
 
 
 PSPSDK=$(shell psp-config --pspsdk-path)
