@@ -65,6 +65,9 @@ PSP_EXPORT_FUNC_HASH(libmPrintSymbolXY)
 PSP_EXPORT_FUNC_HASH(libmPrintSymbolXY16)
 PSP_EXPORT_FUNC_HASH(libmCloseAllContainer)
 PSP_EXPORT_FUNC_HASH(libmGetActiveNum)
+PSP_EXPORT_FUNC_HASH(libmHookDisplayHander)
+PSP_EXPORT_FUNC_HASH(libmInitBuffers_ForHook)
+
 PSP_EXPORT_END
 
 PSP_END_EXPORTS
