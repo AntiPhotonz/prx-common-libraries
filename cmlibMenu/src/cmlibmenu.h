@@ -1301,7 +1301,7 @@ int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip );
 
 
 /*	libmInitBuffers_ForHook
-	This function is like libmInitBuffers. However only use in the function which was registered by libmHookDisplayHandler.
+	This function is like libmInitBuffers. But, only use in the function which was registered by libmHookDisplayHandler.
 	
     @param: opt
 	option
