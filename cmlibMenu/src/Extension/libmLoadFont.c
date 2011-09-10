@@ -43,7 +43,8 @@ int libmLoadFont(int flag){
     }
     
     // malloc
-    font_buf = psp_malloc(1, size);
+    mem_set_alloc_mode(MEM_AUTO);
+    font_buf = mem_alloc(size);
     if(font_buf == NULL){
         sceIoClose(fd);
         pspSdkSetK1(k1);
@@ -55,7 +56,7 @@ int libmLoadFont(int flag){
     readsize = sceIoRead(fd, font_buf, size);
     sceIoClose(fd);
     if(readsize != size){
-        psp_free(font_buf);
+        mem_free(font_buf);
         pspSdkSetK1(k1);
         return -4;
     }

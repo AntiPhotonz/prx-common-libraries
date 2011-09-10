@@ -79,7 +79,7 @@ ASFLAGS 	= $(CFLAGS)
 
 LIBDIR		= 
 LDFLAGS		= -mno-crt0 -nostartfiles
-LIBS		= -lpspsystemctrl_kernel
+LIBS		= -lpspsystemctrl_kernel -lpspkubridge
 
 
 PSPSDK=$(shell psp-config --pspsdk-path)
