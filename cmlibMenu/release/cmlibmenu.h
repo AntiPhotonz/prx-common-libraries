@@ -1301,7 +1301,7 @@ int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip );
 
 
 /*	libmInitBuffers_ForHook
-	libmHookDisplayHanderで登録する関数内のみで使うlibmInitBuffersです。
+	This function is like libmInitBuffers. However only use in the function which was registered by libmHookDisplayHandler.
 	
     @param: opt
 	option
@@ -1316,7 +1316,7 @@ int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip );
 	LIBM_DRAW_INIT			init pixelformat8888 & enable fold back(cannot use)
     
     @param: topaddr, bufferwidth, pixelformat, sync
-    sceDisplaySetFrameBuf_Patchedの引数
+    arguments of sceDisplaySetFrameBuf_Patched
 
     @param: *dinfo
     Pointer of libm_draw_info.
@@ -1326,8 +1326,8 @@ int libmGetActiveNum(MenuContext *Context, MenuItem *Item , bool Invalid_Skip );
 bool libmInitBuffers_ForHook( int opt, void *topaddr, int bufferwidth, int pixelformat, int sync, libm_draw_info *dinfo );
 
 
-/*	libmHookDisplayHander
-	フックしたsceDisplaySetFrameBufに処理を割りこませます。
+/*	libmHookDisplayHandler
+	Hook the sceDisplaySetFrameBuf, and the func interrupt to it.
 	
 	@param: (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync)
 	target Function
@@ -1349,13 +1349,13 @@ bool libmInitBuffers_ForHook( int opt, void *topaddr, int bufferwidth, int pixel
 
 	int module_start(SceSize args, void *argp)
 	{
-		previous = libmHookDisplayHander(sceDisplaySetFrameBuf_Patched);
+		previous = libmHookDisplayHandler(sceDisplaySetFrameBuf_Patched);
 
 		return 0;
 	}
 
  */
-void* libmHookDisplayHander(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync));
+void* libmHookDisplayHandler(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync));
 
 
 #ifdef __cplusplus
