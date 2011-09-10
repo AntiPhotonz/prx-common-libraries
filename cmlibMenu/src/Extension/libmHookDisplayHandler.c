@@ -5,14 +5,14 @@
 /*------------------------------------------------------------*/
 
 int (*sceDisplaySetFrameBuf_Real)(void *topaddr, int bufferwidth, int pixelformat, int sync);
-int (*sceDisplaySetFrameBuf_Hander)(void *topaddr, int bufferwidth, int pixelformat, int sync) = NULL;
+int (*sceDisplaySetFrameBuf_Handler)(void *topaddr, int bufferwidth, int pixelformat, int sync) = NULL;
 
 /*------------------------------------------------------------*/
 
 int sceDisplaySetFrameBuf_Patched(void *topaddr, int bufferwidth, int pixelformat, int sync)
 {
-	if( sceDisplaySetFrameBuf_Hander ){
-		sceDisplaySetFrameBuf_Hander(topaddr, bufferwidth, pixelformat, sync);
+	if( sceDisplaySetFrameBuf_Handler ){
+		sceDisplaySetFrameBuf_Handler(topaddr, bufferwidth, pixelformat, sync);
 	}
 	return sceDisplaySetFrameBuf_Real(topaddr, bufferwidth, pixelformat, sync);
 }
@@ -29,15 +29,15 @@ void init()
 	sctrlHENPatchSyscall((u32)sceDisplaySetFrameBuf_Real, sceDisplaySetFrameBuf_Patched);
 	ClearCaches();
 }
-void* libmHookDisplayHander(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync))
+void* libmHookDisplayHandler(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync))
 {
-	if(sceDisplaySetFrameBuf_Hander == NULL)
+	if(sceDisplaySetFrameBuf_Handler == NULL)
 	{
 		init();
 	}
 
-	void *previous = sceDisplaySetFrameBuf_Hander;
-	sceDisplaySetFrameBuf_Hander = func;
+	void *previous = sceDisplaySetFrameBuf_Handler;
+	sceDisplaySetFrameBuf_Handler = func;
 	return previous;
 }
 
