@@ -43,7 +43,7 @@ int libmLoadFont(int flag){
     }
     
     // malloc
-    mem_set_alloc_mode(MEM_AUTO);
+    //mem_set_alloc_mode(MEM_AUTO);
     font_buf = mem_alloc(size);
     if(font_buf == NULL){
         sceIoClose(fd);
