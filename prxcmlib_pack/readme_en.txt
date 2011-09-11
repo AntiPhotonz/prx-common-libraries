@@ -4,9 +4,9 @@ This is summarizes of the libraries needed to run the plugin.
 Please place "lib" folder in the seplugins.
 
 
-*moduleinfo(2011/08/25)
+*moduleinfo(2011/09/11)
 -cmlibAudioÅ@ver 1.0
 -cmlibCtrl  ver 1.2
 -cmLibLog   ver 0.4
--cmlibMenu  ver 1.5
+-cmlibMenu  ver 1.6
 -cmlibPower ver 1.0

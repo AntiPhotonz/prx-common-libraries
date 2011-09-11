@@ -1,4 +1,4 @@
-*1.6 (
+*1.6 (2011.09.11)
 [+] Added libmHookDisplayHandler and libmInitBuffers_ForHook.
 [-] Removed an unused font in font_cg.
 [!] Optimized a memory allocation.
