@@ -1358,6 +1358,22 @@ bool libmInitBuffers_ForHook( int opt, void *topaddr, int bufferwidth, int pixel
 void* libmHookDisplayHandler(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync));
 
 
+/*
+	libmGetFontAddr
+	Get the top address of font data.
+	
+	@param : flag
+	which font. can use the following.
+	
+	LIBM_FONT_CG
+    LIBM_FONT_HANKAKU_KANA
+    LIBM_FONT_SJIS
+    LIBM_FONT_ICON
+    
+    @retern top address
+*/
+char* libmGetFontAddr(int flag);
+
 #ifdef __cplusplus
 }
 #endif

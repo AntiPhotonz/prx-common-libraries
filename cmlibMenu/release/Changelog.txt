@@ -1,5 +1,6 @@
 *1.7
 [!] Fixed issue of a memory allocation on the model 1000.
+[+] Added libmGetFontAddr.
 
 *1.6 (2011.09.11)
 [+] Added libmHookDisplayHandler and libmInitBuffers_ForHook.

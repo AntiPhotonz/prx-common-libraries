@@ -11,9 +11,8 @@
 #define	PB_INVALID_FONT			('?' * LIBM_CHAR_HEIGHT)
 #define	PB_INVALID_SJIS_INDEX	(0xFFFF)
 
-const char *font_cg = NULL, *font_hankaku_kana = NULL, *font_sjis = NULL;
-
-const char no_font[] = {0x7F, 0x63, 0x55, 0x49, 0x49, 0x55, 0x63, 0x7F};
+extern char *font_cg, *font_hankaku_kana, *font_sjis, *font_icon;
+extern char *no_font;
 
 inline int libmPrintXY( int x, int y, u32 fg, u32 bg, const char *str, libm_draw_info *dinfo )
 {
