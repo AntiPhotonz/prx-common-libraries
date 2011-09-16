@@ -1,8 +1,7 @@
 #include "common.h"
 
-
-const char *font_icon;
-extern const char no_font[];
+extern char *font_cg, *font_hankaku_kana, *font_sjis, *font_icon;
+extern char *no_font;
 
 inline int libmPrintSymbolXY( int x, int y, u32 color1, u32 color2, u32 color3, u32 color0, const char *str, libm_draw_info *dinfo )
 {

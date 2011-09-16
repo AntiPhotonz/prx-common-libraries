@@ -65,6 +65,7 @@ OBJS	+=	./Extension/libmCloseAllContainer.o
 OBJS	+=	./Extension/libmGetActiveNum.o
 OBJS	+=	./Extension/libmHookDisplayHandler.o
 OBJS	+=	./Extension/libmInitBuffers_ForHook.o
+OBJS	+=	./Extension/libmGetFontAddr.o
 
 BUILD_PRX = 1
 PRX_EXPORTS = exports.exp

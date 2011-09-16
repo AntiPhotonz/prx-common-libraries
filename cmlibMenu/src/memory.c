@@ -104,7 +104,7 @@ static int mem_get_auto_partition(int num)
               { 2, 5, 4, 1, 0, 0, 0}, // slim 9/2 fix
           },
           { // GAME
-              { 1,  2, 0, 0, 0, 0, 0}, // fat  9/3 fix
+              { 1,  2, 0, 0, 0, 0, 0}, // fat  9/15 fix
               { 9, 11, 8, 4, 1, 2, 0}, // slim 9/2 fix
               { 9, 11, 8, 4, 1, 2, 0}, // slim 9/2 fix
               { 9, 11, 8, 4, 1, 2, 0}, // slim 9/2 fix

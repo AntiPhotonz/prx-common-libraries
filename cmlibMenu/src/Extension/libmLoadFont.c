@@ -1,8 +1,8 @@
 #include "common.h"
 #include "memory.h"
 
-extern const char *font_cg, *font_hankaku_kana, *font_sjis;
-extern const char *font_icon;
+char *font_cg = NULL, *font_hankaku_kana = NULL, *font_sjis = NULL, *font_icon = NULL;
+char no_font[] = {0x7F, 0x63, 0x55, 0x49, 0x49, 0x55, 0x63, 0x7F};
 
 int libmLoadFont(int flag){
     SceUID fd;
