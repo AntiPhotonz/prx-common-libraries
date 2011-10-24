@@ -1,8 +1,8 @@
 //
 // genupdate
 // 2011/10/24
-// Created by popsdec and Y.K
-// Thanks popsdec!
+// Created by popsdec and Y.K.
+// Thanks to popsdeco!
 //
 
 #include <stdio.h>
