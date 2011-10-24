@@ -1,7 +1,7 @@
 //
 // genupdate
 // 2011/10/24
-// Created by popsdec and Y.K.
+// Created by popsdeco and Y.K.
 // Thanks to popsdeco!
 //
 
@@ -96,6 +96,11 @@ int main( int argc, char **argv )
 {
 	char *cmd, *remote, *local;
 	char md5[33] = "";
+
+	if( argc != 2 ) {
+		perror( "usage: genupdate root/of/PSP" );
+		return 0;
+	}
 
 	initstdio();
 	sceIoChdir( argv[1] );
