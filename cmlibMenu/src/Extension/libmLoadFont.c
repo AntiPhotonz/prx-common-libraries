@@ -5,7 +5,7 @@ char *font_cg = NULL, *font_hankaku_kana = NULL, *font_sjis = NULL, *font_icon =
 char no_font[] = {0x7F, 0x63, 0x55, 0x49, 0x49, 0x55, 0x63, 0x7F};
 
 /*---------------------------------------------------------------------------
-  メモリ確保
+  メモリ確保 Thanks noname
     int size: 利用メモリサイズ
 
     return: 確保したメモリへのポインタ
