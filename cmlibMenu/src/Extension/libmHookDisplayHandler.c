@@ -1,7 +1,12 @@
 #include <systemctrl.h>
 #include "common.h"
 
-//from libhook_test_2 by hiroi01
+//Thanks libhook_test_2 by hiroi01
+//Thanks RedirectFunction  by hiroi01
+
+#define NOP 0x00000000
+#define MAKE_JUMP(a, f) _sw(0x08000000 | (((u32)(f) & 0x0ffffffc) >> 2), a); 
+
 /*------------------------------------------------------------*/
 
 int (*sceDisplaySetFrameBuf_Real)(void *topaddr, int bufferwidth, int pixelformat, int sync);
@@ -23,10 +28,59 @@ void ClearCaches(void)
 	sceKernelIcacheClearAll();
 }
 
+//takka氏の umd_dump より malloc を拝借
+static void *p_malloc(u32 size)
+{
+	u32 *p;
+	SceUID h_block;
+	
+	if(size == 0)
+		return NULL;
+	
+	h_block = sceKernelAllocPartitionMemory(1, "block", 0, size + sizeof(h_block), NULL);
+	
+	if(h_block <= 0)
+		return NULL;
+	
+	p = (u32 *)sceKernelGetBlockHeadAddr(h_block);
+	*p = h_block;
+	
+	return (void *)(p + 1);
+}
+/*
+static s32 p_mfree(void *ptr)
+{
+	return sceKernelFreePartitionMemory((SceUID)*((u32 *)ptr - 1));
+}
+*/
+
+void *RedirectFunction(void *addr, void *func)
+{
+	u32 orgaddr = (u32)addr;
+	if( orgaddr != 0 )
+	{
+		u32 buff = (u32)p_malloc( 4 * 4 );
+		if( buff == 0 ) return 0;
+		
+		memcpy( (void *)buff, (void *)orgaddr, 4 * 2 );
+		MAKE_JUMP( (buff + 4 * 2) , (orgaddr + 4 * 2) );
+		_sw( NOP, buff + 4 * 3 );
+		
+		MAKE_JUMP( (u32)(orgaddr), (u32)(func) );
+		_sw( NOP, orgaddr + 4 * 1 );
+		
+		orgaddr = (u32)buff;
+		
+		ClearCaches();
+	}
+	
+	return (void *)orgaddr;
+}
+
 void init()
 {
-	sceDisplaySetFrameBuf_Real = (void *)FindProc("sceDisplay_Service", "sceDisplay", 0x289D82FE);
-	sctrlHENPatchSyscall((u32)sceDisplaySetFrameBuf_Real, sceDisplaySetFrameBuf_Patched);
+	u32 addr = (void *)FindProc("sceDisplay_Service", "sceDisplay", 0x289D82FE);
+	sceDisplaySetFrameBuf_Real = RedirectFunction((void *)addr, sceDisplaySetFrameBuf_Patched);
 	ClearCaches();
 }
 void* libmHookDisplayHandler(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync))
