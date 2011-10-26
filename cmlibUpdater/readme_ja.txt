@@ -5,7 +5,7 @@
  */
 
 cmLibUpdaterとは？
-　prx-common-librariesプロジェクトでリリースされているPRXライブラリのインストール・アップデートを自動で行うアプリです。
+　Prx Common Libraries プロジェクトでリリースされているPRXライブラリのインストール・アップデートを自動で行うアプリです。
 　LCFW/CFWをPSPに導入し、WiFi環境のある方向けです。
 
 
