@@ -4,6 +4,40 @@
 char *font_cg = NULL, *font_hankaku_kana = NULL, *font_sjis = NULL, *font_icon = NULL;
 char no_font[] = {0x7F, 0x63, 0x55, 0x49, 0x49, 0x55, 0x63, 0x7F};
 
+/*---------------------------------------------------------------------------
+  メモリ確保
+    int size: 利用メモリサイズ
+
+    return: 確保したメモリへのポインタ
+            エラーの場合はNULLを返す
+---------------------------------------------------------------------------*/
+void* mem_alloc_forLoadFont(int size)
+{
+  SceUID* p;
+  int h_block;
+
+  if(size == 0) return NULL;
+
+  int fw = (sceKernelDevkitVersion() >> 24) - 5;  // 0 = ～5.xx, 1 = 6.xx
+  int mode = (sceKernelInitKeyConfig() >> 8) - 1; // 0 = VSH, 1 = GAME, 2 = POPS
+  int model = kuKernelGetModel();                 // 0 = 1000, 1 = 2000, 2,3,5,6,7,8 = 3000, 4 = go
+
+  if(mode && model)
+  {
+    h_block = sceKernelAllocPartitionMemory(8+fw, "mem_alloc", PSP_SMEM_High, size + sizeof(SceUID*), NULL);
+    if(h_block <= 0)
+      return NULL;
+
+    p = sceKernelGetBlockHeadAddr(h_block);
+    *p = h_block;
+
+    return (void *)(p + 1);
+  } else {
+    return mem_alloc(size);
+  }
+}
+
+
 int libmLoadFont(int flag){
     SceUID fd;
     SceSize size, readsize;
@@ -44,7 +78,7 @@ int libmLoadFont(int flag){
     
     // malloc
     //mem_set_alloc_mode(MEM_AUTO);
-    font_buf = mem_alloc(size);
+    font_buf = mem_alloc_forLoadFont(size);
     if(font_buf == NULL){
         sceIoClose(fd);
         pspSdkSetK1(k1);
