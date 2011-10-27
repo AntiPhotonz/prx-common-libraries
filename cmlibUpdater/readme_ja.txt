@@ -1,8 +1,12 @@
 /*
- *	cmLibUpdater 1.0
+ *	cmLibUpdater v1.0
  *	2011/10/24
  *	Created by Y.K
+ *
+ *	Author: Team Otwibaco
+ *	Project: http://code.google.com/p/prx-common-libraries/
  */
+
 
 cmLibUpdaterとは？
 　Prx Common Libraries プロジェクトでリリースされているPRXライブラリのインストール・アップデートを自動で行うアプリです。
@@ -31,9 +35,17 @@ cmLibUpdaterとは？
 　アップデート中はメッセージが流れますので確認して置いてください。
 　もし失敗したようであれば時間を置いてから再度試してください。
 
+
 謝辞
 　今回このアプリを作るのに色々な方にお世話になりました。ありがとうございます。
 　特にpopsdeco氏には大変お世話になりました。ありがとうございます。
+　procfwプロジェクトにて公開されているソースコードの一部を改変利用しています。
+　ソースコードの公開に感謝します。
+
+ライセンス
+　GNU GENERAL PUBLIC LICENSE Version 3
 
 履歴
+ 2011/10/27    v1.0    readme_ja.txt修正,適切なライセンスに変更 GPLv2→GPLv3
+ 2011/10/26    v1.0    readme_ja.txt修正
  2011/10/24    v1.0    リリース
