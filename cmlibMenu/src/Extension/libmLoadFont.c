@@ -141,7 +141,7 @@ int font_thread(SceSize args, void *argp)
 	while(1)
 	{
 		sceKernelWaitSema(semaid,1,0);
-		sceKernelDelayThread(5*1000*1000);
+		sceKernelDelayThread(1*1000*1000);
 		for(i=1; i<5; i++)
 		{
 			libmCheckFont(i);
