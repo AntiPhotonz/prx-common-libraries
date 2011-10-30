@@ -1,5 +1,6 @@
 #include <systemctrl.h>
 #include "common.h"
+#include "memory.h"
 
 //Thanks libhook_test_2 by hiroi01
 //Thanks RedirectFunction  by hiroi01
@@ -28,38 +29,14 @@ void ClearCaches(void)
 	sceKernelIcacheClearAll();
 }
 
-//takka氏の umd_dump より malloc を拝借
-static void *p_malloc(u32 size)
-{
-	u32 *p;
-	SceUID h_block;
-	
-	if(size == 0)
-		return NULL;
-	
-	h_block = sceKernelAllocPartitionMemory(1, "block", 0, size + sizeof(h_block), NULL);
-	
-	if(h_block <= 0)
-		return NULL;
-	
-	p = (u32 *)sceKernelGetBlockHeadAddr(h_block);
-	*p = h_block;
-	
-	return (void *)(p + 1);
-}
-/*
-static s32 p_mfree(void *ptr)
-{
-	return sceKernelFreePartitionMemory((SceUID)*((u32 *)ptr - 1));
-}
-*/
-
 void *RedirectFunction(void *addr, void *func)
 {
 	u32 orgaddr = (u32)addr;
 	if( orgaddr != 0 )
 	{
-		u32 buff = (u32)p_malloc( 4 * 4 );
+		mem_set_alloc_mode(1);
+		u32 buff = (u32)mem_alloc( 4 * 4 );
+		mem_set_alloc_mode(0);
 		if( buff == 0 ) return 0;
 		
 		memcpy( (void *)buff, (void *)orgaddr, 4 * 2 );
