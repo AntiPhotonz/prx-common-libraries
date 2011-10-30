@@ -5,8 +5,8 @@ Please place "lib" folder in the seplugins.
 
 
 *moduleinfo(2011/09/17)
--cmlibAudioÅ@ver 1.0
--cmlibCtrl  ver 1.2
--cmLibLog   ver 0.4
--cmlibMenu  ver 1.7
--cmlibPower ver 1.0
+ - cmlibAudioÅ@ver 1.0
+ - cmlibCtrl  ver 1.2
+ - cmLibLog   ver 0.4
+ - cmlibMenu  ver 1.7
+ - cmlibPower ver 1.0
