@@ -79,10 +79,10 @@ void *RedirectFunction(void *addr, void *func)
 
 void init()
 {
-	u32 addr = (void *)FindProc("sceDisplay_Service", "sceDisplay", 0x289D82FE);
+	u32 addr = FindProc("sceDisplay_Service", "sceDisplay", 0x289D82FE);
 	sceDisplaySetFrameBuf_Real = RedirectFunction((void *)addr, sceDisplaySetFrameBuf_Patched);
-	ClearCaches();
 }
+
 void* libmHookDisplayHandler(int (*func)(void *topaddr, int bufferwidth, int pixelformat, int sync))
 {
 	if(sceDisplaySetFrameBuf_Handler == NULL)
