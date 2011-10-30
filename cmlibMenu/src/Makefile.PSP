@@ -1,7 +1,7 @@
 TARGET = cmlibmenu
 
 MAJOR_VERSION = 1
-MINOR_VERSION = 7
+MINOR_VERSION = 8
 
 OBJS = main.o syslibc.o memory.o
 
@@ -66,6 +66,8 @@ OBJS	+=	./Extension/libmGetActiveNum.o
 OBJS	+=	./Extension/libmHookDisplayHandler.o
 OBJS	+=	./Extension/libmInitBuffers_ForHook.o
 OBJS	+=	./Extension/libmGetFontAddr.o
+OBJS	+=	./Extension/libmPutCharXY16.o
+OBJS	+=	./Extension/libmPrintMyIcon.o
 
 BUILD_PRX = 1
 PRX_EXPORTS = exports.exp

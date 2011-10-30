@@ -1374,6 +1374,42 @@ void* libmHookDisplayHandler(int (*func)(void *topaddr, int bufferwidth, int pix
 */
 char* libmGetFontAddr(int flag);
 
+
+/*
+	libmPutCharXY16
+	Draw char. (zoom 16x16)
+*/
+inline int libmPutCharXY16( int x, int y, u32 fg, u32 bg, const char chr, libm_draw_info *dinfo );
+
+
+/*
+	libmPrintMyIcon
+	Draw icon.
+	
+	@param : x
+	Position X.
+	
+	@param : y
+	Position Y.
+	
+	@param : fg
+	Fore color.
+	
+	@param : bg
+	Back color.
+	
+	@param : *icon
+	Pointer of icon data.
+	
+	@param : size
+	Icon size. (ex. 12x12 -> size = 12)
+	
+	@param : *dinfo
+	Pointer of libm_draw_info.
+*/
+void libmPrintMyIcon(int x, int y, u32 fg, u32 bg, const char *icon, u32 size, libm_draw_info *dinfo);
+
+
 #ifdef __cplusplus
 }
 #endif
