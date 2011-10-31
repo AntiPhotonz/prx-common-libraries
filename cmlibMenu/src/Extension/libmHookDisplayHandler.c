@@ -34,9 +34,10 @@ void *RedirectFunction(void *addr, void *func)
 	u32 orgaddr = (u32)addr;
 	if( orgaddr != 0 )
 	{
+		int before_mode =  mem_get_alloc_mode();
 		mem_set_alloc_mode(1);
 		u32 buff = (u32)mem_alloc( 4 * 4 );
-		mem_set_alloc_mode(0);
+		mem_set_alloc_mode(before_mode);
 		if( buff == 0 ) return 0;
 		
 		memcpy( (void *)buff, (void *)orgaddr, 4 * 2 );
