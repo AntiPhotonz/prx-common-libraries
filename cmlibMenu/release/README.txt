@@ -1,6 +1,6 @@
-/**************
-* cmlibMenu
-***************/
+/*--------------
+  cmlibMenu
+--------------*/
 Author: Team Otwibaco
 project: http://code.google.com/p/prx-common-libraries/
 
