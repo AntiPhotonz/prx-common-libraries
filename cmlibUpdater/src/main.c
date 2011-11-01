@@ -1,10 +1,10 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * main.c
- * 2011/10/24
+ * 2011/11/01
  * Created by Y.K
  *
- * Thanks to popsdeco and neur0n!
+ * Thanks to popsdeco and neur0n.
  * Thanks to team Otwibaco developers.
  */
 
@@ -30,7 +30,6 @@ PSP_MODULE_INFO( MODULE_NAME, 0, MAJOR_VER, MAINOR_VER );
 PSP_MAIN_THREAD_ATTR( PSP_THREAD_ATTR_USER );
 
 
-// struct UpdateConfig g_config = { 0 };
 int g_disp_flip;
 int g_running = 1;
 

@@ -1,13 +1,14 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * script.c
- * 2011/10/24
+ * 2011/11/01
  * Created by Y.K
  */
 
 #include <pspsdk.h>
 #include <pspkernel.h>
 #include <pspdebug.h>
+#include <pspctrl.h>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,7 +18,6 @@
 #include "net.h"
 #include "file.h"
 #include "http.h"
-#include "md5.h"
 #include "oe_malloc.h"
 #include "script.h"
 
@@ -30,8 +30,7 @@ static unsigned short server_port;
 //
 // private
 //
-static
-int strcpy_tok( char *dest, const char *src, char tok )
+static int strcpy_tok( char *dest, const char *src, char tok )
 {
 	int len = 0;
 	while( *src != '\0' && *src != tok ) {
@@ -42,81 +41,32 @@ int strcpy_tok( char *dest, const char *src, char tok )
 	return len;
 }
 
-static inline
-void jumptok( char **str, char tok )
+static inline void jumptok( char **str, char tok )
 {
 	while( **str == tok ) *str += 1;
 }
 
-static inline
-void jump_space( char **pos )
+static inline void jump_space( char **pos )
 {
 	while( *(*pos) == ' ' || *(*pos) == '\t' )
 		*pos += 1;
 }
 
-static
-int make_md5( const char *file, char *hash )
+static void wait_x_button(void)
 {
-	SceUID fd;
-	MD5_CTX md5ctx;
-	unsigned char digest[16];
-	char md5[33]; md5[32] = 0;
-	unsigned char buf[0x2000];
-	int readlen;
+	SceCtrlData pad;
 
-	if( (fd = sceIoOpen( file, PSP_O_RDONLY, 0777 )) < 0 ) {
-		return -1;
+	printf("Press X to exit...\n");
+
+	while(1) {
+		sceCtrlReadBufferPositive(&pad, 1);
+		if( pad.Buttons & PSP_CTRL_CROSS )
+			break;
+		sceKernelDelayThread(10000);
 	}
-
-	MD5Init( &md5ctx );
-
-	while( (readlen = sceIoRead( fd, buf, sizeof buf)) > 0 ) {
-		MD5Update( &md5ctx, (unsigned char *)buf, readlen );
-	}
-
-	MD5Final( digest, &md5ctx );
-	sceIoClose( fd );
-
-	int i = 0;
-	for( ; i < 16; i++ ) {
-		int x = digest[i] >> 4, y = digest[i] & 0xf;
-		md5[2 * i + 0] = (x > 9)? (x - 10 + 'a') : (x + '0');
-		md5[2 * i + 1] = (y > 9)? (y - 10 + 'a') : (y + '0');
-	}
-	strcpy( hash, md5 );
-	return 0;
 }
 
-static
-int check_md5( const char *file, const char *remote_md5 )
-{
-	char md5[33];
-	char title[260] = "";
-
-	get_filetitle( title, file );
-	printf( "Verifying %s... ", title );
-
-	if( make_md5( file, md5 ) < 0 ) {
-		return -1;
-	}
-
-	DBG_LOG( "check_md5() file:\"%s\"", file );
-	DBG_LOG( "  local:  %s", md5 );
-	DBG_LOG( "  remote: %s", remote_md5 );
-
-	if( strcmp( md5, remote_md5 ) != 0 ) {
-		printf( "Incorrect file.\n" );
-		DBG_LOG( "MD5 mismatch!" );
-		return 0;
-	}
-
-	printf( "OK!\n" );
-	return 1;
-}
-
-static
-int parse_server_tag( char *line, char *server, unsigned short *uport )
+static int parse_server_tag( char *line, char *server, unsigned short *uport )
 {
 	jump_space( &line );
 	line += strcpy_tok( server, line, ':' ) + 1;
@@ -124,17 +74,19 @@ int parse_server_tag( char *line, char *server, unsigned short *uport )
 
 	*uport = (unsigned short) strtol( line, NULL, 10 );
 	DBG_LOG( "uport = %d", *uport );
-	if( *uport == 0 ) return -1;
-	return 0;
+
+	return (*uport == 0)? -1 : 0;
 }
 
-static
-int get_server_info( void )
+static int get_server_info( void )
 {
 	char line[1024];
 	int nret;
 	do {
 		nret = read_line( script_path, line, sizeof line );
+		if( line[0] == '#' || line[0] == '\0' ) {
+			continue;
+		}
 
 		if( !strncmp( line, "<SERVER>", 8 ) ) {
 			if( parse_server_tag( line + 8, server_name, &server_port ) < 0 ) {
@@ -147,8 +99,7 @@ int get_server_info( void )
 	return nret;
 }
 
-static
-int parse_get_tag( char *line, const char *server, unsigned short uport )
+static int parse_get_tag( char *line, const char *server, unsigned short uport )
 {
 	char path[512] = "";
 	char save[260] = "";
@@ -172,7 +123,6 @@ int parse_get_tag( char *line, const char *server, unsigned short uport )
 
 	char md5[33];
 	make_md5( save, md5 );
-//	if( check_md5( save, remote_md5 ) == 1 ) {
 	if( !strcmp( md5, remote_md5 ) ) {
 		printf( "No need to update \"%s\".\n", save );
 		DBG_LOG( "No need to update \"%s\".\n", save );
@@ -181,29 +131,75 @@ int parse_get_tag( char *line, const char *server, unsigned short uport )
 
 	if( http_getfile( server, uport, path, save_tmp ) < 0 ) {
 		goto error;
-	}
-
-	if( check_md5( save_tmp, remote_md5 ) != 1 ) {
+	} else if( check_md5( save_tmp, remote_md5 ) != 1 ) {
 		goto error;
-	}
-
-	if( sceIoRename( save_tmp, save ) < 0 ) {
+	} else if( rename_file( save_tmp, save ) < 0 ) {
 		DBG_LOG( "Error, sceIoRename()." );
 		goto error;
 	}
 
 	printf( "Update success \"%s\".\n", save );
 	DBG_LOG( "Update success \"%s\".\n", save );
-
 	sceIoRemove( save_tmp );
 	return 0;
 
 error:
 	printf( "Failed to update \"%s\".\n", save );
-	DBG_LOG( "Error, failed to update \"%s\".", save );
-
+	DBG_LOG( "Failed to update \"%s\".", save );
 	sceIoRemove( save_tmp );
 	return -1;
+}
+
+static int get_tag_count( const char *file )
+{
+	int i = 0;
+	char line[1024] = "";
+	int nret;
+
+	do {
+		nret = read_line( file, line, sizeof line );
+		if( line[0] == '#' || line[0] == '\0' )
+			continue;
+		if( !strncmp( line, "<GET>", 5 ) )
+			i++;
+	} while( nret == 1 );
+
+	read_line( NULL, NULL, 0 );
+	return i;
+}
+
+static int get_updateinfo( char *line, struct UpdateInfo *upinfo )
+{
+	char path[512] = "";
+	char save[260] = "";
+	char save_tmp[260] = "";
+	char remote_md5[33] = "";
+
+	jump_space( &line );
+	line += strcpy_tok( path, line, ' ' );
+	DBG_LOG( "path = \"%s\"", path );
+	upinfo->path = oe_strmalloc( path );
+	if( upinfo->path == NULL ) {
+		return -1;
+	}
+
+	jump_space( &line );
+	line += strcpy_tok( remote_md5, line, ' ' );
+	DBG_LOG( "remote_md5 = \"%s\"", remote_md5 );
+	strcpy( upinfo->remote_md5, remote_md5 );
+
+	jump_space( &line );
+	line += strcpy_tok( save_tmp, line, ' ' );
+	make_dir( save, get_device_name( NULL ), save_tmp );
+	DBG_LOG( "save = \"%s\"", save );
+	upinfo->save = oe_strmalloc( save );
+	if( upinfo->save == NULL ) {
+		oe_free( (void *)(upinfo->path) );
+		return -1;
+	}
+
+	upinfo->b_update = 1;
+	return 0;
 }
 
 //
@@ -266,59 +262,8 @@ int read_update_script( void )
 	}
 
 	read_line( NULL, NULL, 0 );
-	sceKernelDelayThread( UPDATE_EXIT_DELAY );
+	wait_x_button();
 	return nret;
-}
-
-static
-int get_tag_count( const char *file )
-{
-	int i = 0;
-	char buf[1024] = "";
-	int nret;
-	do {
-		nret = read_line( file, buf, sizeof buf );
-		if( !strncmp( buf, "<GET>", 5 ) ) {
-			i++;
-		}
-	} while( nret == 1 );
-
-	read_line( NULL, NULL, 0 );
-	return i;
-}
-
-static
-int read_updateinfo( char *line, struct UpdateInfo *upinfo )
-{
-	char path[512] = "";
-	char save[260] = "";
-	char save_tmp[260] = "";
-	char remote_md5[33] = "";
-
-	jump_space( &line );
-	line += strcpy_tok( path, line, ' ' );
-	DBG_LOG( "path = \"%s\"", path );
-	upinfo->path = oe_strmalloc( path );
-	if( upinfo->path == NULL ) {
-		return -1;
-	}
-
-	jump_space( &line );
-	line += strcpy_tok( remote_md5, line, ' ' );
-	DBG_LOG( "remote_md5 = \"%s\"", remote_md5 );
-	strcpy( upinfo->remote_md5, remote_md5 );
-
-	jump_space( &line );
-	line += strcpy_tok( save_tmp, line, ' ' );
-	make_dir( save, get_device_name( NULL ), save_tmp );
-	DBG_LOG( "save = \"%s\"", save );
-	upinfo->save = oe_strmalloc( save );
-	if( upinfo->save == NULL ) {
-		return -1;
-	}
-
-	upinfo->b_update = 1;
-	return 0;
 }
 
 int make_updateinfo( struct UpdateInfo **lpupinfo )
@@ -334,13 +279,17 @@ int make_updateinfo( struct UpdateInfo **lpupinfo )
 	}
 
 	int nret;
-	char buf[1024] = "";
+	char line[1024] = "";
 	int i = 0;
 
 	do {
-		nret = read_line( script_path, buf, sizeof buf );
-		if( !strncmp( buf, "<GET>", 5 ) ) {
-			if( read_updateinfo( buf + 5, &(upinfo[i++]) ) < 0 ) {
+		nret = read_line( script_path, line, sizeof line );
+		if( line[0] == '#' || line[0] == '\0' ) {
+			continue;
+		}
+
+		if( !strncmp( line, "<GET>", 5 ) ) {
+			if( get_updateinfo( line + 5, &(upinfo[i++]) ) < 0 ) {
 				i--;
 			}
 		}
@@ -352,7 +301,6 @@ int make_updateinfo( struct UpdateInfo **lpupinfo )
 	upinfo[i] = null_upinfo;
 
 	*lpupinfo = upinfo;
-
 	return i;
 }
 
@@ -373,8 +321,6 @@ int individually_update( struct MenuEntry *entry )
 	sceKernelDelayThread( CHANGE_DELAY );
 	set_bottom_info( "", 0 );
 
-	pspDebugScreenClear();
-
 	net_reconnect();
 
 	char save_tmp[260] = "";
@@ -391,7 +337,6 @@ int individually_update( struct MenuEntry *entry )
 
 		char md5[33];
 		make_md5( save, md5 );
-//		if( check_md5( save, remote_md5 ) == 1 ) {
 		if( !strcmp( md5, remote_md5 ) ) {
 			printf( "No need to update \"%s\".\n", save );
 			DBG_LOG( "No need to update \"%s\".\n", save );
@@ -406,14 +351,14 @@ int individually_update( struct MenuEntry *entry )
 			err--;
 		} else if( check_md5( save_tmp, remote_md5 ) != 1 ) {
 			err--;
-		} else if( sceIoRename( save_tmp, save ) < 0 ) {
+		} else if( rename_file( save_tmp, save ) < 0 ) {
 			err--;
 			DBG_LOG( "Error, sceIoRename()." );
 		}
 
 		if( err < 0 ) {
 			printf( "Failed to download \"%s\".\n", save );
-			DBG_LOG( "Error, failed to download \"%s\".", save );
+			DBG_LOG( "Failed to download \"%s\".", save );
 		} else {
 			printf( "Update success \"%s\".\n", save );
 			DBG_LOG( "Update success \"%s\".\n", save );
@@ -424,6 +369,6 @@ int individually_update( struct MenuEntry *entry )
 
 	printf( "\nExit updates!\n" );
 	DBG_LOG( "Exit updates!\n" );
-	sceKernelDelayThread( UPDATE_EXIT_DELAY );
+	wait_x_button();
 	return 0;
 }
