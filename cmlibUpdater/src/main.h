@@ -1,7 +1,7 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * main.h
- * 2011/10/24
+ * 2011/11/01
  * Created by Y.K
  */
 
@@ -10,9 +10,9 @@
 
 #define MODULE_NAME 	"cmLibUpdater"
 #define MAJOR_VER 		1
-#define MAINOR_VER 		0
+#define MAINOR_VER 		1
 
-#define VERSION_STR 	"1.0"
+#define VERSION_STR 	"1.1"
 
 #define SCRIPT_NAME 	"update_script.txt"
 
@@ -88,14 +88,6 @@ struct Menu {
 	int subtitle_color;
 	int b_topmenu;
 };
-
-/*
-struct UpdateConfig {
-	int savedevice;
-};
-*/
-
-// extern struct UpdateConfig g_config;
 
 struct UpdateInfo {
 	const char *path;

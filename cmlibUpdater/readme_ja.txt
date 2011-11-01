@@ -1,6 +1,6 @@
 /*
- *	cmLibUpdater v1.0
- *	2011/10/24
+ *	cmLibUpdater v1.1
+ *	2011/11/01
  *	Created by Y.K
  *
  *	Author: Team Otwibaco
@@ -46,6 +46,10 @@ cmLibUpdaterとは？
 　GNU GENERAL PUBLIC LICENSE Version 3
 
 履歴
+ 2011/10/27    v1.1    アップデート後のログ確認が出来る様に修正
+                       アップデートスクリプト解析処理にコメントを無視する処理が抜けていたのを修正
+                       メモリリーク一件修正
+                       リネーム処理のバグ修正
  2011/10/27    v1.0    readme_ja.txt修正,適切なライセンスに変更 GPLv2→GPLv3
  2011/10/26    v1.0    readme_ja.txt修正
  2011/10/24    v1.0    リリース

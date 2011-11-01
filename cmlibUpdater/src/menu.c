@@ -1,7 +1,7 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * menu.c
- * 2011/10/24
+ * 2011/11/01
  * Created by Y.K
  */
 
@@ -148,43 +148,6 @@ static int make_plugins_menu( struct Menu *menu, const char **subtitle, struct U
 }
 
 //
-// Using config menu functions
-//
-/*
-static struct ValueOption g_savedevice_option = {
-	(s16 *)&g_config.savedevice,
-	0, 3
-};
-
-static const char *get_savedevice_name( int value )
-{
-	const char *name[] = { "Auto", "ms0:/", "ef0:/", }:
-	return name[value];
-}
-
-static int cb_disp_savedevice_name( struct MenuEntry* entry, char *buf, int size )
-{
-	sprintf( buf, "%-48s %-11s", g_msg[SAVE_DEVICE], get_savedevice_name( g_config.savedevice ) );
-
-	return 0;
-}
-
-static struct MenuEntry g_config_entries[] = {
-	{ NULL, 0, 0, &cb_disp_savedevice_name, &change_option, &change_option_by_enter, &g_savedevice_option },
-	{ &g_msg[DUMMY], 0, 0, NULL, NULL, NULL, NULL },
-};
-
-static struct Menu g_config_menu = {
-	&g_msg[CONFIG],
-	g_config_entries,
-	NELEMS(g_config_entries),
-	0,
-	0xFF00,
-	0
-};
-*/
-
-//
 // Using top menu functions
 //
 static int all_updates_func( struct MenuEntry *entry )
@@ -229,20 +192,9 @@ static int manual_updates_func( struct MenuEntry *entry )
 	return 0;
 }
 
-/*
-static int config_func( struct MenuEntry *entry )
-{
-	struct Menu *menu = &g_config_menu;
-
-	menu->cur_sel = 0;
-	menu_loop( menu );
-	return 0;
-} */
-
 static struct MenuEntry g_top_menu_entries[] = {
 	{ &g_msg[ALL_UPDATE], 0, 0, NULL, NULL, &all_updates_func, NULL },
 	{ &g_msg[MANUAL_UPDATES], 1, 0, NULL, NULL, &manual_updates_func, NULL },
-/*	{ &g_msg[CONFIG], 1, 0, NULL, NULL, &config_func, NULL }, */
 };
 
 static struct Menu g_top_menu = {
