@@ -62,8 +62,9 @@ static void wait_x_button(void)
 		sceCtrlReadBufferPositive(&pad, 1);
 		if( pad.Buttons & PSP_CTRL_CROSS )
 			break;
-		sceKernelDelayThread(10000);
+		sceKernelDelayThread(CTRL_DELAY);
 	}
+	sceKernelDelayThread(CTRL_DEADZONE_DELAY);
 }
 
 static int parse_server_tag( char *line, char *server, unsigned short *uport )

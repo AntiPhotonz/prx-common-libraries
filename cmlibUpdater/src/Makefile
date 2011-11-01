@@ -14,8 +14,7 @@ BUILD_PRX = 1
 
 
 INCDIR = 
-CFLAGS = -O3 -G0 -Wall
-# -DDEBUG
+CFLAGS = -O3 -G0 -Wall -DDEBUG
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
