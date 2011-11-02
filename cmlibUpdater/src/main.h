@@ -8,7 +8,7 @@
 #ifndef _MAIN_H_
 #define _MAIN_H_
 
-#define MODULE_NAME 	"cmLibUpdater"
+#define MODULE_NAME 	"cmLibUpdater TEST"
 #define MAJOR_VER 		1
 #define MAINOR_VER 		1
 

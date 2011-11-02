@@ -1,7 +1,7 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * script.c
- * 2011/11/01
+ * 2011/11/02
  * Created by Y.K
  */
 
@@ -106,6 +106,8 @@ static int parse_get_tag( char *line, const char *server, unsigned short uport )
 	char save[260] = "";
 	char save_tmp[260] = "";
 	char remote_md5[33] = "";
+	char local_md5[33] = "";
+	char title[260] = "";
 
 	jump_space( &line );
 	line += strcpy_tok( path, line, ' ' );
@@ -122,13 +124,15 @@ static int parse_get_tag( char *line, const char *server, unsigned short uport )
 	strcpy( save_tmp, save );
 	strcat( save_tmp, ".tmp" );
 
-	char md5[33];
-	make_md5( save, md5 );
-	if( !strcmp( md5, remote_md5 ) ) {
+	make_md5( save, local_md5 );
+	if( !strcmp( local_md5, remote_md5 ) ) {
 		printf( "No need to update \"%s\".\n", save );
 		DBG_LOG( "No need to update \"%s\".\n", save );
 		return 1;
 	}
+
+	get_filetitle( title, save );
+	printf( "Downloading \"%s\"...\n", title );
 
 	if( http_getfile( server, uport, path, save_tmp ) < 0 ) {
 		goto error;
@@ -214,6 +218,8 @@ int download_script( void )
 	const char path[] = "/hg/genupdate/upload_script.src";
 	unsigned short uport = 80;
 
+	printf( "Downloading the script file...\n" );
+
 	strcpy( script_path, get_curdir(NULL) );
 	strcat( script_path, SCRIPT_NAME );
 
@@ -255,8 +261,8 @@ int read_update_script( void )
 	} while( nret == 1 );
 
 	if( nret == 0 ) {
-		printf( "\nExit updates!\n" );
-		DBG_LOG( "Exit updates!\n" );
+		printf( "\nComplete updates!\n" );
+		DBG_LOG( "Complete updates!\n" );
 	} else {
 		printf( "\nFailed to updates.\n" );
 		DBG_LOG( "Failed to updates.\n" );
@@ -336,9 +342,9 @@ int individually_update( struct MenuEntry *entry )
 			continue;
 		}
 
-		char md5[33];
-		make_md5( save, md5 );
-		if( !strcmp( md5, remote_md5 ) ) {
+		char local_md5[33] = "";
+		make_md5( save, local_md5 );
+		if( !strcmp( local_md5, remote_md5 ) ) {
 			printf( "No need to update \"%s\".\n", save );
 			DBG_LOG( "No need to update \"%s\".\n", save );
 			continue;
@@ -346,6 +352,10 @@ int individually_update( struct MenuEntry *entry )
 
 		strcpy( save_tmp, save );
 		strcat( save_tmp, ".tmp" );
+
+		char title[260] = "";
+		get_filetitle( title, save );
+		printf( "Downloading \"%s\"...\n", title );
 
 		int err = 0;
 		if( http_getfile( server_name, server_port, path, save_tmp ) < 0 ) {
@@ -368,8 +378,8 @@ int individually_update( struct MenuEntry *entry )
 		sceIoRemove( save_tmp );
 	}
 
-	printf( "\nExit updates!\n" );
-	DBG_LOG( "Exit updates!\n" );
+	printf( "\nComplete updates!\n" );
+	DBG_LOG( "Complete updates!\n" );
 	wait_x_button();
 	return 0;
 }
