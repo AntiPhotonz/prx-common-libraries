@@ -1,7 +1,7 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * menu.c
- * 2011/11/01
+ * 2011/11/02
  * Created by Y.K
  */
 
@@ -19,7 +19,7 @@
 #include "oe_malloc.h"
 
 const char * g_msg[] = {
-	"cmLibUpdater " VERSION_STR " By Team Otwibaco",
+	MODULE_NAME " " VERSION_STR " By Team Otwibaco",
 	"Main menu",
 	"Entering",
 	"Exiting",

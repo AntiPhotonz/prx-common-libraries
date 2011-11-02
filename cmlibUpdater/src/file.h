@@ -16,7 +16,7 @@
 
 int read_line( const char *file, char *dest, int size );
 
-int get_filetitle( char *dest, const char *path );
+char *get_filetitle( char *dest, const char *path );
 char *get_curdir( const char *argp );
 char *get_device_name( const char *argp );
 char *make_dir( char *dest, const char *devname, const char *path );

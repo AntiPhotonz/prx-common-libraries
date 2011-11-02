@@ -1,7 +1,7 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * file.c
- * 2011/11/01
+ * 2011/11/02
  * Created by Y.K
  */
 
@@ -93,14 +93,17 @@ int read_line( const char *file, char *dest, int size )
 	return 1;
 }
 
-int get_filetitle( char *dest, const char *path )
+char *get_filetitle( char *dest, const char *path )
 {
-	char *pos = strrchr( path, '/' );
-	if( pos == NULL ) {
-		return -1;
+	if( dest != NULL && path != NULL ) {
+		char *pos = strrchr( path, '/' );
+		if( pos == NULL ) {
+			strcpy( dest, path );
+		} else {
+			strcpy( dest, ++pos );
+		}
 	}
-	strcpy( dest, ++pos );
-	return 0;
+	return dest;
 }
 
 char *get_curdir( const char *argp )

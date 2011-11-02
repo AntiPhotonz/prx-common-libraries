@@ -1,7 +1,7 @@
 /*
  * Prx Common Libraries - cmlibUpdater
  * http.c
- * 2011/10/21
+ * 2011/11/02
  * Created by Y.K
  */
 
@@ -71,7 +71,7 @@ int check_statuscode( int status )
 	switch( status )
 	{
 	case 200:
-printf("Request OK!\n" );
+// printf("Request OK!\n" );
 		return status;
 
 	case 304:
@@ -225,12 +225,6 @@ int http_getfile( const char *server, unsigned short uport, const char *path, co
 	char buf[4096] = "";
 	MemArray mabuf = { buf, sizeof buf, 0 };
 	HTTPResponse resp = { };
-
-//	memset( &resp, 0, sizeof(HTTPResponse) );
-
-//	mabuf.ptr = buf;
-//	mabuf.size = sizeof buf;
-//	mabuf.len = 0;
 
 	if( (sock = net_connect_to_server( server, uport )) < 0 ) {
 		DBG_LOG( "Error, net_connect_to_server()" );
