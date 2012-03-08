@@ -1,0 +1,9 @@
+psp-build-exports -b exports.exp > exports.c
+psp-gcc -IC:/pspsdk/psp/sdk/include/libc -I. -IC:/pspsdk/psp/sdk/include -Os -G 0 -Wall -fno-strict-aliasing -D_PSP_FW_VERSION=150   -c -o exports.o exports.c
+psp-gcc -IC:/pspsdk/psp/sdk/include/libc -I. -IC:/pspsdk/psp/sdk/include -Os -G 0 -Wall -fno-strict-aliasing -D_PSP_FW_VERSION=150   -c -o memory.o memory.c
+psp-gcc -IC:/pspsdk/psp/sdk/include/libc -I. -IC:/pspsdk/psp/sdk/include -Os -G 0 -Wall -fno-strict-aliasing -D_PSP_FW_VERSION=150   -c -o main.o main.c
+psp-gcc -IC:/pspsdk/psp/sdk/include/libc -I. -IC:/pspsdk/psp/sdk/include -Os -G 0 -Wall -fno-strict-aliasing -D_PSP_FW_VERSION=150  -L. -LC:/pspsdk/psp/sdk/lib -Wl,-q,-TC:/pspsdk/psp/sdk/lib/linkfile.prx -mno-crt0 -nostartfiles -mno-crt0 -nostartfiles  exports.o memory.o main.o -lpspkubridge -lpspdebug -lpspdisplay_driver -lpspctrl_driver -lpspsdk  -lpspkernel -o cmlibconv.elf
+psp-fixup-imports cmlibconv.elf
+psp-prxgen cmlibconv.elf cmlibconv.prx
+psp-build-exports -s exports.exp
+rm exports.c
