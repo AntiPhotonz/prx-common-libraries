@@ -22,7 +22,15 @@ void libmRemoveContext(MenuContext* Context)
 			
 			if (!Curr && last->Parent)
 			{
-				Curr = last->Parent->Next;
+				MenuItem *last2 = last;
+				while(last2->Parent->Parent && !last2->Parent->Next)
+				{
+					MenuItem *parent = last2->Parent;
+					Context->opt->func.free_p(last2);
+					last2 = parent;
+				}
+				Curr = last2->Parent->Next;
+				Context->opt->func.free_p(last2->Parent);
 			}
 		}
 		

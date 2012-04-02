@@ -11,23 +11,9 @@ void libmRemoveItem( MenuContext *Context , MenuItem* Item )
 		
 		while( Curr )
 		{
-			MenuItem *last = Curr;
-			
-			if ( Curr->Type == MenuContainer && Curr->Children )
-			{
-				Curr = Curr->Children;
-			}
-			else
-			{
-				Curr = Curr->Next;
-				
-				if (!Curr && last->Parent)
-				{
-					Curr = last->Parent->Next;
-				}
-			}
-			
-			Context->opt->func.free_p(last);
+			MeniItem *next = Curr->Next;
+			libmRemoveItem(Context, Curr);
+			Curr = next;
 		}
 	}
 	
