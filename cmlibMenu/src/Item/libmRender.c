@@ -230,6 +230,11 @@ void libmRender(MenuContext* Context,int PosX,int PosY ,char *buf ,int bufLen, l
 					
 					if (!Curr && last->Parent)
 					{
+						while(last->Parent->Parent && !last->Parent->Next)
+						{
+							last = last->Parent;
+							depth--;
+						}
 						Curr = last->Parent->Next;
 						--depth;
 					}
