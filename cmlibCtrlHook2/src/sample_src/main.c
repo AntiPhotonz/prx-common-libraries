@@ -8,7 +8,16 @@
 // info
 PSP_MODULE_INFO("cmlibCtrlHook_sample", PSP_MODULE_KERNEL, 0, 1);
 
+// trigger
+#define TRIGGER_KEYS	(PSP_CTRL_LTRIGGER | PSP_CTRL_SQUARE)
+
+// mask
+#define MASK_KEYS	(PSP_CTRL_UP | PSP_CTRL_DOWN | PSP_CTRL_LEFT | PSP_CTRL_RIGHT |\
+					PSP_CTRL_CIRCLE | PSP_CTRL_CROSS | PSP_CTRL_TRIANGLE | PSP_CTRL_SQUARE |\
+					PSP_CTRL_LTRIGGER | PSP_CTRL_RTRIGGER | PSP_CTRL_START | PSP_CTRL_SELECT)
+
 // global
+int invalid_flag;
 CTRL_HOOK_HANDLER previous;
 
 // function
@@ -28,16 +37,9 @@ void WaitButtons(u32 buttons)
 
 int CtrlHandler(SceCtrlData *pad_data)
 {
-	// swap Square / Select buttons
-	if(pad_data->Buttons & PSP_CTRL_SQUARE)
+	if(invalid_flag)
 	{
-		pad_data->Buttons |= PSP_CTRL_SELECT;
-		pad_data->Buttons &= ~PSP_CTRL_SQUARE;
-	}
-	else if(pad_data->Buttons & PSP_CTRL_SELECT)
-	{
-		pad_data->Buttons |= PSP_CTRL_SQUARE;
-		pad_data->Buttons &= ~PSP_CTRL_SELECT;
+		pad_data->Buttons &= ~MASK_KEYS;
 	}
 
 	return previous ? previous(pad_data) : 0;
@@ -45,17 +47,10 @@ int CtrlHandler(SceCtrlData *pad_data)
 
 int MainThread(SceSize args, void *argp)
 {
-	int id;
 	SceCtrlData pad_data;
 
 	// set handler
 	previous = libCtrlHookSetHandler(CtrlHandler);
-
-	// set Circle
-	libCtrlHookSetInvalidButtons(PSP_CTRL_CIRCLE);
-
-	// clear
-	id = 0;
 
 	// loop
 	while(1)
@@ -63,20 +58,11 @@ int MainThread(SceSize args, void *argp)
 		// get raw_pad_data
 		libCtrlHookGetRawData(&pad_data);
 
-		// set / delete invalid_button
-		if(pad_data.Buttons & PSP_CTRL_CIRCLE)
+		// on / off invalid_flag
+		if((pad_data.Buttons & TRIGGER_KEYS) == TRIGGER_KEYS)
 		{
-			WaitButtons(PSP_CTRL_CIRCLE);
-
-			if(id == 0)
-			{
-				id = libCtrlHookSetInvalidButtons(PSP_CTRL_LEFT | PSP_CTRL_RIGHT | PSP_CTRL_UP | PSP_CTRL_DOWN);
-			}
-			else
-			{
-				libCtrlHookDeleteInvalidButtons(id);
-				id = 0;
-			}
+			WaitButtons(TRIGGER_KEYS);
+			invalid_flag ^= 1;
 		}
 
 		// delay

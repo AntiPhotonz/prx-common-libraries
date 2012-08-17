@@ -55,31 +55,6 @@ int libCtrlHookGetRawData(SceCtrlData *pad_data);
 */
 CTRL_HOOK_HANDLER libCtrlHookSetHandler(CTRL_HOOK_HANDLER new_handler);
 
-/*
-	An invalid button is set up.
-
-	@param invalid_buttons - The button to repeal.
-	@returns - ID for deletion.
-
-	@Example:
-
-	int id = libCtrlHookSetInvalidButtons(PSP_CTRL_CIRCLE);
-
-*/
-int libCtrlHookSetInvalidButtons(u32 invalid_buttons);
-
-/*
-	Deletion of an invalid button.
-
-	@param id - The return value of libCtrlHookSetInvalidButtons.
-
-	@Example:
-
-	libCtrlHookDeleteInvalidButtons(id);
-
-*/
-void libCtrlHookDeleteInvalidButtons(int id);
-
 #ifdef __cplusplus
 }
 #endif
