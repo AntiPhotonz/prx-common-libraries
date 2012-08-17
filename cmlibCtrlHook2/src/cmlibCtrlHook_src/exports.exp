@@ -12,15 +12,11 @@ PSP_EXPORT_END
 PSP_EXPORT_START(cmlibCtrlHookKernel, 0, 0x0001)
 PSP_EXPORT_FUNC(libCtrlHookGetRawData)
 PSP_EXPORT_FUNC(libCtrlHookSetHandler)
-PSP_EXPORT_FUNC(libCtrlHookSetInvalidButtons)
-PSP_EXPORT_FUNC(libCtrlHookDeleteInvalidButtons)
 PSP_EXPORT_END
 
 PSP_EXPORT_START(cmlibCtrlHookUser, 0, 0x4001)
 PSP_EXPORT_FUNC(libCtrlHookGetRawData)
 PSP_EXPORT_FUNC(libCtrlHookSetHandler)
-PSP_EXPORT_FUNC(libCtrlHookSetInvalidButtons)
-PSP_EXPORT_FUNC(libCtrlHookDeleteInvalidButtons)
 PSP_EXPORT_END
 
 PSP_END_EXPORTS

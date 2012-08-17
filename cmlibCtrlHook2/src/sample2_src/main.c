@@ -9,6 +9,7 @@
 PSP_MODULE_INFO("cmlibCtrlHook_sample2", PSP_MODULE_USER, 0, 1);
 
 // global
+int swap_flag;
 CTRL_HOOK_HANDLER previous;
 
 // function
@@ -28,16 +29,19 @@ void WaitButtons(u32 buttons)
 
 int CtrlHandler(SceCtrlData *pad_data)
 {
-	// swap Left / L_trigger & Right / R_trigger buttons
-	if(pad_data->Buttons & PSP_CTRL_LTRIGGER)
+	if(swap_flag)
 	{
-		pad_data->Buttons |= PSP_CTRL_LEFT;
-		pad_data->Buttons &= ~PSP_CTRL_LTRIGGER;
-	}
-	else if(pad_data->Buttons & PSP_CTRL_RTRIGGER)
-	{
-		pad_data->Buttons |= PSP_CTRL_RIGHT;
-		pad_data->Buttons &= ~PSP_CTRL_RTRIGGER;
+		// swap Left / L_trigger & Right / R_trigger buttons
+		if(pad_data->Buttons & PSP_CTRL_LTRIGGER)
+		{
+			pad_data->Buttons |= PSP_CTRL_LEFT;
+			pad_data->Buttons &= ~PSP_CTRL_LTRIGGER;
+		}
+		else if(pad_data->Buttons & PSP_CTRL_RTRIGGER)
+		{
+			pad_data->Buttons |= PSP_CTRL_RIGHT;
+			pad_data->Buttons &= ~PSP_CTRL_RTRIGGER;
+		}
 	}
 
 	return previous ? previous(pad_data) : 0;
@@ -45,14 +49,10 @@ int CtrlHandler(SceCtrlData *pad_data)
 
 int MainThread(SceSize args, void *argp)
 {
-	int id;
 	SceCtrlData pad_data;
 
 	// set handler
 	previous = libCtrlHookSetHandler(CtrlHandler);
-
-	// clear
-	id = 0;
 
 	// loop
 	while(1)
@@ -60,20 +60,11 @@ int MainThread(SceSize args, void *argp)
 		// get raw_pad_data
 		libCtrlHookGetRawData(&pad_data);
 
-		// set / delete invalid_button
+		// set
 		if(pad_data.Buttons & PSP_CTRL_TRIANGLE)
 		{
 			WaitButtons(PSP_CTRL_TRIANGLE);
-
-			if(id == 0)
-			{
-				id = libCtrlHookSetInvalidButtons(PSP_CTRL_CROSS);
-			}
-			else
-			{
-				libCtrlHookDeleteInvalidButtons(id);
-				id = 0;
-			}
+			swap_flag ^= 1;
 		}
 
 		// delay
