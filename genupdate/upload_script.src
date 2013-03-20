@@ -21,3 +21,7 @@
 #cmLibAudio
 <GET> /hg/prxcmlib_pack/lib/cmlibaudio.prx ab4a7d2e4b84c547a11c9a61134b542d /seplugins/lib/cmlibaudio.prx
 
+#cmLibConv
+<GET> /hg/prxcmlib_pack/lib/cmlibconv.prx 6b4d9d5bcbceb3faeddc686193d1e432 /seplugins/lib/cmlibconv.prx
+<GET> /hg/prxcmlib_pack/lib/conv/StoU.bin 022101be2b8dceadd28bdffbfce6d1c2 /seplugins/lib/conv/StoU.bin
+<GET> /hg/prxcmlib_pack/lib/conv/UtoS.bin b1b2dabcf0dc7e224cdc725b3d64d656 /seplugins/lib/conv/UtoS.bin
